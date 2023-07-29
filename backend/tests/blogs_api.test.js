@@ -4,8 +4,7 @@ const app = require('../app')
 const api = supertest(app)
 const helper = require('./test_helper')
 const Blog = require('../models/blog')
-const testToken =
-  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImF0dXJuZXI4OCIsImlkIjoiNjQzZDQzZjFmMDIxYzA2ZmNmNDI4ODBjIiwiaWF0IjoxNjgxOTA5NDM3LCJleHAiOjE2ODE5MTMwMzd9.DbDIfxjT8VbyIODty7XYF70Kxrf-XrvPCGUP79DjAz8'
+const testToken = 'JWT TOKEN HERE'
 // Delete all blogs from the database and insert the initial blogs before each test
 beforeEach(async () => {
   await Blog.deleteMany({})

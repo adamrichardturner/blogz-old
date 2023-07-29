@@ -2,8 +2,8 @@ post http://localhost:3003/api/blogs
 Content-Type: application/json
 
 {
-    "title": "On Libertie",
+    "title": "Example Title",
     "author": "Johns Stuart Mill",
-    "url": "https://jsmill.com/",
+    "url": "https://website.com",
     "likes": 7
 }
