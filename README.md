@@ -14,7 +14,7 @@ Integration testing with Supertest ensures robust APIs, and user authentication 
 
 # Demo
 
-To trial the application simply [click here.](https://blogz.dev) and use the following credentials:
+To trial the application simply [click here](https://blogz.dev) and use the following credentials:
 
 Username: **demo**  
 Password: **demo**
@@ -68,7 +68,7 @@ npm start
 
 In the requests folder found within backend, execute the following REST request to create a user in the database so that you can login to application. Replace credentials as appropriate.
 
-```JSON
+```
 post http://localhost:3003/api/users
 Content-Type: application/json
 
@@ -121,4 +121,4 @@ npm run start:test
 npm run dev
 ```
 
-![Logo](blogz-logo.png)
+[![Logo](blogz-logo.png)](https://blogz.dev)
