@@ -1,0 +1,10 @@
+post http://localhost:3003/api/blogs
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InJvYWRtYW4iLCJpZCI6IjY0YzUyMjE3MDYyNWNhMGU2NWI2ZDA0ZiIsImlhdCI6MTY5MDY0MTA2OSwiZXhwIjoxNjkwNjQ0NjY5fQ.Ha65MlwMTO1gy8FeV7QR7jwwT5hn6u4ZiHzjDOhD-68
+
+{
+    "title": "I am special",
+    "author": "Adam Turner from Blogz, your first friend",
+    "url": "Hello. This is a test application at the moment. Feel free to like, comment and make blogs. If you want to abuse me, that's fine too, but I'll send a dangerous owl your way if you do.",
+    "likes": 50000
+}

@@ -1,0 +1,42 @@
+{
+  "name": "blogz",
+  "version": "0.0.1",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build:ui": "rm -rf build && cd ../bloglist-frontend && npm run build && cp -r build ../bloglist-backend",
+    "deploy:full": "npm run build:ui && git add . && git commit -m uibuild && git push -u origin main",
+    "start": "cross-env NODE_ENV=production node index.js",
+    "start:test": "NODE_ENV=test node index.js",
+    "dev": "cross-env NODE_ENV=development nodemon index.js",
+    "lint": "eslint .",
+    "test": "cross-env NODE_ENV=test jest --verbose --runInBand"
+  },
+  "author": "Adam Turner",
+  "license": "MIT",
+  "dependencies": {
+    "bcrypt": "^5.1.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.3",
+    "express": "^4.18.2",
+    "express-async-errors": "^3.1.1",
+    "jsonwebtoken": "^9.0.0",
+    "lodash": "^4.17.21",
+    "mongodb": "^5.6.0",
+    "mongoose": "^7.0.3",
+    "mongoose-unique-validator": "^4.0.0",
+    "morgan": "^1.10.0"
+  },
+  "devDependencies": {
+    "cross-env": "^7.0.3",
+    "eslint": "^8.37.0",
+    "eslint-config-prettier": "^8.8.0",
+    "jest": "^29.5.0",
+    "nodemon": "^2.0.22",
+    "prettier": "3.0.0",
+    "supertest": "^6.3.3"
+  },
+  "jest": {
+    "testEnvironment": "node"
+  }
+}

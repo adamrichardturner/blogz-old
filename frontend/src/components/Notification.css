@@ -1,0 +1,44 @@
+/* Container for the notification */
+.notification {
+  position: fixed;
+  top: 0;
+  z-index: 9999;
+  width: 100%;
+  margin: auto;
+  padding: 0;
+  display: flex;
+  justify-content: flex-start;
+  opacity: 0;
+  animation:
+    slideInDown 0.5s,
+    fadeOut 0.5s 4s;
+  animation-fill-mode: forwards;
+}
+
+.notification-show {
+  opacity: 1;
+}
+
+@keyframes slideInDown {
+  from {
+    transform: translateY(-100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+@media only screen and (max-width: 767px) {
+  .notification {
+    left: 0rem;
+  }
+}

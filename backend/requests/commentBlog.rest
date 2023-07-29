@@ -1,0 +1,7 @@
+post http://localhost:3003/api/blogs/64ba2dd42ea418228ebaa2fe/comments/
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFkYW1yaWNoYXJkdHVybmVyIiwiaWQiOiI2NGE3MGVkOWZlOGJlZTlkNzYyMjFkNTYiLCJpYXQiOjE2OTAzNzI3NzksImV4cCI6MTY5MDM3NjM3OX0.ySRt-1WcnUGCxlyt9GvysXrtn5O71ZHOuW86r5TeRo0
+
+{
+    "text": "Tango whisky alpha"
+}
