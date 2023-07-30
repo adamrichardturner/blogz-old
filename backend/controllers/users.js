@@ -3,32 +3,52 @@ const bcrypt = require('bcrypt') // Password hashing library
 const usersRouter = require('express').Router() // Express router
 const User = require('../models/user') // User model
 
-// Route for creating a new user
 usersRouter.post('/', async (request, response) => {
-  const { username, name, password } = request.body // Extracting username, name and password from the request body
+  const { username, name, password } = request.body
 
-  // Validating the password length and sending a 400 Bad Request error if it's less than 3 characters
-  if (password.length < 3) {
-    return response
-      .status(400)
-      .json({ error: 'Password length must be at least 3 characters' })
+  try {
+    // Validate username
+    if (!username || typeof username !== 'string' || username.trim() === '') {
+      return response.status(400).json({ error: 'Invalid username' })
+    }
+
+    // Validate name
+    if (!name || typeof name !== 'string' || name.trim() === '') {
+      return response.status(400).json({ error: 'Invalid name' })
+    }
+
+    // Validate password length and number presence
+    if (password.length < 5 || !/\d/.test(password)) {
+      return response
+        .status(400)
+        .json({
+          error:
+            'Password must be at least 5 characters long and contain a number',
+        })
+    }
+
+    // Hash the password with bcrypt and the number of salt rounds
+    const saltRounds = 10
+    const passwordHash = await bcrypt.hash(password, saltRounds)
+
+    // Create a new User object with username, name, and the hashed password
+    const user = new User({
+      username,
+      name,
+      passwordHash,
+    })
+
+    // Save the user to the database and send a 201 Created response with the saved user information
+    const savedUser = await user.save()
+    response.status(201).json(savedUser)
+  } catch (error) {
+    response
+      .status(500)
+      .json({ error: 'An error occurred during user registration' })
   }
-
-  // Hashing the password with bcrypt and the number of salt rounds
-  const saltRounds = 10
-  const passwordHash = await bcrypt.hash(password, saltRounds)
-
-  // Creating a new User object with username, name, and the hashed password
-  const user = new User({
-    username,
-    name,
-    passwordHash,
-  })
-
-  // Saving the user to the database and sending a 201 Created response with the saved user information
-  const savedUser = await user.save()
-  response.status(201).json(savedUser)
 })
+
+module.exports = usersRouter
 
 // Route for retrieving all users and their associated blogs
 usersRouter.get('/', async (request, response) => {
