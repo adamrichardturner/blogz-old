@@ -34,6 +34,10 @@ const Blog = ({ blog, updateLikes, removeBlog, user }) => {
     removeBlog(blog)
   }
 
+  if (!blog || !user) {
+    return null
+  }
+
   return (
     <Box
       border={1}
@@ -55,7 +59,12 @@ const Blog = ({ blog, updateLikes, removeBlog, user }) => {
           </span>
         </MuiLink>
         <Typography variant="paragraphHeader">
-          <p>Blog made by {blog.author}</p>
+          <p>
+            Blog made by{' '}
+            <MuiLink component={RouterLink} to={`/users/${blog.user.id}`}>
+              {blog.user.name}
+            </MuiLink>
+          </p>
         </Typography>
         <Typography variant="paragraph">
           <p
@@ -66,10 +75,6 @@ const Blog = ({ blog, updateLikes, removeBlog, user }) => {
             {blog.url}
           </p>
         </Typography>
-        <Typography variant="paragraph">User: </Typography>
-        <MuiLink component={RouterLink} to={`/users/${blog.user.id}`}>
-          {blog.user.name}
-        </MuiLink>
       </Box>
       <Box
         sx={{
@@ -93,7 +98,6 @@ const Blog = ({ blog, updateLikes, removeBlog, user }) => {
           display: 'flex',
           justifyContent: 'space-between',
           flexDirection: 'row',
-          padding: 5,
         }}
       >
         <Box

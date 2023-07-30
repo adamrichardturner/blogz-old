@@ -1,10 +1,23 @@
 import axios from 'axios'
 const baseUrl = '/api/users'
 
-const getUsers = () => {
-  const request = axios.get(baseUrl)
-  return request.then((res) => res.data)
+const getUsers = async () => {
+  const response = await axios.get(baseUrl)
+  return response.data
 }
 
-// eslint-disable-next-line import/no-anonymous-default-export
-export default { getUsers }
+const registerUser = async (credentials) => {
+  try {
+    const response = await axios.post(baseUrl, credentials)
+
+    if (response.status === 201) {
+      console.log('User registered successfully:', response.data)
+    } else {
+      console.error('Error registering user:', response.data)
+    }
+  } catch (error) {
+    console.error('Error occurred during registration:', error)
+  }
+}
+
+export default { getUsers, registerUser }

@@ -1,18 +1,32 @@
 import { useState } from 'react'
 import { useUser } from '../hooks'
-import Notification from './Notification'
-import { Container, TextField, Button } from '@mui/material'
-import { Typography, useMediaQuery } from '@mui/material'
+import Notification from '../components/Notification/Notification'
+import {
+  Box,
+  Button,
+  Typography,
+  useMediaQuery,
+  Container,
+  TextField,
+  Link as MuiLink,
+} from '@mui/material'
 import AssignmentIcon from '@mui/icons-material/Assignment'
+import { Link as RouterLink, useNavigate } from 'react-router-dom' // Import useNavigate
 
 const LoginForm = ({ theme }) => {
-  const { loginUser } = useUser('')
+  const { loginUser } = useUser()
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
 
+  const navigate = useNavigate() // Add useNavigate hook
+
   const handleLogin = async (event) => {
     event.preventDefault()
-    loginUser(username, password)
+    const user = await loginUser(username, password)
+    if (user) {
+      // If the loginUser function returns a user object (login successful), navigate to the home page
+      navigate('/')
+    }
   }
 
   const isSmallScreen = useMediaQuery((theme) => theme.breakpoints.down('sm'))
@@ -32,7 +46,7 @@ const LoginForm = ({ theme }) => {
           flexDirection: 'column',
         }}
       >
-        <div
+        <Box
           style={{
             display: 'flex',
             marginBottom: 10,
@@ -46,14 +60,22 @@ const LoginForm = ({ theme }) => {
               fontSize: isSmallScreen ? '2rem' : '3.5rem',
             }}
           />
-        </div>
+        </Box>
+        <Typography
+          variant="h2"
+          sx={{
+            padding: 0,
+            margin: '0 0 2rem 0',
+          }}
+        >
+          Login
+        </Typography>
         <form onSubmit={handleLogin} style={{ width: '100%' }}>
-          <div>
+          <Box>
             <TextField
               fullWidth
               sx={{
                 marginBottom: 2,
-                background: '#A16D11',
                 color: '#000000',
               }}
               label="Username"
@@ -64,12 +86,12 @@ const LoginForm = ({ theme }) => {
               variant="filled"
               onChange={({ target }) => setUsername(target.value)}
             />
-          </div>
-          <div>
+          </Box>
+          <Box>
             <TextField
               fullWidth
               sx={{
-                background: '#A16D11',
+                marginBottom: 2,
                 color: '#000000',
               }}
               label="Password"
@@ -79,7 +101,7 @@ const LoginForm = ({ theme }) => {
               variant="filled"
               onChange={({ target }) => setPassword(target.value)}
             />
-          </div>
+          </Box>
           <Button
             id="login-button"
             variant="contained"
@@ -95,10 +117,24 @@ const LoginForm = ({ theme }) => {
           >
             Login
           </Button>
-          {/* <button id="login-button" type="submit">
-        login
-      </button> */}
         </form>
+        <Typography variant="h2">Not got an account?</Typography>
+        <MuiLink component={RouterLink} to="/register">
+          <Button
+            id="register-button"
+            variant="contained"
+            color="primary"
+            sx={{
+              color: '#fff',
+              borderColor: '#fff',
+              padding: '16px 16px',
+              width: '100%',
+              borderRadius: '5px',
+            }}
+          >
+            Register
+          </Button>
+        </MuiLink>
       </Container>
     </>
   )

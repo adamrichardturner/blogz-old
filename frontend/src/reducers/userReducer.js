@@ -22,7 +22,6 @@ const userSlice = createSlice({
       state.allUsers = action.payload
     },
     addBlogToUser(state, action) {
-      console.log(action.payload)
       const { username, blogId } = action.payload
       const userToUpdate = state.user.allUsers.find(
         (user) => user.username === username
@@ -51,8 +50,20 @@ export const setLogin = (username, password) => {
 export const initializeUsers = () => {
   return async (dispatch) => {
     const users = await userService.getUsers()
-    console.log(users)
     await dispatch(setUsers(users))
+  }
+}
+
+export const registerUser = (username, name, password) => {
+  return async (dispatch) => {
+    const user = await userService.registerUser({
+      username,
+      name,
+      password,
+    })
+    await dispatch(addUser(user))
+    await dispatch(setLogin(username, password))
+    return user
   }
 }
 

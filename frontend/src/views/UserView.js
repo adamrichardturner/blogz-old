@@ -1,7 +1,7 @@
 import { useParams } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import { Box, Typography, List, ListItem, ListItemText } from '@mui/material'
-import Loading from './Loading'
+import Loading from '../common/Loading'
 
 const UserView = () => {
   const id = useParams().id

@@ -1,6 +1,7 @@
-import { Link as RouterLink } from 'react-router-dom'
+import { useState } from 'react'
+import { Link as RouterLink, useNavigate } from 'react-router-dom'
 import { useSelector } from 'react-redux'
-import { useUser } from '../hooks'
+import { useUser } from '../../hooks'
 import { Button, Typography, Link as MuiLink } from '@mui/material'
 import FormGroup from '@mui/material/FormGroup'
 import FormControlLabel from '@mui/material/FormControlLabel'
@@ -9,16 +10,21 @@ import AssignmentIcon from '@mui/icons-material/Assignment'
 import { useMediaQuery } from '@mui/material'
 import LightbulbIcon from '@mui/icons-material/Lightbulb'
 
-const Navigation = ({ handleThemeChange, isDark, theme }) => {
+const Header = ({ handleThemeChange, theme }) => {
   const { user } = useSelector((state) => state.user)
   const { logoutUser } = useUser()
+  const navigate = useNavigate()
 
   const handleLogout = () => {
     window.localStorage.removeItem('loggedBlogappUser')
     logoutUser()
+    navigate('/')
   }
 
-  const handleChange = () => {
+  const [darkMode, setDarkMode] = useState(true)
+
+  const handleDarkModeChange = (event) => {
+    setDarkMode(event.target.checked)
     handleThemeChange()
   }
 
@@ -31,7 +37,7 @@ const Navigation = ({ handleThemeChange, isDark, theme }) => {
     justifyContent: 'space-between',
     borderBottom: `1px solid ${theme.palette.text.primary}`,
     paddingBottom: 10,
-    marginTop: '6rem',
+    marginTop: '2rem',
   }
 
   const iconColor = theme.palette.type === 'dark' ? '#ffffff' : '#000000'
@@ -122,8 +128,12 @@ const Navigation = ({ handleThemeChange, isDark, theme }) => {
                       }}
                     >
                       <FormControlLabel
-                        control={<Switch defaultChecked={isDark} />}
-                        onChange={handleChange}
+                        control={
+                          <Switch
+                            checked={darkMode}
+                            onChange={handleDarkModeChange}
+                          />
+                        }
                         sx={{
                           marginRight: 0,
                         }}
@@ -142,4 +152,4 @@ const Navigation = ({ handleThemeChange, isDark, theme }) => {
   )
 }
 
-export default Navigation
+export default Header

@@ -6,9 +6,15 @@ import {
   likeSelectedBlog,
   commentSelectedBlog,
 } from '../reducers/blogsReducer'
-import { setLogin, logout, initializeUsers } from '../reducers/userReducer'
+import {
+  setLogin,
+  logout,
+  initializeUsers,
+  registerUser,
+} from '../reducers/userReducer'
 import { useDispatch } from 'react-redux'
 import blogService from '../services/blogs'
+
 export const useBlogs = () => {
   const dispatch = useDispatch()
 
@@ -110,8 +116,8 @@ export const useUser = () => {
       if (user) {
         window.localStorage.setItem('loggedBlogappUser', JSON.stringify(user))
         blogService.setToken(user.token)
-        console.log(user.name)
         dispatch(setNotification(`${user.name} logged in`, 'positive', 5000))
+        return user
       }
     } catch (error) {
       console.error(error)
@@ -127,9 +133,34 @@ export const useUser = () => {
     }
   }
 
+  const registerNewUser = async (username, name, password) => {
+    await dispatch(registerUser(username, name, password))
+    const user = await dispatch(setLogin(username, password))
+    try {
+      if (user) {
+        window.localStorage.setItem('loggedBlogappUser', JSON.stringify(user))
+        blogService.setToken(user.token)
+        await dispatch(initializeUsers())
+        await dispatch(initializeBlogs())
+        dispatch(
+          setNotification(`${user.name} joined and logged in`, 'positive', 5000)
+        )
+        return user
+      }
+    } catch (error) {
+      setNotification(
+        `${user.name} registration failed: ${error}`,
+        'negative',
+        5000
+      )
+      console.error(error)
+    }
+  }
+
   return {
     loginUser,
     logoutUser,
     getAll,
+    registerNewUser,
   }
 }

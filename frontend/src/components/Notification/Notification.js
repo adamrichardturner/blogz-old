@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { useSelector } from 'react-redux'
-import { setNotification } from '../reducers/notificationReducer'
+import { setNotification } from '../../reducers/notificationReducer'
 import { Alert, AlertTitle, Box } from '@mui/material'
 import AssignmentIcon from '@mui/icons-material/Assignment'
 import './Notification.css'

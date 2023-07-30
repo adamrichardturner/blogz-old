@@ -1,7 +1,7 @@
 import React from 'react'
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import BlogForm from './BlogForm'
+import BlogForm from './Blogs/BlogForm'
 
 describe('BlogForm', () => {
   test('calls the event handler with the right details when a new blog is created', async () => {

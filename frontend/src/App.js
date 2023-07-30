@@ -1,25 +1,28 @@
 import { useEffect, useState } from 'react'
-import Navigation from './components/Navigation'
-import BlogsList from './components/BlogsList'
-import BlogView from './components/BlogView'
-import LoginForm from './components/LoginForm'
-import UserSummary from './components/UserSummary'
-import UserView from './components/UserView'
+import {
+  Navigate,
+  BrowserRouter as Router,
+  Routes,
+  Route,
+} from 'react-router-dom'
+import Header from './Layout/Header/Header'
+import Footer from './Layout/Footer/Footer'
+import BlogsView from './views/BlogsView'
+import BlogView from './views/BlogView'
+import Notification from './components/Notification/Notification'
+import LoginView from './views/LoginView'
+import UserSummaryView from './views/UserSummaryView'
+import UserView from './views/UserView'
+import blogService from './services/blogs'
 import { useDispatch, useSelector } from 'react-redux'
 import { useBlogs, useUser } from './hooks'
-import blogService from './services/blogs'
 import { addUser } from './reducers/userReducer'
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import { Container } from '@mui/material'
 import { ThemeProvider } from '@mui/material/styles'
-import Footer from './components/Footer'
 import { lightTheme } from './theme/lightTheme'
 import { darkTheme } from './theme/darkTheme'
-import Notification from './components/Notification'
 
 const App = () => {
-  let loggedUser = useSelector((state) => state.user)
-  const { user } = loggedUser
   const { getBlogs } = useBlogs()
   const { getAll } = useUser()
   const dispatch = useDispatch()
@@ -27,7 +30,7 @@ const App = () => {
   const [isDarkMode, setIsDarkMode] = useState(() => {
     // Get the mode from localStorage, or use true if not found
     const storedMode = JSON.parse(localStorage.getItem('isDarkMode'))
-    return storedMode !== null ? storedMode : false
+    return storedMode !== null ? storedMode : true
   })
 
   const theme = isDarkMode ? darkTheme : lightTheme
@@ -45,11 +48,9 @@ const App = () => {
   }, [isDarkMode])
 
   useEffect(() => {
-    const getLatest = () => {
-      const blogs = getBlogs()
-      const users = getAll()
-      console.log(users)
-      console.log(blogs)
+    const getLatest = async () => {
+      await getBlogs()
+      await getAll()
     }
     getLatest()
   }, [])
@@ -64,29 +65,38 @@ const App = () => {
     }
   }, [dispatch])
 
-  if (user === null) {
-    return (
-      <ThemeProvider theme={theme}>
-        <LoginForm theme={theme} />
-      </ThemeProvider>
-    )
-  }
+  // Use the useSelector hook to get the user state from Redux store
+  const { user } = useSelector((state) => state.user)
 
   return (
     <ThemeProvider theme={theme}>
       <Container maxWidth="md">
         <Router>
-          <Navigation
-            handleThemeChange={handleThemeChange}
-            isDark={isDarkMode}
-            theme={theme}
-          />
+          {user !== null && (
+            <Header
+              handleThemeChange={handleThemeChange}
+              isDark={isDarkMode}
+              theme={theme}
+            />
+          )}
           <Notification />
           <Routes>
+            {/* Redirect to login if user is not logged in */}
+            {user === null && (
+              <Route path="/" element={<Navigate to="/login" />} />
+            )}
             <Route path="/users/:id" element={<UserView />} />
-            <Route path="/users" element={<UserSummary />} />
+            <Route path="/users" element={<UserSummaryView />} />
             <Route path="/blogs/:id" element={<BlogView />} />
-            <Route path="/" element={<BlogsList />} />
+            <Route
+              path="/login"
+              element={<LoginView theme={theme} isRegistration={false} />}
+            />
+            <Route
+              path="/register"
+              element={<LoginView theme={theme} isRegistration={true} />}
+            />
+            <Route path="/" element={<BlogsView />} />
           </Routes>
           <Footer />
         </Router>

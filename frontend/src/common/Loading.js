@@ -1,4 +1,4 @@
-import Loader from '../loading.svg'
+import Loader from './loading.svg'
 import { Box } from '@mui/material'
 
 const Loading = () => {

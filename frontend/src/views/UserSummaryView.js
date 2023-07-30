@@ -9,9 +9,9 @@ import {
   TableCell,
   TableBody,
 } from '@mui/material'
-import Loading from './Loading'
+import Loading from '../common/Loading'
 
-const UserSummary = () => {
+const UserSummaryView = () => {
   const allUsers = useSelector((state) => state.user.allUsers)
   if (!allUsers) {
     return <Loading />
@@ -53,4 +53,4 @@ const UserSummary = () => {
   )
 }
 
-export default UserSummary
+export default UserSummaryView

@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { useBlogs } from '../hooks'
+import { useBlogs } from '../../hooks'
 import FavoriteIcon from '@mui/icons-material/Favorite'
 import {
   Button,

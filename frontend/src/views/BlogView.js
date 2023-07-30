@@ -1,8 +1,8 @@
 import { useParams } from 'react-router-dom'
 import { useSelector } from 'react-redux'
-import BlogFooter from './BlogFooter'
+import BlogFooter from '../components/Blogs/BlogFooter'
 import { Box, Typography } from '@mui/material'
-import Loading from './Loading'
+import Loading from '../common/Loading'
 
 const BlogView = () => {
   const id = useParams().id
