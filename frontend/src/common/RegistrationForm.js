@@ -149,7 +149,7 @@ const RegistrationForm = ({ theme }) => {
               borderRadius: '5px',
             }}
           >
-            Login
+            Register
           </Button>
         </form>
         <Typography variant="h2">Back to Login</Typography>

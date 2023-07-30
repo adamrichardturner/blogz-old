@@ -6,7 +6,9 @@ The UI offers clear views for Blogs and Users, managed by Redux for smooth state
 
 On the backend, Node and Express manage routes for user actions like blog creation, updates, and deletion, along with commenting and liking. User data is securely stored in MongoDB with Mongoose.
 
-Integration testing with Supertest ensures robust APIs, and user authentication relies on JWT and Bcrypt. Comprehensive end-to-end testing is implemented using Cypress. Blogz aims to provide a secure and engaging platform for users to connect and share their thoughts and passions.
+Integration testing with Supertest ensures robust APIs, and user authentication relies on JWT and Bcrypt. Comprehensive end-to-end testing is implemented using Cypress.
+
+Blogz aims to provide a secure and engaging platform for users to connect and share their thoughts and passions.
 
 # Screenshots
 
@@ -115,7 +117,7 @@ npm start
 npm run start:test
 ```
 
-** Starting the Development Server **
+**Starting the Development Server**
 
 ```bash
 npm run dev
