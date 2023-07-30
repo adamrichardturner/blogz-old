@@ -12,6 +12,7 @@ const middleware = require('./utils/middleware') // Custom middleware
 const logger = require('./utils/logger') // Custom logger module
 const mongoose = require('mongoose') // Mongoose library
 const morgan = require('morgan') // HTTP request logger middleware
+const path = require('path')
 
 // Disable strict query handling in Mongoose
 mongoose.set('strictQuery', false)
@@ -64,6 +65,11 @@ if (process.env.NODE_ENV === 'test') {
   const testingRouter = require('./controllers/testing')
   app.use('/api/testing', testingRouter)
 }
+
+// Serve the React app for all other requests
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'build', 'index.html'))
+})
 
 // Using custom unknown endpoint middleware
 app.use(middleware.unknownEndpoint)
