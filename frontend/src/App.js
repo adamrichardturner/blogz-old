@@ -1,13 +1,14 @@
 import { useEffect, useState } from 'react'
 import { Routes, Route } from 'react-router-dom'
 import Header from './Layout/Header/Header'
+import Notification from './components/Notification/Notification'
 import Footer from './Layout/Footer/Footer'
 import BlogsView from './views/BlogsView'
 import BlogView from './views/BlogView'
 import UserSummaryView from './views/UserSummaryView'
 import UserView from './views/UserView'
 import LoginView from './views/LoginView'
-// import RegisterView from './views/RegisterView'
+import RegisterView from './views/RegisterView'
 import { ProtectedRoute } from './components/ProtectedRoute/ProtectedRoute'
 import { useBlogs, useUser, useAuth } from './hooks'
 import { Container } from '@mui/material'
@@ -57,6 +58,7 @@ const App = () => {
           theme={theme}
           user={user}
         />
+        <Notification />
         <Routes>
           <Route
             path="/login"
@@ -66,14 +68,14 @@ const App = () => {
               </>
             }
           />
-          {/* <Route
+          <Route
             path="/register"
             element={
               <>
                 <RegisterView theme={theme} />
               </>
             }
-          /> */}
+          />
           <Route
             path="/users/:id"
             element={

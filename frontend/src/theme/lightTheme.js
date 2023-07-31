@@ -13,7 +13,7 @@ export const lightTheme = createTheme({
   palette: {
     type: 'light',
     primary: {
-      main: '#e79d19',
+      main: '#201b2d',
     },
     secondary: {
       main: '#A16D11',
@@ -78,6 +78,26 @@ export const lightTheme = createTheme({
     // Other typography variants and styles can be defined here
   },
   components: {
+    MuiPaper: {
+      styleOverrides: {
+        root: {
+          borderRadius: '8px',
+          boxShadow: '0px 4px 10px rgba(0, 0, 0, 0.1)',
+          background: '#CDCDCD,',
+          elevation: '3',
+        },
+      },
+    },
+    MuiButton: {
+      styleOverrides: {
+        containedPrimary: {
+          color: '#fff',
+          borderColor: '#fff',
+          marginTop: '10px',
+          background: '#222a41',
+        },
+      },
+    },
     MuiInputLabel: {
       styleOverrides: {
         root: {

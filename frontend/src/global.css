@@ -23,8 +23,11 @@ button {
   font-weight: 800 !important;
 }
 
-#add-like:hover {
-  color: #e79d19;
+#add-like:hover,
+#add-like:active,
+#add-like:visited,
+#add-like:focus {
+  color: #dc3545;
   transition: 0.1s ease-in-out;
 }
 
@@ -33,6 +36,7 @@ h1 {
   margin: 0;
   padding: 0;
   margin-right: 10px;
+  text-shadow: 0px 0px 6px rgba(255, 255, 255, 0.7);
 }
 
 h2,

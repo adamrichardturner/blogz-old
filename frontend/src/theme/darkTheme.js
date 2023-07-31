@@ -13,7 +13,7 @@ export const darkTheme = createTheme({
   palette: {
     type: 'dark',
     primary: {
-      main: '#e79d19',
+      main: '#fff',
     },
     secondary: {
       main: '#A16D11',
@@ -81,6 +81,29 @@ export const darkTheme = createTheme({
     // Other typography variants and styles can be defined here
   },
   components: {
+    MuiPaper: {
+      styleOverrides: {
+        root: {
+          borderRadius: '8px',
+          boxShadow: '0px 4px 10px rgba(0, 0, 0, 0.1)',
+          background: '#212121',
+        },
+      },
+    },
+    MuiButton: {
+      styleOverrides: {
+        containedPrimary: {
+          color: '#fff',
+          borderColor: '#fff',
+          marginTop: '10px',
+          background: '#222a41',
+          '&:hover': {
+            backgroundColor: '#111', // Change the background color on hover
+            color: '#fff', // Change the text color on hover
+          },
+        },
+      },
+    },
     MuiInputLabel: {
       styleOverrides: {
         root: {
@@ -112,7 +135,7 @@ export const darkTheme = createTheme({
     MuiLink: {
       styleOverrides: {
         root: {
-          color: '#e79d19',
+          color: '#fff',
           textDecoration: 'underline',
           fontWeight: '600',
           '&:hover': {

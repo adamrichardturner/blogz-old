@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { useBlogs } from '../../hooks'
 import FavoriteIcon from '@mui/icons-material/Favorite'
 import {
+  Box,
   Button,
   TextField,
   Typography,
@@ -33,18 +34,19 @@ const BlogFooter = ({ blog, user }) => {
     return setComment('')
   }
   return (
-    <div>
-      <div
+    <Box>
+      <Box
         style={{
           display: 'flex',
           flexDirection: 'row',
           justifyContent: 'flex-end',
         }}
       >
-        <div
+        <Box
           style={{
             display: 'flex',
             alignItems: 'center',
+            padding: '1.25rem',
           }}
         >
           <Typography variant="paragraph">{blog.likes}</Typography>
@@ -59,8 +61,8 @@ const BlogFooter = ({ blog, user }) => {
               paddingLeft: '3px',
             }}
           />
-        </div>
-        <div>
+        </Box>
+        <Box>
           {user.name === blog.user.name ? (
             <Button
               variant="contained"
@@ -77,9 +79,9 @@ const BlogFooter = ({ blog, user }) => {
               Remove
             </Button>
           ) : null}
-        </div>
-      </div>
-      <div
+        </Box>
+      </Box>
+      <Box
         style={{
           marginTop: '2rem',
         }}
@@ -133,8 +135,8 @@ const BlogFooter = ({ blog, user }) => {
             </Typography>
           ))}
         </List>
-      </div>
-    </div>
+      </Box>
+    </Box>
   )
 }
 

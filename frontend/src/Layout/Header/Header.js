@@ -1,10 +1,15 @@
 import { Link as RouterLink } from 'react-router-dom'
-import { Button, Typography, Link as MuiLink } from '@mui/material'
-import FormGroup from '@mui/material/FormGroup'
-import FormControlLabel from '@mui/material/FormControlLabel'
-import Switch from '@mui/material/Switch'
+import {
+  Box,
+  FormGroup,
+  FormControlLabel,
+  Button,
+  Typography,
+  Switch,
+  useMediaQuery,
+  Link as MuiLink,
+} from '@mui/material'
 import AssignmentIcon from '@mui/icons-material/Assignment'
-import { useMediaQuery } from '@mui/material'
 import LightbulbIcon from '@mui/icons-material/Lightbulb'
 import { useAuth } from '../../hooks'
 
@@ -35,16 +40,16 @@ const Header = ({ handleThemeChange, theme, isDarkMode }) => {
   }
 
   const iconColor = theme.palette.type === 'dark' ? '#ffffff' : '#000000'
-  console.log(user)
+
   if (user === null) {
     return null
   }
 
   return (
-    <div style={{ color: iconColor }}>
-      <div style={styles}>
-        <div>
-          <div
+    <Box style={{ color: iconColor }}>
+      <Box style={styles}>
+        <Box>
+          <Box
             style={{
               display: 'flex',
               alignItems: 'center',
@@ -66,40 +71,54 @@ const Header = ({ handleThemeChange, theme, isDarkMode }) => {
                 fontSize: isSmallScreen ? '2rem' : '3.5rem',
               }}
             />
-          </div>
-          <MuiLink component={RouterLink} to="/" style={{ marginRight: 15 }}>
+          </Box>
+          <MuiLink
+            component={RouterLink}
+            to="/"
+            sx={{
+              marginRight: 2.5,
+              fontWeight: '500',
+              fontSize: isSmallScreen ? '1rem' : '1.125rem',
+            }}
+          >
             Posts
           </MuiLink>
-          <MuiLink component={RouterLink} to="/users">
+          <MuiLink
+            component={RouterLink}
+            to="/users"
+            sx={{
+              fontWeight: '500',
+              fontSize: isSmallScreen ? '1rem' : '1.125rem',
+            }}
+          >
             Users
           </MuiLink>
-        </div>
-        <div>
+        </Box>
+        <Box>
           {user ? (
             <>
-              <div>
-                <div>
-                  <span
-                    style={{
+              <Box>
+                <Box>
+                  <Typography
+                    sx={{
                       fontWeight: '600',
                       fontSize: isSmallScreen ? '.75rem' : '1.25rem',
-                      color: '#e79d19',
                     }}
                     className="login-user"
                   >
                     {user.name}
-                  </span>{' '}
-                  <span
-                    style={{
-                      fontSize: isSmallScreen ? '.75rem' : '1.25rem',
+                  </Typography>{' '}
+                  <Typography
+                    sx={{
+                      fontSize: isSmallScreen ? '.75rem' : '1rem',
                     }}
                     className="login-status"
                   >
                     is logged in
-                  </span>
-                </div>
-                <div
-                  style={{
+                  </Typography>
+                </Box>
+                <Box
+                  sx={{
                     textAlign: 'right',
                   }}
                 >
@@ -117,17 +136,17 @@ const Header = ({ handleThemeChange, theme, isDarkMode }) => {
                   >
                     Logout
                   </Button>
-                </div>
-                <div>
-                  <div
-                    style={{
+                </Box>
+                <Box>
+                  <Box
+                    sx={{
                       display: 'flex',
                       alignItems: 'center',
                       justifyContent: 'flex-end',
                     }}
                   >
                     <FormGroup
-                      style={{
+                      sx={{
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'center',
@@ -150,15 +169,15 @@ const Header = ({ handleThemeChange, theme, isDarkMode }) => {
                       />
                       <LightbulbIcon />
                     </FormGroup>
-                  </div>
-                  <div></div>
-                </div>
-              </div>
+                  </Box>
+                  <Box></Box>
+                </Box>
+              </Box>
             </>
           ) : null}
-        </div>
-      </div>
-    </div>
+        </Box>
+      </Box>
+    </Box>
   )
 }
 

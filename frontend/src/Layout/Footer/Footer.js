@@ -4,7 +4,7 @@ const Footer = () => {
   return (
     <footer
       style={{
-        minHeight: 72,
+        margin: '2rem 0',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
@@ -17,8 +17,9 @@ const Footer = () => {
           target="_blank"
           rel="noreferrer"
           style={{
-            color: '#e79d19',
+            color: '#3b43f2',
             cursor: 'pointer',
+            fontWeight: '600',
           }}
         >
           Adam Turner
