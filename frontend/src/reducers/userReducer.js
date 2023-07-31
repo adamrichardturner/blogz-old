@@ -6,24 +6,27 @@ import userService from '../services/users'
 const initialState = {
   user: null,
   allUsers: null,
+  isLoggedIn: false,
 }
 
 const userSlice = createSlice({
   name: 'user',
   initialState,
   reducers: {
-    addUser(state, action) {
+    login(state, action) {
       state.user = action.payload
+      state.isLoggedIn = true
     },
     logout(state) {
       state.user = null
+      state.isLoggedIn = false
     },
     setUsers(state, action) {
       state.allUsers = action.payload
     },
     addBlogToUser(state, action) {
       const { username, blogId } = action.payload
-      const userToUpdate = state.user.allUsers.find(
+      const userToUpdate = state.allUsers.find(
         (user) => user.username === username
       )
       if (userToUpdate) {
@@ -33,20 +36,16 @@ const userSlice = createSlice({
   },
 })
 
-export const { addUser, logout, setUsers, addBlogToUser } = userSlice.actions
+export const { login, logout, setUsers, addBlogToUser } = userSlice.actions
 
 export const setLogin = (username, password) => {
   return async (dispatch) => {
-    const lowercaseUsername = username.toLowerCase()
-    const lowercasePassword = password.toLowerCase()
-
     const user = await loginService.login({
-      username: lowercaseUsername,
-      password: lowercasePassword,
+      username,
+      password,
     })
-
-    dispatch(addUser(user))
     blogService.setToken(user.token)
+    await dispatch(login(user))
     return user
   }
 }
@@ -68,7 +67,7 @@ export const registerUser = (username, name, password) => {
       lowercaseName,
       lowercasePassword,
     })
-    await dispatch(addUser(user))
+    await dispatch(login(user))
     await dispatch(setLogin(username, password))
     return user
   }

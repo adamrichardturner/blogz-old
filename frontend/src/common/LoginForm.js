@@ -1,5 +1,6 @@
+// LoginForm.js
 import { useState } from 'react'
-import { useUser } from '../hooks'
+import { useAuth } from '../hooks'
 import Notification from '../components/Notification/Notification'
 import {
   Box,
@@ -10,26 +11,25 @@ import {
   TextField,
 } from '@mui/material'
 import AssignmentIcon from '@mui/icons-material/Assignment'
-import { Navigate } from 'react-router-dom' // Import useNavigate
 
-const LoginForm = ({ theme }) => {
-  const { loginUser } = useUser()
+const LoginForm = ({ handleLogin, theme }) => {
+  const { authenticate } = useAuth()
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
-
-  const handleLogin = async (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault()
-    const user = await loginUser(username, password)
-    if (user) {
+    const user = await authenticate(username, password)
+    if (user !== null) {
       setUsername('')
       setPassword('')
-      return <Navigate replace to="/" />
+      handleLogin()
     }
   }
 
-  const handleRegister = () => {
-    return <Navigate replace to="/register" />
-  }
+  // const handleRegister = () => {
+  //   setUsername('')
+  //   setPassword('')
+  // }
 
   const isSmallScreen = useMediaQuery((theme) => theme.breakpoints.down('sm'))
 
@@ -72,7 +72,7 @@ const LoginForm = ({ theme }) => {
         >
           Login
         </Typography>
-        <form onSubmit={handleLogin} style={{ width: '100%' }}>
+        <form onSubmit={handleSubmit} style={{ width: '100%' }}>
           <Box>
             <TextField
               fullWidth
@@ -120,11 +120,12 @@ const LoginForm = ({ theme }) => {
             Login
           </Button>
         </form>
-        <Typography variant="h2">Not got an account?</Typography>
+        {/* <Typography variant="h2">Not got an account?</Typography>
         <Button
           id="register-button"
           variant="contained"
           color="primary"
+          onClick={handleRegister}
           sx={{
             color: '#fff',
             borderColor: '#fff',
@@ -133,9 +134,8 @@ const LoginForm = ({ theme }) => {
             borderRadius: '5px',
           }}
         >
-          onClick={handleRegister}
           Register
-        </Button>
+        </Button> */}
       </Container>
     </>
   )

@@ -1,11 +1,10 @@
 import RegistrationForm from '../common/RegistrationForm'
-import { Navigate } from 'react-router-dom'
 
-const RegisterView = ({ isLoggedIn, theme }) => {
-  if (!isLoggedIn) {
+const RegisterView = ({ theme }) => {
+  const user = JSON.parse(localStorage.getItem('loggedBlogzApp'))
+  if (!user || user === null) {
     return <RegistrationForm theme={theme} />
   }
-  return <Navigate replace to="/login" />
 }
 
 export default RegisterView

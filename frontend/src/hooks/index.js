@@ -11,9 +11,12 @@ import {
   logout,
   initializeUsers,
   registerUser,
+  login,
 } from '../reducers/userReducer'
 import { useDispatch } from 'react-redux'
 import blogService from '../services/blogs'
+import { useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 
 export const useBlogs = () => {
   const dispatch = useDispatch()
@@ -114,7 +117,7 @@ export const useUser = () => {
     try {
       const user = await dispatch(setLogin(username, password))
       if (user) {
-        window.localStorage.setItem('loggedBlogappUser', JSON.stringify(user))
+        window.localStorage.setItem('loggedBlogzApp', JSON.stringify(user))
         blogService.setToken(user.token)
         dispatch(setNotification(`${user.name} logged in`, 'positive', 5000))
         return user
@@ -127,7 +130,7 @@ export const useUser = () => {
   const logoutUser = () => {
     try {
       dispatch(logout())
-      window.localStorage.removeItem('loggedBlogappUser')
+      window.localStorage.removeItem('loggedBlogzApp')
     } catch (error) {
       console.error(error)
     }
@@ -138,7 +141,7 @@ export const useUser = () => {
     const user = await dispatch(setLogin(username, password))
     try {
       if (user) {
-        window.localStorage.setItem('loggedBlogappUser', JSON.stringify(user))
+        window.localStorage.setItem('loggedBlogzApp', JSON.stringify(user))
         blogService.setToken(user.token)
         await dispatch(initializeUsers())
         await dispatch(initializeBlogs())
@@ -163,4 +166,77 @@ export const useUser = () => {
     getAll,
     registerNewUser,
   }
+}
+
+export const useAuth = () => {
+  const navigate = useNavigate()
+  const dispatch = useDispatch()
+  const [userState, setUserState] = useLocalStorage('loggedBlogzApp', null)
+
+  useEffect(() => {
+    const updatedState = async (state) => {
+      await dispatch(login(state))
+    }
+    if (userState) {
+      updatedState(userState)
+    }
+  }, [userState, dispatch])
+
+  const authenticate = async (username, password) => {
+    try {
+      const user = await dispatch(setLogin(username, password))
+      console.log(user)
+      blogService.setToken(user.token)
+      setUserState(user) // Save the user data to local storage after login
+      await dispatch(login(user)) // Redux action
+      return user
+    } catch (error) {
+      console.error(error)
+    }
+  }
+
+  const signout = async () => {
+    try {
+      await dispatch(logout()) // Assuming 'logout' is your Redux action to clear user data
+      blogService.setToken(null)
+      setUserState(null) // Clear the user data from local storage after logout
+      navigate('/login', { replace: true })
+    } catch (error) {
+      console.error(error)
+    }
+  }
+
+  return {
+    user: userState,
+    authenticate,
+    signout,
+  }
+}
+
+export const useLocalStorage = (keyName, defaultValue) => {
+  const [storedValue, setStoredValue] = useState(() => {
+    try {
+      const value = window.localStorage.getItem(keyName)
+      if (value && value !== 'undefined') {
+        return JSON.parse(value)
+      } else {
+        window.localStorage.setItem(keyName, JSON.stringify(defaultValue))
+        return defaultValue
+      }
+    } catch (err) {
+      console.error('Failed to get value from localStorage:', err)
+      return defaultValue
+    }
+  })
+
+  const setValue = (newValue) => {
+    try {
+      window.localStorage.setItem(keyName, JSON.stringify(newValue))
+      setStoredValue(newValue)
+    } catch (err) {
+      console.error('Failed to set value in localStorage:', err)
+    }
+  }
+
+  return [storedValue, setValue]
 }

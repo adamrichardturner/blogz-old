@@ -22,7 +22,6 @@ const RegistrationForm = ({ theme }) => {
   const handleRegister = async (event) => {
     event.preventDefault()
 
-    // Validate password length and number presence
     if (password.length < 5 || !/\d/.test(password)) {
       setError(
         'Password must be at least 5 characters long and contain a number'
@@ -30,17 +29,14 @@ const RegistrationForm = ({ theme }) => {
       return
     }
 
-    // Clear any previous error messages
     setError('')
 
-    // TODO: Implement registration logic here
-    // You can use Axios to send the registration data to the backend
     const user = await registerNewUser(username, name, password)
 
     if (user) {
       return <Navigate replace to="/" />
     }
-    // Reset form fields after successful registration
+
     setUsername('')
     setName('')
     setPassword('')

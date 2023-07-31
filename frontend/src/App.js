@@ -4,15 +4,12 @@ import Header from './Layout/Header/Header'
 import Footer from './Layout/Footer/Footer'
 import BlogsView from './views/BlogsView'
 import BlogView from './views/BlogView'
-import LoginView from './views/LoginView'
-import RegisterView from './views/RegisterView'
-import Notification from './components/Notification/Notification'
 import UserSummaryView from './views/UserSummaryView'
 import UserView from './views/UserView'
-import blogService from './services/blogs'
-import { useDispatch, useSelector } from 'react-redux'
-import { useBlogs, useUser } from './hooks'
-import { addUser } from './reducers/userReducer'
+import LoginView from './views/LoginView'
+// import RegisterView from './views/RegisterView'
+import { ProtectedRoute } from './components/ProtectedRoute/ProtectedRoute'
+import { useBlogs, useUser, useAuth } from './hooks'
 import { Container } from '@mui/material'
 import { ThemeProvider } from '@mui/material/styles'
 import { lightTheme } from './theme/lightTheme'
@@ -21,7 +18,7 @@ import { darkTheme } from './theme/darkTheme'
 const App = () => {
   const { getBlogs } = useBlogs()
   const { getAll } = useUser()
-  const dispatch = useDispatch()
+  const { user } = useAuth()
 
   const [isDarkMode, setIsDarkMode] = useState(() => {
     // Get the mode from localStorage, or use true if not found
@@ -51,18 +48,6 @@ const App = () => {
     getLatest()
   }, [])
 
-  const isLoggedIn = useSelector((state) => state.user.user)
-
-  useEffect(() => {
-    const loggedUserJSON = window.localStorage.getItem('loggedBlogappUser')
-    if (loggedUserJSON) {
-      const user = JSON.parse(loggedUserJSON)
-      dispatch(addUser(user))
-      window.localStorage.setItem('loggedBlogappUser', JSON.stringify(user))
-      blogService.setToken(user.token)
-    }
-  }, [dispatch])
-
   return (
     <ThemeProvider theme={theme}>
       <Container maxWidth="md">
@@ -70,28 +55,57 @@ const App = () => {
           handleThemeChange={handleThemeChange}
           isDarkMode={isDarkMode}
           theme={theme}
-          isLoggedIn={isLoggedIn}
+          user={user}
         />
-        <Notification />
         <Routes>
-          <Route path="/users/:id" element={<UserView />} />
-          <Route path="/users" element={<UserSummaryView />} />
-          <Route path="/blogs/:id" element={<BlogView />} />
           <Route
             path="/login"
             element={
-              <LoginView
-                isLoggedIn={isLoggedIn}
-                theme={theme}
-                isRegistration={false}
-              />
+              <>
+                <LoginView theme={theme} user={user} />
+              </>
+            }
+          />
+          {/* <Route
+            path="/register"
+            element={
+              <>
+                <RegisterView theme={theme} />
+              </>
+            }
+          /> */}
+          <Route
+            path="/users/:id"
+            element={
+              <ProtectedRoute>
+                <UserView />
+              </ProtectedRoute>
             }
           />
           <Route
-            path="/register"
-            element={<RegisterView isLoggedIn={isLoggedIn} theme={theme} />}
+            path="/users"
+            element={
+              <ProtectedRoute>
+                <UserSummaryView />
+              </ProtectedRoute>
+            }
           />
-          <Route path="/" element={<BlogsView theme={theme} />} />
+          <Route
+            path="/blogs/:id"
+            element={
+              <ProtectedRoute>
+                <BlogView />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/"
+            element={
+              <ProtectedRoute>
+                <BlogsView theme={theme} />
+              </ProtectedRoute>
+            }
+          />
         </Routes>
         <Footer />
       </Container>

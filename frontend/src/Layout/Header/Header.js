@@ -1,6 +1,4 @@
-import { Navigate, Link as RouterLink } from 'react-router-dom'
-import { useSelector } from 'react-redux'
-import { useUser } from '../../hooks'
+import { Link as RouterLink } from 'react-router-dom'
 import { Button, Typography, Link as MuiLink } from '@mui/material'
 import FormGroup from '@mui/material/FormGroup'
 import FormControlLabel from '@mui/material/FormControlLabel'
@@ -8,14 +6,16 @@ import Switch from '@mui/material/Switch'
 import AssignmentIcon from '@mui/icons-material/Assignment'
 import { useMediaQuery } from '@mui/material'
 import LightbulbIcon from '@mui/icons-material/Lightbulb'
+import { useAuth } from '../../hooks'
 
-const Header = ({ handleThemeChange, theme, isLoggedIn, isDarkMode }) => {
-  const { user } = useSelector((state) => state.user)
-  const { logoutUser } = useUser()
+const Header = ({ handleThemeChange, theme, isDarkMode }) => {
+  const { signout } = useAuth()
+
+  const user = JSON.parse(localStorage.getItem('loggedBlogzApp'))
 
   const handleLogout = () => {
-    window.localStorage.removeItem('loggedBlogappUser')
-    logoutUser()
+    window.localStorage.removeItem('loggedBlogzApp')
+    signout()
   }
 
   const handleDarkModeChange = () => {
@@ -35,131 +35,131 @@ const Header = ({ handleThemeChange, theme, isLoggedIn, isDarkMode }) => {
   }
 
   const iconColor = theme.palette.type === 'dark' ? '#ffffff' : '#000000'
+  console.log(user)
+  if (user === null) {
+    return null
+  }
 
-  if (!isLoggedIn) {
-    return <Navigate replace to="/login" />
-  } else {
-    return (
-      <div style={{ color: iconColor }}>
-        <div style={styles}>
-          <div>
-            <div
-              style={{
-                display: 'flex',
-                alignItems: 'center',
+  return (
+    <div style={{ color: iconColor }}>
+      <div style={styles}>
+        <div>
+          <div
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+            }}
+          >
+            <Typography
+              variant="h1"
+              sx={{
+                fontSize: isSmallScreen ? '3.15rem' : '5rem',
+                marginRight: isSmallScreen ? '5px' : '10px',
               }}
+              color="primary"
             >
-              <Typography
-                variant="h1"
-                sx={{
-                  fontSize: isSmallScreen ? '3.15rem' : '5rem',
-                  marginRight: isSmallScreen ? '5px' : '10px',
-                }}
-                color="primary"
-              >
-                Blogz
-              </Typography>
-              <AssignmentIcon
-                style={{
-                  color: iconColor,
-                  fontSize: isSmallScreen ? '2rem' : '3.5rem',
-                }}
-              />
-            </div>
-            <MuiLink component={RouterLink} to="/" style={{ marginRight: 15 }}>
-              Posts
-            </MuiLink>
-            <MuiLink component={RouterLink} to="/users">
-              Users
-            </MuiLink>
+              Blogz
+            </Typography>
+            <AssignmentIcon
+              style={{
+                color: iconColor,
+                fontSize: isSmallScreen ? '2rem' : '3.5rem',
+              }}
+            />
           </div>
-          <div>
-            {user ? (
-              <>
+          <MuiLink component={RouterLink} to="/" style={{ marginRight: 15 }}>
+            Posts
+          </MuiLink>
+          <MuiLink component={RouterLink} to="/users">
+            Users
+          </MuiLink>
+        </div>
+        <div>
+          {user ? (
+            <>
+              <div>
                 <div>
-                  <div>
-                    <span
-                      style={{
-                        fontWeight: '600',
-                        fontSize: isSmallScreen ? '.75rem' : '1.25rem',
-                        color: '#e79d19',
-                      }}
-                      className="login-user"
-                    >
-                      {user.name}
-                    </span>{' '}
-                    <span
-                      style={{
-                        fontSize: isSmallScreen ? '.75rem' : '1.25rem',
-                      }}
-                      className="login-status"
-                    >
-                      is logged in
-                    </span>
-                  </div>
+                  <span
+                    style={{
+                      fontWeight: '600',
+                      fontSize: isSmallScreen ? '.75rem' : '1.25rem',
+                      color: '#e79d19',
+                    }}
+                    className="login-user"
+                  >
+                    {user.name}
+                  </span>{' '}
+                  <span
+                    style={{
+                      fontSize: isSmallScreen ? '.75rem' : '1.25rem',
+                    }}
+                    className="login-status"
+                  >
+                    is logged in
+                  </span>
+                </div>
+                <div
+                  style={{
+                    textAlign: 'right',
+                  }}
+                >
+                  <Button
+                    id="login-button"
+                    variant="contained"
+                    type="submit"
+                    color="primary"
+                    sx={{
+                      color: '#fff',
+                      borderColor: '#fff',
+                      marginTop: '10px',
+                    }}
+                    onClick={handleLogout}
+                  >
+                    Logout
+                  </Button>
+                </div>
+                <div>
                   <div
                     style={{
-                      textAlign: 'right',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'flex-end',
                     }}
                   >
-                    <Button
-                      id="login-button"
-                      variant="contained"
-                      type="submit"
-                      color="primary"
-                      sx={{
-                        color: '#fff',
-                        borderColor: '#fff',
-                        marginTop: '10px',
-                      }}
-                      onClick={handleLogout}
-                    >
-                      Logout
-                    </Button>
-                  </div>
-                  <div>
-                    <div
+                    <FormGroup
                       style={{
                         display: 'flex',
                         alignItems: 'center',
-                        justifyContent: 'flex-end',
+                        justifyContent: 'center',
+                        marginRight: 0,
+                        paddingTop: '2.5rem',
+                        flexDirection: 'row',
                       }}
                     >
-                      <FormGroup
-                        style={{
-                          display: 'flex',
-                          alignItems: 'center',
-                          justifyContent: 'center',
+                      <FormControlLabel
+                        control={
+                          <Switch
+                            checked={isDarkMode}
+                            onChange={handleDarkModeChange}
+                          />
+                        }
+                        sx={{
                           marginRight: 0,
-                          paddingTop: '2.5rem',
-                          flexDirection: 'row',
+                          padding: 0,
                         }}
-                      >
-                        <FormControlLabel
-                          control={
-                            <Switch
-                              checked={isDarkMode}
-                              onChange={handleDarkModeChange}
-                            />
-                          }
-                          sx={{
-                            marginRight: 0,
-                            padding: 0,
-                          }}
-                        />
-                        <LightbulbIcon />
-                      </FormGroup>
-                    </div>
-                    <div></div>
+                      />
+                      <LightbulbIcon />
+                    </FormGroup>
                   </div>
+                  <div></div>
                 </div>
-              </>
-            ) : null}
-          </div>
+              </div>
+            </>
+          ) : null}
         </div>
       </div>
-    )
-  }
+    </div>
+  )
 }
 
 export default Header
