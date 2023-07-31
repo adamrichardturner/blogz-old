@@ -19,7 +19,7 @@ const BlogView = () => {
       <article>
         <Box className="blog__meta">
           <Typography
-            variant="h2"
+            variant="h3"
             lineHeight={1}
             marginTop={2}
             marginBottom={2}

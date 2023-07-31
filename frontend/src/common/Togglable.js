@@ -27,7 +27,6 @@ const Togglable = forwardRef((props, refs) => {
           sx={{
             color: '#fff',
             borderColor: '#fff',
-            marginTop: 2,
             padding: '6px 16px',
           }}
           className="toggle-button"

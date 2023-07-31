@@ -18,6 +18,9 @@ export const lightTheme = createTheme({
     secondary: {
       main: '#A16D11',
     },
+    body: {
+      main: '#111111',
+    },
     background: {
       main: '#ffffff',
     },
@@ -31,7 +34,9 @@ export const lightTheme = createTheme({
       main: '#4BB543',
     },
     text: {
-      primary: '#000000',
+      primary: '#111111',
+      secondary: '#000000',
+      tertiary: '#111111',
     },
   },
   typography: {
@@ -61,7 +66,6 @@ export const lightTheme = createTheme({
     h2: {
       color: '#000000',
       padding: 0,
-      margin: '2rem 0',
       fontSize: '2rem',
     },
     h3: {

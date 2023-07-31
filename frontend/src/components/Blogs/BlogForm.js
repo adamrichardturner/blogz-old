@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Box, Button, TextField, Typography } from '@mui/material'
+import { Box, Button, TextField } from '@mui/material'
 
 const BlogForm = ({ createBlog }) => {
   const [newBlog, setNewBlog] = useState({
@@ -24,16 +24,7 @@ const BlogForm = ({ createBlog }) => {
   }
 
   return (
-    <form
-      onSubmit={addBlog}
-      style={{
-        marginTop: 15,
-      }}
-    >
-      <Typography variant="h3" marginBottom={2.75}>
-        Create new Blog
-      </Typography>
-
+    <form onSubmit={addBlog}>
       <Box
         style={{
           display: 'flex',

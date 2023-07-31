@@ -40,21 +40,24 @@ h3 {
   font-family: 'Roboto', sans-serif;
 }
 
-.logo {
-  display: flex;
-  align-items: center;
-  flex-direction: row;
+h2 {
+  font-size: 2rem !important;
+  margin: 1.25rem 0 !important;
+}
+
+h3 {
+  font-size: 1.75rem !important;
+  line-height: 1.8;
 }
 
 @media only screen and (max-width: 767px) {
-  h1 {
-    font-size: 2rem !important;
+  h2 {
+    font-size: 1.5rem !important;
+    margin: 1.25rem 0 !important;
   }
-  .login-status,
-  .login-user {
-    font-size: 0.65rem !important;
-  }
-  img {
-    width: 40px !important;
+
+  h3 {
+    font-size: 1.25rem !important;
+    line-height: 1.8;
   }
 }

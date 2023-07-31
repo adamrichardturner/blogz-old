@@ -18,7 +18,7 @@ const UserSummaryView = () => {
   }
   return (
     <Box>
-      <Typography variant="h2" color="primary">
+      <Typography variant="h2" color="body">
         Users Summary
       </Typography>
       <Table>

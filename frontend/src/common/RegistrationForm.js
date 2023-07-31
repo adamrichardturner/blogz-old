@@ -10,7 +10,7 @@ import {
 } from '@mui/material'
 import { useUser } from '../hooks'
 import AssignmentIcon from '@mui/icons-material/Assignment'
-import { Link as RouterLink, useNavigate } from 'react-router-dom'
+import { Navigate, Link as RouterLink } from 'react-router-dom'
 
 const RegistrationForm = ({ theme }) => {
   const [username, setUsername] = useState('')
@@ -18,8 +18,6 @@ const RegistrationForm = ({ theme }) => {
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
   const { registerNewUser } = useUser()
-
-  const navigate = useNavigate() // Add useNavigate hook
 
   const handleRegister = async (event) => {
     event.preventDefault()
@@ -38,11 +36,9 @@ const RegistrationForm = ({ theme }) => {
     // TODO: Implement registration logic here
     // You can use Axios to send the registration data to the backend
     const user = await registerNewUser(username, name, password)
-    console.log(user)
+
     if (user) {
-      navigate('/')
-    } else {
-      navigate('/register')
+      return <Navigate replace to="/" />
     }
     // Reset form fields after successful registration
     setUsername('')

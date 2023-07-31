@@ -18,6 +18,9 @@ export const darkTheme = createTheme({
     secondary: {
       main: '#A16D11',
     },
+    body: {
+      main: '#ffffff',
+    },
     background: {
       main: '#33332d',
     },
@@ -34,7 +37,9 @@ export const darkTheme = createTheme({
       main: '#4BB543',
     },
     text: {
-      primary: '#fff',
+      primary: '#ffffff',
+      secondary: '#ffffff',
+      tertiary: '#ffffff',
     },
   },
   typography: {
@@ -64,7 +69,6 @@ export const darkTheme = createTheme({
     h2: {
       color: '#ffffff',
       padding: 0,
-      margin: '1.75rem 0',
       fontSize: '2rem',
     },
     h3: {
@@ -95,7 +99,6 @@ export const darkTheme = createTheme({
           opacity: '0.85',
           borderRadius: '5px',
           color: '#fff',
-          height: '3.5rem',
         },
       },
     },

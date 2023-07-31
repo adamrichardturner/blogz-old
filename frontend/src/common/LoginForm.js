@@ -8,25 +8,27 @@ import {
   useMediaQuery,
   Container,
   TextField,
-  Link as MuiLink,
 } from '@mui/material'
 import AssignmentIcon from '@mui/icons-material/Assignment'
-import { Link as RouterLink, useNavigate } from 'react-router-dom' // Import useNavigate
+import { Navigate } from 'react-router-dom' // Import useNavigate
 
 const LoginForm = ({ theme }) => {
   const { loginUser } = useUser()
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
 
-  const navigate = useNavigate() // Add useNavigate hook
-
   const handleLogin = async (event) => {
     event.preventDefault()
     const user = await loginUser(username, password)
     if (user) {
-      // If the loginUser function returns a user object (login successful), navigate to the home page
-      navigate('/')
+      setUsername('')
+      setPassword('')
+      return <Navigate replace to="/" />
     }
+  }
+
+  const handleRegister = () => {
+    return <Navigate replace to="/register" />
   }
 
   const isSmallScreen = useMediaQuery((theme) => theme.breakpoints.down('sm'))
@@ -119,22 +121,21 @@ const LoginForm = ({ theme }) => {
           </Button>
         </form>
         <Typography variant="h2">Not got an account?</Typography>
-        <MuiLink component={RouterLink} to="/register">
-          <Button
-            id="register-button"
-            variant="contained"
-            color="primary"
-            sx={{
-              color: '#fff',
-              borderColor: '#fff',
-              padding: '16px 16px',
-              width: '100%',
-              borderRadius: '5px',
-            }}
-          >
-            Register
-          </Button>
-        </MuiLink>
+        <Button
+          id="register-button"
+          variant="contained"
+          color="primary"
+          sx={{
+            color: '#fff',
+            borderColor: '#fff',
+            padding: '16px 16px',
+            width: '100%',
+            borderRadius: '5px',
+          }}
+        >
+          onClick={handleRegister}
+          Register
+        </Button>
       </Container>
     </>
   )

@@ -5,7 +5,7 @@ import BlogForm from '../components/Blogs/BlogForm'
 import Blog from '../components/Blogs/Blog'
 import { useBlogs } from '../hooks'
 import Loading from '../common/Loading'
-import { Box } from '@mui/material'
+import { Box, Typography } from '@mui/material'
 
 const BlogsView = () => {
   const { blogs } = useSelector((state) => state.blogs)
@@ -27,7 +27,7 @@ const BlogsView = () => {
   }
 
   if (blogs.length <= 0) {
-    return null
+    return <Loading />
   }
 
   const list = blogs.map((blog, index) => {
@@ -42,17 +42,16 @@ const BlogsView = () => {
     )
   })
 
-  const isLoaded = blogs.length > 0
-
-  return isLoaded ? (
+  return (
     <Box>
+      <Typography variant="h2" color="body">
+        Welcome to Blogz! Spill the beans, we won&apos;t judge! 😄
+      </Typography>
       <Togglable buttonLabel="New Blog" ref={blogFormRef}>
         <BlogForm createBlog={handleCreateBlog} />
       </Togglable>
       {list}
     </Box>
-  ) : (
-    <Loading />
   )
 }
 

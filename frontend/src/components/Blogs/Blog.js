@@ -48,32 +48,46 @@ const Blog = ({ blog, updateLikes, removeBlog, user }) => {
     >
       <Box className="blog-details">
         <MuiLink component={RouterLink} to={`/blogs/${blog.id}`}>
-          <span
-            style={{
-              fontSize: '1.75rem',
-              lineHeight: '1.95rem',
+          <Typography
+            variant="h3"
+            color="primary"
+            sx={{
               textDecoration: 'none',
+              wordWrap: 'break-word',
+              overflowWrap: 'break-word',
             }}
           >
             {blog.title}
-          </span>
+          </Typography>
         </MuiLink>
-        <Typography variant="paragraphHeader">
-          <p>
-            Blog made by{' '}
-            <MuiLink component={RouterLink} to={`/users/${blog.user.id}`}>
-              {blog.user.name}
-            </MuiLink>
-          </p>
+        <Typography
+          sx={{
+            maxWidth: '100%',
+            wordWrap: 'break-word',
+            whiteSpace: 'normal',
+            overflowWrap: 'break-word',
+            color: 'body',
+            fontStyle: 'italic',
+          }}
+        >
+          Blog made by{' '}
+          <MuiLink component={RouterLink} to={`/users/${blog.user.id}`}>
+            {blog.user.name}
+          </MuiLink>
         </Typography>
-        <Typography variant="paragraph">
-          <p
-            style={{
-              margin: '1rem 0',
-            }}
-          >
-            {blog.url}
-          </p>
+        <Typography
+          variant="paragraph"
+          href={blog.url}
+          target="_blank"
+          rel="noopener noreferrer"
+          style={{
+            maxWidth: '100%',
+            display: 'block',
+            wordWrap: 'break-word',
+            overflowWrap: 'break-word',
+          }}
+        >
+          {blog.url}
         </Typography>
       </Box>
       <Box
@@ -160,12 +174,13 @@ const Blog = ({ blog, updateLikes, removeBlog, user }) => {
                 variant="contained"
                 id="remove-blog"
                 onClick={deleteBlog}
-                color="primary"
+                color="warning"
                 sx={{
                   color: '#fff',
                   borderColor: '#fff',
                   marginLeft: 1,
-                  padding: '6px 10px',
+                  padding: '5px 5px',
+                  fontSize: '.75rem',
                 }}
               >
                 Remove

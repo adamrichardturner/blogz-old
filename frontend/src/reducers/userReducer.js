@@ -37,10 +37,14 @@ export const { addUser, logout, setUsers, addBlogToUser } = userSlice.actions
 
 export const setLogin = (username, password) => {
   return async (dispatch) => {
+    const lowercaseUsername = username.toLowerCase()
+    const lowercasePassword = password.toLowerCase()
+
     const user = await loginService.login({
-      username,
-      password,
+      username: lowercaseUsername,
+      password: lowercasePassword,
     })
+
     dispatch(addUser(user))
     blogService.setToken(user.token)
     return user
@@ -56,10 +60,13 @@ export const initializeUsers = () => {
 
 export const registerUser = (username, name, password) => {
   return async (dispatch) => {
+    const lowercaseUsername = username.toLowerCase()
+    const lowercaseName = name.toLowerCase()
+    const lowercasePassword = password.toLowerCase()
     const user = await userService.registerUser({
-      username,
-      name,
-      password,
+      lowercaseUsername,
+      lowercaseName,
+      lowercasePassword,
     })
     await dispatch(addUser(user))
     await dispatch(setLogin(username, password))

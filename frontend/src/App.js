@@ -1,16 +1,12 @@
 import { useEffect, useState } from 'react'
-import {
-  Navigate,
-  BrowserRouter as Router,
-  Routes,
-  Route,
-} from 'react-router-dom'
+import { Routes, Route } from 'react-router-dom'
 import Header from './Layout/Header/Header'
 import Footer from './Layout/Footer/Footer'
 import BlogsView from './views/BlogsView'
 import BlogView from './views/BlogView'
-import Notification from './components/Notification/Notification'
 import LoginView from './views/LoginView'
+import RegisterView from './views/RegisterView'
+import Notification from './components/Notification/Notification'
 import UserSummaryView from './views/UserSummaryView'
 import UserView from './views/UserView'
 import blogService from './services/blogs'
@@ -55,51 +51,49 @@ const App = () => {
     getLatest()
   }, [])
 
+  const isLoggedIn = useSelector((state) => state.user.user)
+
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem('loggedBlogappUser')
     if (loggedUserJSON) {
-      let user = JSON.parse(loggedUserJSON)
+      const user = JSON.parse(loggedUserJSON)
       dispatch(addUser(user))
       window.localStorage.setItem('loggedBlogappUser', JSON.stringify(user))
       blogService.setToken(user.token)
     }
   }, [dispatch])
 
-  // Use the useSelector hook to get the user state from Redux store
-  const { user } = useSelector((state) => state.user)
-
   return (
     <ThemeProvider theme={theme}>
       <Container maxWidth="md">
-        <Router>
-          {user !== null && (
-            <Header
-              handleThemeChange={handleThemeChange}
-              isDark={isDarkMode}
-              theme={theme}
-            />
-          )}
-          <Notification />
-          <Routes>
-            {/* Redirect to login if user is not logged in */}
-            {user === null && (
-              <Route path="/" element={<Navigate to="/login" />} />
-            )}
-            <Route path="/users/:id" element={<UserView />} />
-            <Route path="/users" element={<UserSummaryView />} />
-            <Route path="/blogs/:id" element={<BlogView />} />
-            <Route
-              path="/login"
-              element={<LoginView theme={theme} isRegistration={false} />}
-            />
-            <Route
-              path="/register"
-              element={<LoginView theme={theme} isRegistration={true} />}
-            />
-            <Route path="/" element={<BlogsView />} />
-          </Routes>
-          <Footer />
-        </Router>
+        <Header
+          handleThemeChange={handleThemeChange}
+          isDarkMode={isDarkMode}
+          theme={theme}
+          isLoggedIn={isLoggedIn}
+        />
+        <Notification />
+        <Routes>
+          <Route path="/users/:id" element={<UserView />} />
+          <Route path="/users" element={<UserSummaryView />} />
+          <Route path="/blogs/:id" element={<BlogView />} />
+          <Route
+            path="/login"
+            element={
+              <LoginView
+                isLoggedIn={isLoggedIn}
+                theme={theme}
+                isRegistration={false}
+              />
+            }
+          />
+          <Route
+            path="/register"
+            element={<RegisterView isLoggedIn={isLoggedIn} theme={theme} />}
+          />
+          <Route path="/" element={<BlogsView theme={theme} />} />
+        </Routes>
+        <Footer />
       </Container>
     </ThemeProvider>
   )
