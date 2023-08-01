@@ -64,10 +64,18 @@ const Notification = () => {
         severity={alertStyle}
         sx={{
           width: isSmallScreen ? '100%' : '100%',
+          color: '#000000',
+          border: '1px solid #201b2d',
         }}
-        icon={<AssignmentIcon color="primary" />}
+        icon={<AssignmentIcon />}
       >
-        <AlertTitle color="primary">Success!</AlertTitle>
+        <AlertTitle
+          sx={{
+            color: '#000000',
+          }}
+        >
+          Success!
+        </AlertTitle>
         {truncateString(message)}
       </Alert>
     </Box>

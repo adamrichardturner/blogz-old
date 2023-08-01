@@ -16,7 +16,7 @@ export const darkTheme = createTheme({
       main: '#fff',
     },
     secondary: {
-      main: '#A16D11',
+      main: '#201b2d',
     },
     body: {
       main: '#fff',
@@ -35,7 +35,7 @@ export const darkTheme = createTheme({
     },
     text: {
       primary: '#ffffff',
-      secondary: '#ffffff',
+      secondary: '#000000',
       tertiary: '#ffffff',
     },
   },
@@ -160,7 +160,7 @@ export const darkTheme = createTheme({
       styleOverrides: {
         root: {
           title: {
-            color: (theme) => theme.palette.primary.main,
+            color: (theme) => theme.palette.secondary.main,
           },
           border: '2px solid #e79d19',
         },
