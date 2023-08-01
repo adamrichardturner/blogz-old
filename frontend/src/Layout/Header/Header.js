@@ -11,19 +11,18 @@ import {
 } from '@mui/material'
 import AssignmentIcon from '@mui/icons-material/Assignment'
 import LightbulbIcon from '@mui/icons-material/Lightbulb'
-import { useAuth } from '../../hooks'
+import { useAuth, useTheme } from '../../hooks'
 
-const Header = ({ handleThemeChange, theme, isDarkMode }) => {
+const Header = ({ theme, handleThemeChange }) => {
   const { signout } = useAuth()
-
+  const { isDarkMode } = useTheme()
   const user = JSON.parse(localStorage.getItem('loggedBlogzApp'))
-
   const handleLogout = () => {
     window.localStorage.removeItem('loggedBlogzApp')
     signout()
   }
 
-  const handleDarkModeChange = () => {
+  const handleSwitch = () => {
     handleThemeChange()
   }
 
@@ -39,7 +38,7 @@ const Header = ({ handleThemeChange, theme, isDarkMode }) => {
     marginTop: '1.75rem',
   }
 
-  const iconColor = theme.palette.type === 'dark' ? '#ffffff' : '#000000'
+  const iconColor = theme.palette.type === 'dark' ? '#ffffff' : '#201b2d'
 
   if (user === null) {
     return null
@@ -94,7 +93,11 @@ const Header = ({ handleThemeChange, theme, isDarkMode }) => {
             Users
           </MuiLink>
         </Box>
-        <Box>
+        <Box
+          sx={{
+            display: 'flex',
+          }}
+        >
           {user ? (
             <>
               <Box>
@@ -159,7 +162,7 @@ const Header = ({ handleThemeChange, theme, isDarkMode }) => {
                         control={
                           <Switch
                             checked={isDarkMode}
-                            onChange={handleDarkModeChange}
+                            onChange={handleSwitch}
                           />
                         }
                         sx={{

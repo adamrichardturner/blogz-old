@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import { Routes, Route } from 'react-router-dom'
 import Header from './Layout/Header/Header'
 import Notification from './components/Notification/Notification'
@@ -10,8 +10,8 @@ import UserView from './views/UserView'
 import LoginView from './views/LoginView'
 import RegisterView from './views/RegisterView'
 import { ProtectedRoute } from './components/ProtectedRoute/ProtectedRoute'
-import { useBlogs, useUser, useAuth } from './hooks'
-import { Container } from '@mui/material'
+import { useBlogs, useUser, useAuth, useTheme } from './hooks'
+import { Container, CssBaseline } from '@mui/material'
 import { ThemeProvider } from '@mui/material/styles'
 import { lightTheme } from './theme/lightTheme'
 import { darkTheme } from './theme/darkTheme'
@@ -20,27 +20,8 @@ const App = () => {
   const { getBlogs } = useBlogs()
   const { getAll } = useUser()
   const { user } = useAuth()
-
-  const [isDarkMode, setIsDarkMode] = useState(() => {
-    // Get the mode from localStorage, or use true if not found
-    const storedMode = JSON.parse(localStorage.getItem('isDarkMode'))
-    return storedMode !== null ? storedMode : true
-  })
-
-  const theme = isDarkMode ? darkTheme : lightTheme
-
-  const handleThemeChange = () => {
-    const newMode = !isDarkMode
-    setIsDarkMode(newMode)
-    // Store the updated mode in localStorage
-    localStorage.setItem('isDarkMode', JSON.stringify(newMode))
-  }
-
-  useEffect(() => {
-    const bodyBackground = isDarkMode ? '#33332d' : '#fff'
-    document.body.style.backgroundColor = bodyBackground
-  }, [isDarkMode])
-
+  const { isDarkMode, handleThemeChange } = useTheme()
+  const theme = isDarkMode ? lightTheme : darkTheme
   useEffect(() => {
     const getLatest = async () => {
       await getBlogs()
@@ -51,12 +32,13 @@ const App = () => {
 
   return (
     <ThemeProvider theme={theme}>
+      <CssBaseline />
       <Container maxWidth="md">
         <Header
-          handleThemeChange={handleThemeChange}
-          isDarkMode={isDarkMode}
           theme={theme}
           user={user}
+          handleThemeChange={handleThemeChange}
+          isDarkMode={isDarkMode}
         />
         <Notification />
         <Routes>

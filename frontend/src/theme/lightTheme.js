@@ -22,7 +22,7 @@ export const lightTheme = createTheme({
       main: '#111111',
     },
     background: {
-      main: '#ffffff',
+      default: '#ffffff',
     },
     danger: {
       main: '#DC3545',

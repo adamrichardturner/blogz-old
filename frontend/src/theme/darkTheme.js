@@ -19,13 +19,10 @@ export const darkTheme = createTheme({
       main: '#A16D11',
     },
     body: {
-      main: '#ffffff',
+      main: '#fff',
     },
     background: {
-      main: '#33332d',
-    },
-    dark: {
-      main: '#000000',
+      default: '#33332d',
     },
     danger: {
       main: '#DC3545',

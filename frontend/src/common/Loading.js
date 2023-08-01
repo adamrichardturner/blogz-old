@@ -1,7 +1,10 @@
-import Loader from './loading.svg'
+import loaderDark from './loading-dark.svg'
+import loaderLight from './loading-light.svg'
 import { Box } from '@mui/material'
+import { useSelector } from 'react-redux'
 
 const Loading = () => {
+  const darkMode = useSelector((state) => state.theme.darkMode)
   return (
     <Box
       style={{
@@ -12,7 +15,7 @@ const Loading = () => {
         justifyContent: 'center',
       }}
     >
-      <img src={Loader} alt="Loading Data" />
+      <img src={darkMode ? loaderDark : loaderLight} alt="Loading Data" />
     </Box>
   )
 }

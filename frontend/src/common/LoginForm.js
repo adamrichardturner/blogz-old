@@ -11,6 +11,7 @@ import {
   TextField,
 } from '@mui/material'
 import AssignmentIcon from '@mui/icons-material/Assignment'
+// import { Link as RouterLink } from 'react-router-dom'
 
 const LoginForm = ({ handleLogin, theme }) => {
   const { authenticate } = useAuth()
@@ -121,21 +122,22 @@ const LoginForm = ({ handleLogin, theme }) => {
           </Button>
         </form>
         {/* <Typography variant="h2">Not got an account?</Typography>
-        <Button
-          id="register-button"
-          variant="contained"
-          color="primary"
-          onClick={handleRegister}
-          sx={{
-            color: '#fff',
-            borderColor: '#fff',
-            padding: '16px 16px',
-            width: '100%',
-            borderRadius: '5px',
-          }}
-        >
-          Register
-        </Button> */}
+        <MuiLink component={RouterLink} to="/register">
+          <Button
+            id="register-button"
+            variant="contained"
+            color="primary"
+            sx={{
+              color: '#fff',
+              borderColor: '#fff',
+              padding: '16px 16px',
+              width: '100%',
+              borderRadius: '5px',
+            }}
+          >
+            Register
+          </Button>
+        </MuiLink> */}
       </Container>
     </>
   )

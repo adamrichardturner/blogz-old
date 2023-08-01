@@ -13,7 +13,8 @@ import {
   registerUser,
   login,
 } from '../reducers/userReducer'
-import { useDispatch } from 'react-redux'
+import { setDarkMode, toggleDarkMode } from '../reducers/themeReducer'
+import { useDispatch, useSelector } from 'react-redux'
 import blogService from '../services/blogs'
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
@@ -239,4 +240,41 @@ export const useLocalStorage = (keyName, defaultValue) => {
   }
 
   return [storedValue, setValue]
+}
+
+export const useTheme = () => {
+  const dispatch = useDispatch()
+  const isDarkMode = useSelector((state) => state.theme.darkMode) // Access the darkMode state from the theme reducer
+
+  const [isDarkModeLocal, setIsDarkModeLocal] = useState(isDarkMode)
+
+  useEffect(() => {
+    const isDark = getDarkMode()
+    localStorage.setItem('isDarkMode', JSON.stringify(isDark))
+    setIsDarkModeLocal(isDark)
+  }, [])
+
+  const handleThemeChange = () => {
+    // Dispatch the toggleDarkMode action to the reducer
+    dispatch(toggleDarkMode())
+  }
+
+  const getDarkMode = () => {
+    const storedMode = localStorage.getItem('isDarkMode')
+    return storedMode !== undefined && storedMode !== null
+  }
+
+  const setNewDarkMode = (isDark) => {
+    localStorage.setItem('isDarkMode', JSON.stringify(isDark))
+    // Dispatch the setDarkMode action to the reducer with the new value
+    dispatch(setDarkMode(isDark))
+  }
+
+  return {
+    isDarkMode,
+    isDarkModeLocal,
+    getDarkMode,
+    setNewDarkMode,
+    handleThemeChange,
+  }
 }
