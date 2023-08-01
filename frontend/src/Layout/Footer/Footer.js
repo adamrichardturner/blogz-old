@@ -16,8 +16,8 @@ const Footer = () => {
           href="https://adamrichardturner.dev"
           target="_blank"
           rel="noreferrer"
+          color="primary"
           style={{
-            color: '#3b43f2',
             cursor: 'pointer',
             fontWeight: '600',
           }}

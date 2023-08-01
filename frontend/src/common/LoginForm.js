@@ -9,28 +9,65 @@ import {
   useMediaQuery,
   Container,
   TextField,
+  FormControl,
+  FormHelperText,
+  Link as MuiLink,
 } from '@mui/material'
 import AssignmentIcon from '@mui/icons-material/Assignment'
-// import { Link as RouterLink } from 'react-router-dom'
+import { Link as RouterLink } from 'react-router-dom'
 
 const LoginForm = ({ handleLogin, theme }) => {
   const { authenticate } = useAuth()
-  const [username, setUsername] = useState('')
-  const [password, setPassword] = useState('')
-  const handleSubmit = async (event) => {
-    event.preventDefault()
-    const user = await authenticate(username, password)
-    if (user !== null) {
-      setUsername('')
-      setPassword('')
-      handleLogin()
+
+  const [formData, setFormData] = useState({
+    username: '',
+    password: '',
+  })
+
+  const [errors, setErrors] = useState({
+    username: '',
+    password: '',
+    form: '',
+  })
+
+  const { username, password } = formData
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target
+    setFormData((prevData) => ({ ...prevData, [name]: value }))
+  }
+
+  const handleSubmit = async (e) => {
+    e.preventDefault()
+    if (validateForm()) {
+      const response = await authenticate(username, password)
+      if (response.token) {
+        handleLogin()
+      } else if (response.data.error) {
+        setErrors((prev) => ({ ...prev, form: response.data.error }))
+      }
     }
   }
 
-  // const handleRegister = () => {
-  //   setUsername('')
-  //   setPassword('')
-  // }
+  const validateForm = () => {
+    let isValid = true
+    const newErrors = {}
+
+    // Validate username
+    if (!username.trim()) {
+      newErrors.username = 'Username is required'
+      isValid = false
+    }
+
+    // Validate password
+    if (password.length < 4) {
+      newErrors.password = 'Password must be at least 4 characters'
+      isValid = false
+    }
+
+    setErrors(newErrors)
+    return isValid
+  }
 
   const isSmallScreen = useMediaQuery((theme) => theme.breakpoints.down('sm'))
 
@@ -42,7 +79,7 @@ const LoginForm = ({ handleLogin, theme }) => {
       <Container
         maxWidth="sm"
         sx={{
-          minHeight: '100vh',
+          minHeight: '90vh',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
@@ -52,7 +89,7 @@ const LoginForm = ({ handleLogin, theme }) => {
         <Box
           style={{
             display: 'flex',
-            marginBottom: 10,
+            marginBottom: 0,
             alignItems: 'center',
           }}
         >
@@ -61,67 +98,80 @@ const LoginForm = ({ handleLogin, theme }) => {
             style={{
               color: iconColor,
               fontSize: isSmallScreen ? '2rem' : '3.5rem',
+              margin: 0,
             }}
           />
         </Box>
         <Typography
-          variant="h2"
+          variant="p"
           sx={{
             padding: 0,
-            margin: '0 0 2rem 0',
+            marginTop: 2,
           }}
         >
           Login
         </Typography>
+        <Box>
+          {errors.form && <FormHelperText error>{errors.form}</FormHelperText>}
+        </Box>
         <form onSubmit={handleSubmit} style={{ width: '100%' }}>
           <Box>
-            <TextField
-              fullWidth
-              sx={{
-                marginBottom: 2,
-                color: '#000000',
-              }}
-              label="Username"
-              id="username"
-              type="text"
-              value={username}
-              name="Username"
-              variant="filled"
-              onChange={({ target }) => setUsername(target.value)}
-            />
+            <FormControl fullWidth>
+              <TextField
+                sx={{
+                  marginBottom: 2,
+                  color: '#000000',
+                }}
+                label="Username"
+                name="username"
+                value={username}
+                onChange={handleInputChange}
+                helperText={errors.username}
+              />
+            </FormControl>
           </Box>
           <Box>
-            <TextField
-              fullWidth
-              sx={{
-                marginBottom: 2,
-                color: '#000000',
-              }}
-              label="Password"
-              type="password"
-              value={password}
-              name="Password"
-              variant="filled"
-              onChange={({ target }) => setPassword(target.value)}
-            />
+            <FormControl fullWidth>
+              <TextField
+                sx={{
+                  marginBottom: 2,
+                  color: '#000000',
+                }}
+                label="Password"
+                name="password"
+                type="password"
+                value={password}
+                onChange={handleInputChange}
+                helperText={errors.password}
+              />
+            </FormControl>
           </Box>
-          <Button
-            id="login-button"
-            variant="contained"
-            type="submit"
-            color="primary"
-            sx={{
-              color: '#fff',
-              borderColor: '#fff',
-              padding: '16px 16px',
-              width: '100%',
-              borderRadius: '5px',
-            }}
-          >
-            Login
-          </Button>
+          <Box>
+            <Button
+              id="login-button"
+              variant="contained"
+              type="submit"
+              color="primary"
+              sx={{
+                color: '#fff',
+                borderColor: '#fff',
+                padding: '16px 16px',
+                width: '100%',
+                borderRadius: '5px',
+              }}
+            >
+              Login
+            </Button>
+          </Box>
         </form>
-        {/* <Typography variant="h2">Not got an account?</Typography>
+        <Typography
+          variant="h3"
+          sx={{
+            marginTop: 4,
+          }}
+        >
+          Not got an account?
+        </Typography>
         <MuiLink component={RouterLink} to="/register">
           <Button
             id="register-button"
@@ -135,9 +185,9 @@ const LoginForm = ({ handleLogin, theme }) => {
               borderRadius: '5px',
             }}
           >
-            Register
+            Register Here
           </Button>
-        </MuiLink> */}
+        </MuiLink>
       </Container>
     </>
   )

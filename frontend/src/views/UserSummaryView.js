@@ -32,17 +32,10 @@ const UserSummaryView = () => {
           {allUsers.map((user) => (
             <TableRow key={user.username}>
               <TableCell>
-                <Link to={`/users/${user.id}`}>
-                  <Typography
-                    variant="paragraph"
-                    color="primary"
-                    sx={{
-                      textDecoration: 'underline',
-                    }}
-                  >
-                    {user.name}
-                  </Typography>
-                </Link>
+                <Typography variant="paragraph" color="primary">
+                  {user.name}{' '}
+                  <Link to={`/users/${user.id}`}>({user.username})</Link>
+                </Typography>
               </TableCell>
               <TableCell>{user.blogs.length}</TableCell>
             </TableRow>

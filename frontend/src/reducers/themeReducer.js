@@ -8,8 +8,8 @@ const themeSlice = createSlice({
   name: 'theme',
   initialState,
   reducers: {
-    toggleDarkMode: (state) => {
-      state.darkMode = !state.darkMode
+    toggleDarkMode: (state, action) => {
+      state.darkMode = action.payload
     },
     setDarkMode: (state, action) => {
       console.log(action.payload)

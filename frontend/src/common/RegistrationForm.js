@@ -1,45 +1,90 @@
 import { useState } from 'react'
 import Notification from '../components/Notification/Notification'
 import {
+  Box,
   TextField,
   Button,
   Container,
   Typography,
   useMediaQuery,
+  FormControl,
   Link as MuiLink,
 } from '@mui/material'
 import { useUser } from '../hooks'
 import AssignmentIcon from '@mui/icons-material/Assignment'
-import { Navigate, Link as RouterLink } from 'react-router-dom'
+import { Link as RouterLink } from 'react-router-dom'
 
-const RegistrationForm = ({ theme }) => {
-  const [username, setUsername] = useState('')
-  const [name, setName] = useState('')
-  const [password, setPassword] = useState('')
-  const [error, setError] = useState('')
+const RegistrationForm = ({ theme, handleLogin }) => {
   const { registerNewUser } = useUser()
 
-  const handleRegister = async (event) => {
-    event.preventDefault()
+  const [formData, setFormData] = useState({
+    username: '',
+    name: '',
+    password: '',
+  })
 
-    if (password.length < 5 || !/\d/.test(password)) {
-      setError(
-        'Password must be at least 5 characters long and contain a number'
-      )
-      return
+  const [errors, setErrors] = useState({
+    username: '',
+    name: '',
+    password: '',
+  })
+
+  const { username, name, password } = formData
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target
+    setFormData((prevData) => ({ ...prevData, [name]: value }))
+  }
+
+  const handleSubmit = async (e) => {
+    e.preventDefault()
+    if (validateForm()) {
+      const response = await registerNewUser(username, name, password)
+      console.log(response)
+      if (response.token) {
+        handleLogin()
+      } else if (response.data.error) {
+        setErrors((prev) => ({ ...prev, form: response.data.error }))
+      }
+    }
+  }
+
+  const validateForm = () => {
+    let isValid = true
+    const newErrors = {}
+
+    // Validate username
+    if (!username.trim()) {
+      newErrors.username = 'Username is required'
+      isValid = false
+    } else if (username.length > 20) {
+      newErrors.username = 'Username must be less than 20 characters'
+      isValid = false
+    } else if (/\s/.test(username)) {
+      newErrors.username = 'Username cannot contain spaces'
+      isValid = false
     }
 
-    setError('')
-
-    const user = await registerNewUser(username, name, password)
-
-    if (user) {
-      return <Navigate replace to="/" />
+    // Validate name
+    if (!name.trim()) {
+      newErrors.name = 'Name is required'
+      isValid = false
+    } else if (name.length > 20) {
+      newErrors.name = 'Name must be less than 20 characters'
+      isValid = false
+    } else if (/\d/.test(name)) {
+      newErrors.name = 'Name cannot contain numbers'
+      isValid = false
     }
 
-    setUsername('')
-    setName('')
-    setPassword('')
+    // Validate password
+    if (password.length < 4) {
+      newErrors.password = 'Password must be at least 4 characters'
+      isValid = false
+    }
+
+    setErrors(newErrors)
+    return isValid
   }
 
   const isSmallScreen = useMediaQuery((theme) => theme.breakpoints.down('sm'))
@@ -52,7 +97,7 @@ const RegistrationForm = ({ theme }) => {
       <Container
         maxWidth="sm"
         sx={{
-          minHeight: '100vh',
+          minHeight: '90vh',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
@@ -74,77 +119,88 @@ const RegistrationForm = ({ theme }) => {
             }}
           />
         </div>
-        {error && <Typography>{error}</Typography>}
         <Typography
-          variant="h2"
+          variant="p"
           sx={{
             padding: 0,
-            margin: '0 0 2rem 0',
+            marginTop: 2,
           }}
         >
           Join Blogz
         </Typography>
-        <form onSubmit={handleRegister} style={{ width: '100%' }}>
-          <div>
-            <TextField
-              fullWidth
+        <form onSubmit={handleSubmit} style={{ width: '100%' }}>
+          <Box>
+            <FormControl fullWidth>
+              <TextField
+                sx={{
+                  marginBottom: 2,
+                  color: '#000000',
+                }}
+                label="Username"
+                name="username"
+                value={username}
+                onChange={handleInputChange}
+                helperText={errors.username}
+              />
+            </FormControl>
+          </Box>
+          <Box>
+            <FormControl fullWidth>
+              <TextField
+                sx={{
+                  marginBottom: 2,
+                  color: '#000000',
+                }}
+                label="Name"
+                name="name"
+                value={name}
+                onChange={handleInputChange}
+                helperText={errors.name}
+              />
+            </FormControl>
+          </Box>
+          <Box>
+            <FormControl fullWidth>
+              <TextField
+                sx={{
+                  marginBottom: 2,
+                  color: '#000000',
+                }}
+                label="Password"
+                name="password"
+                type="password"
+                value={password}
+                onChange={handleInputChange}
+                helperText={errors.password}
+              />
+            </FormControl>
+          </Box>
+          <Box>
+            <Button
+              id="login-button"
+              variant="contained"
+              type="submit"
+              color="primary"
               sx={{
-                marginBottom: 2,
-                color: '#000000',
+                color: '#fff',
+                borderColor: '#fff',
+                padding: '16px 16px',
+                width: '100%',
+                borderRadius: '5px',
               }}
-              label="Username"
-              variant="filled"
-              value={username}
-              required
-              onChange={({ target }) => setUsername(target.value)}
-            />
-          </div>
-          <div>
-            <TextField
-              fullWidth
-              sx={{
-                marginBottom: 2,
-                color: '#000000',
-              }}
-              label="Name"
-              value={name}
-              required
-              variant="filled"
-              onChange={({ target }) => setName(target.value)}
-            />
-          </div>
-          <div>
-            <TextField
-              fullWidth
-              sx={{
-                marginBottom: 2,
-                color: '#000000',
-              }}
-              label="Password"
-              variant="outlined"
-              type="password"
-              value={password}
-              required
-              onChange={({ target }) => setPassword(target.value)}
-            />
-          </div>
-          <Button
-            id="login-button"
-            variant="contained"
-            type="submit"
-            color="primary"
-            sx={{
-              color: '#fff',
-              borderColor: '#fff',
-              padding: '16px 16px',
-              width: '100%',
-              borderRadius: '5px',
-            }}
-          >
-            Register
-          </Button>
+            >
+              Register
+            </Button>
+          </Box>
         </form>
-        <Typography variant="h2">Back to Login</Typography>
+        <Typography
+          variant="h3"
+          sx={{
+            marginTop: 4,
+          }}
+        >
+          Back to Login
+        </Typography>
         <MuiLink component={RouterLink} to="/login">
           <Button
             id="register-button"

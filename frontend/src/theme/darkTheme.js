@@ -118,6 +118,7 @@ export const darkTheme = createTheme({
           background: '#33332d',
           opacity: '0.85',
           borderRadius: '5px',
+          borderColor: '#fff',
           color: '#fff',
         },
       },

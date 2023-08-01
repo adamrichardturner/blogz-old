@@ -140,6 +140,7 @@ export const useUser = () => {
   const registerNewUser = async (username, name, password) => {
     await dispatch(registerUser(username, name, password))
     const user = await dispatch(setLogin(username, password))
+    console.log(user)
     try {
       if (user) {
         window.localStorage.setItem('loggedBlogzApp', JSON.stringify(user))
@@ -149,6 +150,7 @@ export const useUser = () => {
         dispatch(
           setNotification(`${user.name} joined and logged in`, 'positive', 5000)
         )
+        console.log(user)
         return user
       }
     } catch (error) {
@@ -158,6 +160,7 @@ export const useUser = () => {
         5000
       )
       console.error(error)
+      throw error
     }
   }
 
@@ -186,21 +189,22 @@ export const useAuth = () => {
   const authenticate = async (username, password) => {
     try {
       const user = await dispatch(setLogin(username, password))
-      console.log(user)
       blogService.setToken(user.token)
-      setUserState(user) // Save the user data to local storage after login
-      await dispatch(login(user)) // Redux action
+      setUserState(user)
+      dispatch(login(user))
       return user
     } catch (error) {
-      console.error(error)
+      if (error.response) {
+        return error.response
+      }
     }
   }
 
   const signout = async () => {
     try {
-      await dispatch(logout()) // Assuming 'logout' is your Redux action to clear user data
+      await dispatch(logout())
       blogService.setToken(null)
-      setUserState(null) // Clear the user data from local storage after logout
+      setUserState(null)
       navigate('/login', { replace: true })
     } catch (error) {
       console.error(error)
@@ -246,22 +250,27 @@ export const useTheme = () => {
   const dispatch = useDispatch()
   const isDarkMode = useSelector((state) => state.theme.darkMode) // Access the darkMode state from the theme reducer
 
-  const [isDarkModeLocal, setIsDarkModeLocal] = useState(isDarkMode)
-
   useEffect(() => {
-    const isDark = getDarkMode()
-    localStorage.setItem('isDarkMode', JSON.stringify(isDark))
-    setIsDarkModeLocal(isDark)
+    // Check if isDarkMode exists in local storage
+    const storedMode = localStorage.getItem('isDarkMode')
+    if (storedMode === null) {
+      // if it doesn't exist, set a default value
+      localStorage.setItem('isDarkMode', JSON.stringify(true)) // Default preference
+      dispatch(setDarkMode(true)) // Also update the Redux store
+    } else {
+      // Sync the Redux store with localStorage value
+      dispatch(setDarkMode(storedMode === 'true'))
+    }
   }, [])
 
   const handleThemeChange = () => {
-    // Dispatch the toggleDarkMode action to the reducer
-    dispatch(toggleDarkMode())
+    localStorage.setItem('isDarkMode', JSON.stringify(!isDarkMode))
+    dispatch(toggleDarkMode(!isDarkMode))
   }
 
   const getDarkMode = () => {
     const storedMode = localStorage.getItem('isDarkMode')
-    return storedMode !== undefined && storedMode !== null
+    return storedMode === 'true'
   }
 
   const setNewDarkMode = (isDark) => {
@@ -272,7 +281,6 @@ export const useTheme = () => {
 
   return {
     isDarkMode,
-    isDarkModeLocal,
     getDarkMode,
     setNewDarkMode,
     handleThemeChange,

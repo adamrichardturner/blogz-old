@@ -59,13 +59,10 @@ export const initializeUsers = () => {
 
 export const registerUser = (username, name, password) => {
   return async (dispatch) => {
-    const lowercaseUsername = username.toLowerCase()
-    const lowercaseName = name.toLowerCase()
-    const lowercasePassword = password.toLowerCase()
     const user = await userService.registerUser({
-      lowercaseUsername,
-      lowercaseName,
-      lowercasePassword,
+      username,
+      name,
+      password,
     })
     await dispatch(login(user))
     await dispatch(setLogin(username, password))

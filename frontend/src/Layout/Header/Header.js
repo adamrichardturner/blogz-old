@@ -11,11 +11,10 @@ import {
 } from '@mui/material'
 import AssignmentIcon from '@mui/icons-material/Assignment'
 import LightbulbIcon from '@mui/icons-material/Lightbulb'
-import { useAuth, useTheme } from '../../hooks'
+import { useAuth } from '../../hooks'
 
-const Header = ({ theme, handleThemeChange }) => {
+const Header = ({ theme, handleThemeChange, isDarkMode }) => {
   const { signout } = useAuth()
-  const { isDarkMode } = useTheme()
   const user = JSON.parse(localStorage.getItem('loggedBlogzApp'))
   const handleLogout = () => {
     window.localStorage.removeItem('loggedBlogzApp')
@@ -101,8 +100,15 @@ const Header = ({ theme, handleThemeChange }) => {
           {user ? (
             <>
               <Box>
-                <Box>
+                <Box
+                  sx={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                  }}
+                >
                   <Typography
+                    variant="paragraph"
                     sx={{
                       fontWeight: '600',
                       fontSize: isSmallScreen ? '.75rem' : '1.25rem',
@@ -110,8 +116,10 @@ const Header = ({ theme, handleThemeChange }) => {
                     className="login-user"
                   >
                     {user.name}
-                  </Typography>{' '}
+                  </Typography>
                   <Typography
+                    variant="paragraph"
+                    marginLeft={0.75}
                     sx={{
                       fontSize: isSmallScreen ? '.75rem' : '1rem',
                     }}
