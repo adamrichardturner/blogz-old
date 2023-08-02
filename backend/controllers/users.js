@@ -7,6 +7,12 @@ usersRouter.post('/', async (request, response) => {
   const { username, name, password } = request.body
 
   try {
+    // Check if the username already exists in the database
+    const existingUser = await User.findOne({ username: username })
+    if (existingUser) {
+      return response.status(400).json({ error: 'Username already exists' })
+    }
+
     // Validate username
     if (!username || typeof username !== 'string' || username.trim() === '') {
       return response.status(400).json({ error: 'Invalid username' })
@@ -19,12 +25,10 @@ usersRouter.post('/', async (request, response) => {
 
     // Validate password length and number presence
     if (password.length < 5 || !/\d/.test(password)) {
-      return response
-        .status(400)
-        .json({
-          error:
-            'Password must be at least 5 characters long and contain a number',
-        })
+      return response.status(400).json({
+        error:
+          'Password must be at least 5 characters long and contain a number',
+      })
     }
 
     // Hash the password with bcrypt and the number of salt rounds

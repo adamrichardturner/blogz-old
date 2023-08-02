@@ -17,7 +17,7 @@ loginRouter.post('/', async (request, response) => {
 
   // If the user or the password is incorrect, sending a 401 Unauthorized error with an error message
   if (!(user && passwordCorrect)) {
-    return response.status(401).json({ error: 'invalid username or password' })
+    return response.status(401).json({ error: 'Invalid username or password' })
   }
 
   // Creating a new object with user's username and id for generating the token
