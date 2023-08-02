@@ -12,9 +12,11 @@ import {
 import AssignmentIcon from '@mui/icons-material/Assignment'
 import LightbulbIcon from '@mui/icons-material/Lightbulb'
 import { useAuth } from '../../hooks'
+import { useTheme } from '../../hooks'
 
-const Header = ({ theme, handleThemeChange, isDarkMode }) => {
+const Header = ({ theme }) => {
   const { signout } = useAuth()
+  const { handleThemeChange, isDarkMode } = useTheme()
   const user = JSON.parse(localStorage.getItem('loggedBlogzApp'))
   const handleLogout = () => {
     window.localStorage.removeItem('loggedBlogzApp')

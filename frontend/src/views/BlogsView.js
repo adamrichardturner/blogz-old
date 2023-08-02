@@ -27,7 +27,7 @@ const BlogsView = () => {
   }
 
   if (blogs.length <= 0) {
-    return <Loading />
+    return <Loading mode="large" />
   }
 
   const list = blogs.map((blog, index) => {

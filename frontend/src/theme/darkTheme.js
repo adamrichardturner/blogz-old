@@ -3,7 +3,7 @@ import { createTheme } from '@mui/material/styles'
 export const darkTheme = createTheme({
   breakpoints: {
     values: {
-      xs: 0,
+      xs: 500,
       sm: 767,
       md: 960,
       lg: 1280,
@@ -163,6 +163,16 @@ export const darkTheme = createTheme({
             color: (theme) => theme.palette.secondary.main,
           },
           border: '2px solid #e79d19',
+        },
+      },
+    },
+    MuiFormHelperText: {
+      styleOverrides: {
+        root: {
+          position: 'absolute',
+          top: '0px', // Adjust as per your requirement
+          right: '0', // Adjust as per your requirement
+          // Other styles if necessary
         },
       },
     },

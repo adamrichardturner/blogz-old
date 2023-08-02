@@ -138,27 +138,24 @@ export const useUser = () => {
   }
 
   const registerNewUser = async (username, name, password) => {
-    await dispatch(registerUser(username, name, password))
-    const user = await dispatch(setLogin(username, password))
-    console.log(user)
     try {
-      if (user) {
-        window.localStorage.setItem('loggedBlogzApp', JSON.stringify(user))
-        blogService.setToken(user.token)
-        await dispatch(initializeUsers())
-        await dispatch(initializeBlogs())
-        dispatch(
-          setNotification(`${user.name} joined and logged in`, 'positive', 5000)
-        )
-        console.log(user)
-        return user
+      await dispatch(registerUser(username, name, password))
+      const user = await dispatch(setLogin(username, password))
+
+      if (!user) {
+        throw new Error('Failed to log in the new user')
       }
-    } catch (error) {
-      setNotification(
-        `${user.name} registration failed: ${error}`,
-        'negative',
-        5000
+
+      window.localStorage.setItem('loggedBlogzApp', JSON.stringify(user))
+      blogService.setToken(user.token)
+      await dispatch(initializeUsers())
+      await dispatch(initializeBlogs())
+      dispatch(
+        setNotification(`${user.name} joined and logged in`, 'positive', 5000)
       )
+      console.log(user)
+      return user
+    } catch (error) {
       console.error(error)
       throw error
     }

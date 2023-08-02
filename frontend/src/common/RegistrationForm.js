@@ -8,13 +8,15 @@ import {
   Typography,
   useMediaQuery,
   FormControl,
+  FormHelperText,
   Link as MuiLink,
 } from '@mui/material'
 import { useUser } from '../hooks'
 import AssignmentIcon from '@mui/icons-material/Assignment'
 import { Link as RouterLink } from 'react-router-dom'
+import Loading from './Loading'
 
-const RegistrationForm = ({ theme, handleLogin }) => {
+const RegistrationForm = ({ handleLogin }) => {
   const { registerNewUser } = useUser()
 
   const [formData, setFormData] = useState({
@@ -27,7 +29,10 @@ const RegistrationForm = ({ theme, handleLogin }) => {
     username: '',
     name: '',
     password: '',
+    form: '',
   })
+
+  const [isLoading, setIsLoading] = useState(false)
 
   const { username, name, password } = formData
 
@@ -38,13 +43,24 @@ const RegistrationForm = ({ theme, handleLogin }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault()
+
     if (validateForm()) {
-      const response = await registerNewUser(username, name, password)
-      console.log(response)
-      if (response.token) {
-        handleLogin()
-      } else if (response.data.error) {
-        setErrors((prev) => ({ ...prev, form: response.data.error }))
+      setIsLoading(true)
+      try {
+        const response = await registerNewUser(username, name, password)
+        if (response && response.token) {
+          console.log(response.token)
+          handleLogin() // Moved inside the success condition
+        }
+      } catch (error) {
+        console.log(error)
+        console.error('Error during registration:', error.message)
+        setErrors((prev) => ({
+          ...prev,
+          form: error.response.data.error || 'An unknown error occurred.',
+        }))
+      } finally {
+        setIsLoading(false)
       }
     }
   }
@@ -89,115 +105,148 @@ const RegistrationForm = ({ theme, handleLogin }) => {
 
   const isSmallScreen = useMediaQuery((theme) => theme.breakpoints.down('sm'))
 
-  const iconColor = theme.palette.type === 'dark' ? '#ffffff' : '#000000'
-
   return (
-    <>
+    <Box
+      minHeight="97vh"
+      sx={{
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        flexDirection: 'column',
+      }}
+    >
       <Notification />
       <Container
-        maxWidth="sm"
+        maxWidth="xs"
         sx={{
-          minHeight: '90vh',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
           flexDirection: 'column',
+          height: '600px',
         }}
       >
-        <div
+        <Box
           style={{
             display: 'flex',
-            marginBottom: 10,
+            marginBottom: 0,
             alignItems: 'center',
           }}
         >
-          <Typography variant="h1">Blogz</Typography>
-          <AssignmentIcon
+          <Typography
+            variant="h1"
+            color="primary"
             style={{
-              color: iconColor,
+              fontSize: isSmallScreen ? '3.15rem' : '5rem',
+            }}
+          >
+            Blogz
+          </Typography>
+          <AssignmentIcon
+            color="primary"
+            style={{
               fontSize: isSmallScreen ? '2rem' : '3.5rem',
+              margin: 0,
             }}
           />
-        </div>
-        <Typography
-          variant="p"
-          sx={{
-            padding: 0,
-            marginTop: 2,
-          }}
-        >
+        </Box>
+        <Typography variant="paragraph" padding={0} marginTop={1}>
           Join Blogz
         </Typography>
-        <form onSubmit={handleSubmit} style={{ width: '100%' }}>
-          <Box>
-            <FormControl fullWidth>
-              <TextField
-                sx={{
-                  marginBottom: 2,
-                  color: '#000000',
-                }}
-                label="Username"
-                name="username"
-                value={username}
-                onChange={handleInputChange}
-                helperText={errors.username}
-              />
-            </FormControl>
-          </Box>
-          <Box>
-            <FormControl fullWidth>
-              <TextField
-                sx={{
-                  marginBottom: 2,
-                  color: '#000000',
-                }}
-                label="Name"
-                name="name"
-                value={name}
-                onChange={handleInputChange}
-                helperText={errors.name}
-              />
-            </FormControl>
-          </Box>
-          <Box>
-            <FormControl fullWidth>
-              <TextField
-                sx={{
-                  marginBottom: 2,
-                  color: '#000000',
-                }}
-                label="Password"
-                name="password"
-                type="password"
-                value={password}
-                onChange={handleInputChange}
-                helperText={errors.password}
-              />
-            </FormControl>
-          </Box>
-          <Box>
-            <Button
-              id="login-button"
-              variant="contained"
-              type="submit"
-              color="primary"
-              sx={{
-                color: '#fff',
-                borderColor: '#fff',
-                padding: '16px 16px',
-                width: '100%',
-                borderRadius: '5px',
-              }}
-            >
-              Register
-            </Button>
-          </Box>
-        </form>
+        <Box>
+          {errors.form && <FormHelperText error>{errors.form}</FormHelperText>}
+        </Box>
+        <Box
+          width="100%"
+          sx={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}
+        >
+          {!isLoading ? (
+            <form onSubmit={handleSubmit} style={{ width: '100%' }}>
+              <Box>
+                <FormControl fullWidth>
+                  <TextField
+                    sx={{
+                      marginBottom: 2,
+                      color: '#000000',
+                    }}
+                    label="Username"
+                    name="username"
+                    value={username}
+                    onChange={handleInputChange}
+                    helperText={errors.username}
+                    disabled={isLoading}
+                    className="auth-textfield"
+                  />
+                </FormControl>
+              </Box>
+              <Box>
+                <FormControl fullWidth>
+                  <TextField
+                    sx={{
+                      marginBottom: 2,
+                      color: '#000000',
+                    }}
+                    label="Name"
+                    name="name"
+                    value={name}
+                    onChange={handleInputChange}
+                    helperText={errors.name}
+                    disabled={isLoading}
+                    className="auth-textfield"
+                  />
+                </FormControl>
+              </Box>
+              <Box>
+                <FormControl fullWidth>
+                  <TextField
+                    sx={{
+                      marginBottom: 2,
+                      color: '#000000',
+                    }}
+                    label="Password"
+                    name="password"
+                    type="password"
+                    value={password}
+                    onChange={handleInputChange}
+                    helperText={errors.password}
+                    disabled={isLoading}
+                    className="auth-textfield"
+                  />
+                </FormControl>
+              </Box>
+              <Box>
+                <Button
+                  id="login-button"
+                  variant="contained"
+                  type="submit"
+                  color="primary"
+                  disabled={isLoading}
+                  sx={{
+                    color: '#fff',
+                    borderColor: '#fff',
+                    padding: '16px 16px',
+                    width: '100%',
+                    borderRadius: '5px',
+                    marginTop: 0,
+                  }}
+                >
+                  Register
+                </Button>
+              </Box>
+            </form>
+          ) : (
+            <Loading mode="small" />
+          )}
+        </Box>
         <Typography
           variant="h3"
-          sx={{
-            marginTop: 4,
-          }}
+          color="primary"
+          marginTop={4.5}
+          marginBottom={1}
         >
           Back to Login
         </Typography>
@@ -212,13 +261,14 @@ const RegistrationForm = ({ theme, handleLogin }) => {
               padding: '16px 16px',
               width: '100%',
               borderRadius: '5px',
+              marginTop: 0,
             }}
           >
             Back to Login
           </Button>
         </MuiLink>
       </Container>
-    </>
+    </Box>
   )
 }
 

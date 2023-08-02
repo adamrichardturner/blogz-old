@@ -20,7 +20,7 @@ const App = () => {
   const { getBlogs } = useBlogs()
   const { getAll } = useUser()
   const { user } = useAuth()
-  const { isDarkMode, handleThemeChange } = useTheme()
+  const { isDarkMode } = useTheme()
   const theme = isDarkMode ? lightTheme : darkTheme
 
   useEffect(() => {
@@ -35,12 +35,7 @@ const App = () => {
     <ThemeProvider theme={theme}>
       <CssBaseline />
       <Container maxWidth="md">
-        <Header
-          theme={theme}
-          user={user}
-          handleThemeChange={handleThemeChange}
-          isDarkMode={isDarkMode}
-        />
+        <Header theme={theme} user={user} />
         <Notification />
         <Routes>
           <Route
