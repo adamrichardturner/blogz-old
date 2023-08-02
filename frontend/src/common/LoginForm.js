@@ -16,7 +16,7 @@ import {
 import AssignmentIcon from '@mui/icons-material/Assignment'
 import { Link as RouterLink } from 'react-router-dom'
 
-const LoginForm = ({ handleLogin, theme }) => {
+const LoginForm = ({ handleLogin }) => {
   const { authenticate } = useAuth()
 
   const [formData, setFormData] = useState({
@@ -71,8 +71,6 @@ const LoginForm = ({ handleLogin, theme }) => {
 
   const isSmallScreen = useMediaQuery((theme) => theme.breakpoints.down('sm'))
 
-  const iconColor = theme.palette.type === 'dark' ? '#ffffff' : '#000000'
-
   return (
     <>
       <Notification />
@@ -93,10 +91,12 @@ const LoginForm = ({ handleLogin, theme }) => {
             alignItems: 'center',
           }}
         >
-          <Typography variant="h1">Blogz</Typography>
+          <Typography variant="h1" color="primary">
+            Blogz
+          </Typography>
           <AssignmentIcon
+            color="primary"
             style={{
-              color: iconColor,
               fontSize: isSmallScreen ? '2rem' : '3.5rem',
               margin: 0,
             }}
@@ -169,6 +169,7 @@ const LoginForm = ({ handleLogin, theme }) => {
           sx={{
             marginTop: 4,
           }}
+          color="primary"
         >
           Not got an account?
         </Typography>

@@ -1,8 +1,8 @@
 import { useEffect } from 'react'
 import { Routes, Route } from 'react-router-dom'
-import Header from './Layout/Header/Header'
+import Header from './layout/Header/Header'
 import Notification from './components/Notification/Notification'
-import Footer from './Layout/Footer/Footer'
+import Footer from './layout/Footer/Footer'
 import BlogsView from './views/BlogsView'
 import BlogView from './views/BlogView'
 import UserSummaryView from './views/UserSummaryView'
@@ -22,6 +22,7 @@ const App = () => {
   const { user } = useAuth()
   const { isDarkMode, handleThemeChange } = useTheme()
   const theme = isDarkMode ? lightTheme : darkTheme
+
   useEffect(() => {
     const getLatest = async () => {
       await getBlogs()
