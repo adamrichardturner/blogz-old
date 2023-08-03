@@ -1,4 +1,4 @@
-import { Link as RouterLink } from 'react-router-dom'
+import { NavLink } from 'react-router-dom'
 import {
   Box,
   FormGroup,
@@ -11,13 +11,14 @@ import {
 } from '@mui/material'
 import AssignmentIcon from '@mui/icons-material/Assignment'
 import LightbulbIcon from '@mui/icons-material/Lightbulb'
-import { useAuth } from '../../hooks'
-import { useTheme } from '../../hooks'
+import { useAuth } from '../../hooks/auth'
+import { useTheme } from '../../hooks/theme'
 
 const Header = ({ theme }) => {
   const { signout } = useAuth()
   const { handleThemeChange, isDarkMode } = useTheme()
   const user = JSON.parse(localStorage.getItem('loggedBlogzApp'))
+
   const handleLogout = () => {
     window.localStorage.removeItem('loggedBlogzApp')
     signout()
@@ -73,7 +74,9 @@ const Header = ({ theme }) => {
             />
           </Box>
           <MuiLink
-            component={RouterLink}
+            component={(props) => (
+              <NavLink exact activeClassName="active-link" {...props} />
+            )}
             to="/"
             sx={{
               marginRight: 2.5,
@@ -83,8 +86,11 @@ const Header = ({ theme }) => {
           >
             Posts
           </MuiLink>
+
           <MuiLink
-            component={RouterLink}
+            component={(props) => (
+              <NavLink activeClassName="active-link" {...props} />
+            )}
             to="/users"
             sx={{
               fontWeight: '500',
@@ -150,21 +156,21 @@ const Header = ({ theme }) => {
                     Logout
                   </Button>
                 </Box>
-                <Box>
-                  <Box
-                    sx={{
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'flex-end',
-                    }}
-                  >
+                <Box
+                  sx={{
+                    display: 'flex',
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    justifyContent: 'flex-end',
+                  }}
+                >
+                  <Box marginTop={2}>
                     <FormGroup
                       sx={{
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'center',
                         marginRight: 0,
-                        paddingTop: '2.5rem',
                         flexDirection: 'row',
                       }}
                     >
@@ -178,12 +184,13 @@ const Header = ({ theme }) => {
                         sx={{
                           marginRight: 0,
                           padding: 0,
+                          display: 'flex',
+                          alignItems: 'flex-end',
                         }}
                       />
                       <LightbulbIcon />
                     </FormGroup>
                   </Box>
-                  <Box></Box>
                 </Box>
               </Box>
             </>

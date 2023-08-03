@@ -2,12 +2,13 @@ import { Box, Typography } from '@mui/material'
 
 const Footer = () => {
   return (
-    <Box minHeight="2vh">
+    <Box minHeight="3vh">
       <footer
         style={{
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
+          padding: '1rem 0',
         }}
       >
         <p>

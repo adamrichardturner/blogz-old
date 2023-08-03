@@ -51,7 +51,7 @@ h2 {
 }
 
 h3 {
-  font-size: 1.75rem !important;
+  font-size: 1.25rem !important;
   line-height: 1.8;
 }
 
@@ -62,7 +62,7 @@ h3 {
   }
 
   h3 {
-    font-size: 1.25rem !important;
+    font-size: 1rem !important;
     line-height: 1.8;
   }
 }

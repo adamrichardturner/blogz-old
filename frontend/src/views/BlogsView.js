@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux'
 import Togglable from '../common/Togglable'
 import BlogForm from '../components/Blogs/BlogForm'
 import Blog from '../components/Blogs/Blog'
-import { useBlogs } from '../hooks'
+import { useBlogs } from '../hooks/blogs'
 import Loading from '../common/Loading'
 import { Box, Typography } from '@mui/material'
 
@@ -26,6 +26,10 @@ const BlogsView = () => {
     createBlog(blogData)
   }
 
+  if (user === null) {
+    return null
+  }
+
   if (blogs.length <= 0) {
     return <Loading mode="large" />
   }
@@ -45,7 +49,7 @@ const BlogsView = () => {
   return (
     <Box>
       <Typography variant="h2" color="body">
-        Welcome to Blogz! Spill the beans, we won&apos;t judge! 😄
+        Spill the beans, {user.name}! 😄
       </Typography>
       <Togglable buttonLabel="New Blog" ref={blogFormRef}>
         <BlogForm createBlog={handleCreateBlog} />

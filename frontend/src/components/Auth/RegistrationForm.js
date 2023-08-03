@@ -1,5 +1,4 @@
 import { useState } from 'react'
-import Notification from '../components/Notification/Notification'
 import {
   Box,
   TextField,
@@ -11,10 +10,10 @@ import {
   FormHelperText,
   Link as MuiLink,
 } from '@mui/material'
-import { useUser } from '../hooks'
+import { useUser } from '../../hooks/users'
 import AssignmentIcon from '@mui/icons-material/Assignment'
 import { Link as RouterLink } from 'react-router-dom'
-import Loading from './Loading'
+import Loading from '../../common/Loading.js'
 
 const RegistrationForm = ({ handleLogin }) => {
   const { registerNewUser } = useUser()
@@ -107,7 +106,7 @@ const RegistrationForm = ({ handleLogin }) => {
 
   return (
     <Box
-      minHeight="97vh"
+      minHeight="90vh"
       sx={{
         display: 'flex',
         alignItems: 'center',
@@ -115,7 +114,6 @@ const RegistrationForm = ({ handleLogin }) => {
         flexDirection: 'column',
       }}
     >
-      <Notification />
       <Container
         maxWidth="xs"
         sx={{
@@ -247,6 +245,7 @@ const RegistrationForm = ({ handleLogin }) => {
           color="primary"
           marginTop={4.5}
           marginBottom={1}
+          fontSize={1}
         >
           Back to Login
         </Typography>
@@ -258,13 +257,13 @@ const RegistrationForm = ({ handleLogin }) => {
             sx={{
               color: '#fff',
               borderColor: '#fff',
-              padding: '16px 16px',
+              padding: '6px 16px',
               width: '100%',
               borderRadius: '5px',
               marginTop: 0,
             }}
           >
-            Back to Login
+            Go Back
           </Button>
         </MuiLink>
       </Container>

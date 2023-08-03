@@ -38,6 +38,10 @@ const Loading = ({ mode }) => {
         <img
           src={darkMode ? loaderDarkSmall : loaderLightSmall}
           alt="Loading Data"
+          style={{
+            height: '4rem',
+            width: '4rem',
+          }}
         />
       </Box>
     )

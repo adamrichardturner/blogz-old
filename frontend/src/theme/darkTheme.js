@@ -91,11 +91,12 @@ export const darkTheme = createTheme({
       styleOverrides: {
         containedPrimary: {
           color: '#fff',
+          textDecoration: 'none',
           borderColor: '#fff',
           marginTop: '10px',
           background: '#222a41',
           '&:hover': {
-            backgroundColor: '#111', // Change the background color on hover
+            backgroundColor: '#222a41', // Change the background color on hover
             color: '#fff', // Change the text color on hover
           },
         },
@@ -118,8 +119,19 @@ export const darkTheme = createTheme({
           background: '#33332d',
           opacity: '0.85',
           borderRadius: '5px',
-          borderColor: '#fff',
           color: '#fff',
+          '& .MuiOutlinedInput-root': {
+            '& fieldset': {
+              borderColor: '#fff',
+              borderWidth: '.5px',
+            },
+            '&:hover fieldset': {
+              borderWidth: '1px',
+            },
+            '&.Mui-focused fieldset': {
+              borderWidth: '2px',
+            },
+          },
         },
       },
     },

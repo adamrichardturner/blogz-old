@@ -1,7 +1,6 @@
 // LoginForm.js
 import { useState } from 'react'
-import { useAuth } from '../hooks'
-import Notification from '../components/Notification/Notification'
+import { useAuth } from '../../hooks/auth'
 import {
   Box,
   Button,
@@ -15,7 +14,7 @@ import {
 } from '@mui/material'
 import AssignmentIcon from '@mui/icons-material/Assignment'
 import { Link as RouterLink } from 'react-router-dom'
-import Loading from './Loading'
+import Loading from '../../common/Loading.js'
 
 const LoginForm = ({ handleLogin }) => {
   const { authenticate } = useAuth()
@@ -71,7 +70,7 @@ const LoginForm = ({ handleLogin }) => {
 
     // Validate password
     if (password.length < 4) {
-      newErrors.password = 'Password must be at least 5 characters'
+      newErrors.password = 'Password must be at least 4 characters'
       isValid = false
     }
 
@@ -83,7 +82,7 @@ const LoginForm = ({ handleLogin }) => {
 
   return (
     <Box
-      minHeight="97vh"
+      minHeight="90vh"
       sx={{
         display: 'flex',
         alignItems: 'center',
@@ -91,7 +90,6 @@ const LoginForm = ({ handleLogin }) => {
         flexDirection: 'column',
       }}
     >
-      <Notification />
       <Container
         maxWidth="xs"
         sx={{
@@ -203,6 +201,7 @@ const LoginForm = ({ handleLogin }) => {
           color="primary"
           marginTop={4.5}
           marginBottom={1}
+          fontSize={1}
         >
           Not got an account?
         </Typography>
@@ -216,7 +215,7 @@ const LoginForm = ({ handleLogin }) => {
               sx={{
                 color: '#fff',
                 borderColor: '#fff',
-                padding: '16px 16px',
+                padding: '6px 16px',
                 width: '100%',
                 borderRadius: '5px',
                 marginTop: 0,

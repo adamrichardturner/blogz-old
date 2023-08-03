@@ -44,25 +44,14 @@ const BlogForm = ({ createBlog }) => {
             }))
           }
         />
-        <TextField
-          label="Blog made by"
-          variant="filled"
-          fullWidth
-          id="author"
-          value={newBlog.author}
-          name="Author"
-          onChange={({ target }) =>
-            setNewBlog((prevState) => ({
-              ...prevState,
-              author: target.value,
-            }))
-          }
-        />
       </Box>
       <Box>
         <TextField
           label="Blog Summary:"
           variant="filled"
+          sx={{
+            height: 'auto',
+          }}
           fullWidth
           multiline
           id="url"

@@ -1,4 +1,4 @@
-import LoginForm from '../common/LoginForm'
+import LoginForm from '../components/Auth/LoginForm'
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 

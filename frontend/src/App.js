@@ -10,7 +10,10 @@ import UserView from './views/UserView'
 import LoginView from './views/LoginView'
 import RegisterView from './views/RegisterView'
 import { ProtectedRoute } from './components/ProtectedRoute/ProtectedRoute'
-import { useBlogs, useUser, useAuth, useTheme } from './hooks'
+import { useBlogs } from './hooks/blogs'
+import { useUser } from './hooks/users'
+import { useAuth } from './hooks/auth'
+import { useTheme } from './hooks/theme'
 import { Container, CssBaseline } from '@mui/material'
 import { ThemeProvider } from '@mui/material/styles'
 import { lightTheme } from './theme/lightTheme'
@@ -34,7 +37,7 @@ const App = () => {
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      <Container maxWidth="md">
+      <Container maxWidth="sm">
         <Header theme={theme} user={user} />
         <Notification />
         <Routes>
