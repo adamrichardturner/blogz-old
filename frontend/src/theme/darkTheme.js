@@ -182,9 +182,8 @@ export const darkTheme = createTheme({
       styleOverrides: {
         root: {
           position: 'absolute',
-          top: '0px', // Adjust as per your requirement
-          right: '0', // Adjust as per your requirement
-          // Other styles if necessary
+          top: '0px',
+          right: '0',
         },
       },
     },

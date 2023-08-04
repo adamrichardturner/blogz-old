@@ -9,7 +9,6 @@ import {
   Container,
   TextField,
   FormControl,
-  FormHelperText,
   Link as MuiLink,
 } from '@mui/material'
 import AssignmentIcon from '@mui/icons-material/Assignment'
@@ -41,20 +40,21 @@ const LoginForm = ({ handleLogin }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault()
-    if (validateForm()) {
-      setIsLoading(true)
-      try {
-        const response = await authenticate(username, password)
-        if (response.token) {
-          handleLogin()
-        } else if (response.data.error) {
-          setErrors((prev) => ({ ...prev, form: response.data.error }))
-        }
-      } catch (error) {
-        console.error('Error during authentication:', error)
-      } finally {
-        setIsLoading(false)
+    if (!validateForm()) {
+      return
+    }
+    setIsLoading(true)
+    try {
+      const response = await authenticate(username, password)
+      if (response?.token) {
+        handleLogin()
+      } else if (response?.data?.error) {
+        setErrors((prev) => ({ ...prev, form: response?.data?.error }))
       }
+    } catch (error) {
+      console.error('Error during authentication:', error)
+    } finally {
+      setIsLoading(false)
     }
   }
 
@@ -128,7 +128,11 @@ const LoginForm = ({ handleLogin }) => {
           Login
         </Typography>
         <Box>
-          {errors.form && <FormHelperText error>{errors.form}</FormHelperText>}
+          {errors.form && (
+            <Typography variant="paragraph" fontSize={10} color={'red'}>
+              {errors.form}
+            </Typography>
+          )}
         </Box>
         <Box
           width="100%"
@@ -193,37 +197,26 @@ const LoginForm = ({ handleLogin }) => {
               </Box>
             </form>
           ) : (
-            <Loading mode="small" />
+            <Box marginTop={4.5}>
+              <Loading mode="small" />
+            </Box>
           )}
         </Box>
         <Typography
           variant="h3"
           color="primary"
           marginTop={4.5}
-          marginBottom={1}
+          marginBottom={0}
           fontSize={1}
         >
           Not got an account?
         </Typography>
         <Box>
-          <MuiLink component={RouterLink} to="/register">
-            <Button
-              id="register-button"
-              variant="contained"
-              color="primary"
-              disabled={isLoading}
-              sx={{
-                color: '#fff',
-                borderColor: '#fff',
-                padding: '6px 16px',
-                width: '100%',
-                borderRadius: '5px',
-                marginTop: 0,
-              }}
-            >
-              Register Here
-            </Button>
-          </MuiLink>
+          <Typography variant="paragraph" fontSize={14}>
+            <MuiLink component={RouterLink} to="/register">
+              Sign up here
+            </MuiLink>
+          </Typography>
         </Box>
       </Container>
     </Box>

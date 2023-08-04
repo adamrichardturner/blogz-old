@@ -1,8 +1,23 @@
-import { Box, Typography } from '@mui/material'
+import { Box, Typography, Divider } from '@mui/material'
 
 const Footer = () => {
   return (
-    <Box minHeight="3vh">
+    <Box
+      minHeight="3vh"
+      sx={{
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        flexDirection: 'column',
+      }}
+    >
+      <Divider
+        variant="middle"
+        width={100}
+        sx={{
+          color: 'primary',
+        }}
+      />
       <footer
         style={{
           display: 'flex',

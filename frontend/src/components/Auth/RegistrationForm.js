@@ -7,7 +7,6 @@ import {
   Typography,
   useMediaQuery,
   FormControl,
-  FormHelperText,
   Link as MuiLink,
 } from '@mui/material'
 import { useUser } from '../../hooks/users'
@@ -43,24 +42,24 @@ const RegistrationForm = ({ handleLogin }) => {
   const handleSubmit = async (e) => {
     e.preventDefault()
 
-    if (validateForm()) {
-      setIsLoading(true)
-      try {
-        const response = await registerNewUser(username, name, password)
-        if (response && response.token) {
-          console.log(response.token)
-          handleLogin() // Moved inside the success condition
-        }
-      } catch (error) {
-        console.log(error)
-        console.error('Error during registration:', error.message)
-        setErrors((prev) => ({
-          ...prev,
-          form: error.response.data.error || 'An unknown error occurred.',
-        }))
-      } finally {
-        setIsLoading(false)
+    if (!validateForm()) {
+      return
+    }
+    setIsLoading(true)
+    try {
+      const response = await registerNewUser(username, name, password)
+      if (response?.token) {
+        handleLogin()
       }
+    } catch (error) {
+      console.log(error)
+      console.error('Error during registration:', error?.message)
+      setErrors((prev) => ({
+        ...prev,
+        form: error?.response?.data?.error || 'An unknown error occurred.',
+      }))
+    } finally {
+      setIsLoading(false)
     }
   }
 
@@ -152,7 +151,11 @@ const RegistrationForm = ({ handleLogin }) => {
           Join Blogz
         </Typography>
         <Box>
-          {errors.form && <FormHelperText error>{errors.form}</FormHelperText>}
+          {errors.form && (
+            <Typography variant="paragraph" fontSize={10} color={'red'}>
+              {errors.form}
+            </Typography>
+          )}
         </Box>
         <Box
           width="100%"
@@ -237,35 +240,18 @@ const RegistrationForm = ({ handleLogin }) => {
               </Box>
             </form>
           ) : (
-            <Loading mode="small" />
+            <Box marginTop={4.5}>
+              <Loading mode="small" />
+            </Box>
           )}
         </Box>
-        <Typography
-          variant="h3"
-          color="primary"
-          marginTop={4.5}
-          marginBottom={1}
-          fontSize={1}
-        >
-          Back to Login
-        </Typography>
-        <MuiLink component={RouterLink} to="/login">
-          <Button
-            id="register-button"
-            variant="contained"
-            color="primary"
-            sx={{
-              color: '#fff',
-              borderColor: '#fff',
-              padding: '6px 16px',
-              width: '100%',
-              borderRadius: '5px',
-              marginTop: 0,
-            }}
-          >
-            Go Back
-          </Button>
-        </MuiLink>
+        <Box marginTop={2}>
+          <MuiLink component={RouterLink} to="/login">
+            <Typography variant="paragraph" fontSize={14}>
+              Go back to login
+            </Typography>
+          </MuiLink>
+        </Box>
       </Container>
     </Box>
   )
