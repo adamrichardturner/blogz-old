@@ -127,6 +127,14 @@ export const lightTheme = createTheme({
         },
       },
     },
+    MuiLink: {
+      styleOverrides: {
+        root: {
+          textDecoration: 'underline',
+          fontWeight: '600',
+        },
+      },
+    },
     MuiListItem: {
       styleOverrides: {
         root: {

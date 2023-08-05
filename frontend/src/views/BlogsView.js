@@ -48,7 +48,7 @@ const BlogsView = () => {
 
   return (
     <Box>
-      <Typography variant="h2" color="body">
+      <Typography variant="h2" color="body" marginTop={2} marginBottom={2}>
         Spill the beans, {user.name}! 😄
       </Typography>
       <Togglable buttonLabel="New Blog" ref={blogFormRef}>

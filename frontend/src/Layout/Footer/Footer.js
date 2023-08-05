@@ -13,9 +13,10 @@ const Footer = () => {
     >
       <Divider
         variant="middle"
-        width={100}
         sx={{
-          color: 'primary',
+          width: 100,
+          backgroundColor: 'primary.main',
+          color: 'primary.main',
         }}
       />
       <footer

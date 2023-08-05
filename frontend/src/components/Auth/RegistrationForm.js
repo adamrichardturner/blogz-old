@@ -52,7 +52,6 @@ const RegistrationForm = ({ handleLogin }) => {
         handleLogin()
       }
     } catch (error) {
-      console.log(error)
       console.error('Error during registration:', error?.message)
       setErrors((prev) => ({
         ...prev,

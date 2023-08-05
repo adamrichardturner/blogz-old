@@ -14,11 +14,11 @@ import Loading from '../common/Loading'
 const UserSummaryView = () => {
   const allUsers = useSelector((state) => state.user.allUsers)
   if (!allUsers) {
-    return <Loading />
+    return <Loading mode="large" />
   }
   return (
     <Box>
-      <Typography variant="h2" color="body">
+      <Typography variant="h2" color="body" marginTop={2} marginBottom={2}>
         Users Summary
       </Typography>
       <Table>
@@ -34,7 +34,7 @@ const UserSummaryView = () => {
               <TableCell>
                 <Typography variant="paragraph" color="primary">
                   {user.name}{' '}
-                  <Link to={`/users/${user.id}`}>({user.username})</Link>
+                  <Link to={`/users/${user.id}`}> {`(${user.username})`}</Link>
                 </Typography>
               </TableCell>
               <TableCell>{user.blogs.length}</TableCell>

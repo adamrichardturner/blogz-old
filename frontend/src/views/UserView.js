@@ -9,7 +9,7 @@ const UserView = () => {
   const id = useParams().id
   const allUsers = useSelector((state) => state.user.allUsers)
   if (!allUsers) {
-    return <Loading />
+    return <Loading mode="large" />
   }
 
   const user = allUsers.find((a) => a.id === id)

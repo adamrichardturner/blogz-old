@@ -1,4 +1,3 @@
-import { NavLink } from 'react-router-dom'
 import {
   Box,
   FormGroup,
@@ -7,12 +6,14 @@ import {
   Typography,
   Switch,
   useMediaQuery,
-  Link as MuiLink,
+  Link,
 } from '@mui/material'
+import { Link as RouterLink } from 'react-router-dom'
 import AssignmentIcon from '@mui/icons-material/Assignment'
 import LightbulbIcon from '@mui/icons-material/Lightbulb'
 import { useAuth } from '../../hooks/auth'
 import { useTheme } from '../../hooks/theme'
+import Navigation from './Navigation'
 
 const Header = ({ theme }) => {
   const { signout } = useAuth()
@@ -73,32 +74,7 @@ const Header = ({ theme }) => {
               }}
             />
           </Box>
-          <MuiLink
-            component={(props) => (
-              <NavLink exact activeClassName="active-link" {...props} />
-            )}
-            to="/"
-            sx={{
-              marginRight: 2.5,
-              fontWeight: '500',
-              fontSize: isSmallScreen ? '1rem' : '1.125rem',
-            }}
-          >
-            Posts
-          </MuiLink>
-
-          <MuiLink
-            component={(props) => (
-              <NavLink activeClassName="active-link" {...props} />
-            )}
-            to="/users"
-            sx={{
-              fontWeight: '500',
-              fontSize: isSmallScreen ? '1rem' : '1.125rem',
-            }}
-          >
-            Users
-          </MuiLink>
+          <Navigation isSmallScreen={isSmallScreen} />
         </Box>
         <Box
           sx={{
@@ -117,22 +93,21 @@ const Header = ({ theme }) => {
                 >
                   <Typography
                     variant="paragraph"
-                    sx={{
-                      fontWeight: '600',
-                      fontSize: isSmallScreen ? '.75rem' : '1.25rem',
-                    }}
-                    className="login-user"
-                  >
-                    {user.name}
-                  </Typography>
-                  <Typography
-                    variant="paragraph"
                     marginLeft={0.75}
                     sx={{
                       fontSize: isSmallScreen ? '.75rem' : '1rem',
                     }}
                     className="login-status"
                   >
+                    <span
+                      style={{
+                        fontWeight: '800',
+                      }}
+                    >
+                      <Link component={RouterLink} to={`/users/${user.id}`}>
+                        {user.name}
+                      </Link>
+                    </span>{' '}
                     is logged in
                   </Typography>
                 </Box>

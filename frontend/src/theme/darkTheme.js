@@ -66,7 +66,11 @@ export const darkTheme = createTheme({
     h2: {
       color: '#ffffff',
       padding: 0,
-      fontSize: '2rem',
+      fontSize: '2.5rem',
+      [`@media (min-width:${(theme) => theme.breakpoints.values.sm}px)`]: {
+        fontSize: '1.25rem',
+        margin: 0,
+      },
     },
     h3: {
       color: '#ffffff',
@@ -148,9 +152,6 @@ export const darkTheme = createTheme({
           color: '#fff',
           textDecoration: 'underline',
           fontWeight: '600',
-          '&:hover': {
-            textDecoration: 'underline', // Add underline on hover
-          },
           // Add any other specific styles you want for the Link component
         },
       },

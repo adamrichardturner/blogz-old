@@ -9,20 +9,19 @@ import {
   ListItem,
   ListItemText,
   Paper,
+  useMediaQuery,
   Link as MuiLink,
 } from '@mui/material'
-import FavoriteIcon from '@mui/icons-material/Favorite'
+import readableDate from '../util/readableDate'
 import { useBlogs } from '../../hooks/blogs'
+import FavoriteIcon from '@mui/icons-material/Favorite'
 
-const Blog = ({ blog, user }) => {
-  const { likeBlog, addComment, removeBlog } = useBlogs()
-  const [visible, setVisible] = useState(false)
+const BlogSingle = ({ blog, user }) => {
+  const { likeBlog, removeBlog, addComment } = useBlogs()
+  const isSmallScreen = useMediaQuery((theme) => theme.breakpoints.down('sm'))
   const [comment, setComment] = useState('')
-
-  const toggleDetails = () => {
-    setVisible(!visible)
-  }
-
+  const newDate = readableDate()
+  console.log(newDate)
   const updatedBlog = {
     user: blog.user,
     likes: 1,
@@ -46,7 +45,6 @@ const Blog = ({ blog, user }) => {
       text: comment,
       user: user.id,
     }
-
     addComment(blog.id, obj)
     return setComment('')
   }
@@ -88,19 +86,16 @@ const Blog = ({ blog, user }) => {
                 alignItems: 'center',
               }}
             >
-              <MuiLink component={RouterLink} to={`/blogs/${blog.id}`}>
-                <Typography
-                  variant="h3"
-                  color="primary"
-                  sx={{
-                    textDecoration: 'none',
-                    wordWrap: 'break-word',
-                    overflowWrap: 'break-word',
-                  }}
-                >
-                  {blog.title}
-                </Typography>
-              </MuiLink>
+              <Typography
+                variant="h2"
+                color="primary"
+                marginBottom={0}
+                sx={{
+                  fontSize: isSmallScreen ? '1.25rem' : '2rem',
+                }}
+              >
+                {blog.title}
+              </Typography>
               {user.name === blog.user.name ? (
                 <Button
                   variant="contained"
@@ -153,7 +148,6 @@ const Blog = ({ blog, user }) => {
         </Box>
         <Box
           sx={{
-            display: visible ? 'flex' : 'none',
             flexDirection: 'column',
             padding: 2,
           }}
@@ -219,29 +213,7 @@ const Blog = ({ blog, user }) => {
               justifyContent: 'space-between',
               alignItems: 'center',
             }}
-          >
-            <a
-              onClick={toggleDetails}
-              style={{
-                fontSize: 14,
-                textDecoration: 'underline',
-                cursor: 'pointer',
-              }}
-            >
-              <Typography
-                variant="paragraph"
-                sx={{
-                  textDecoration: 'underline',
-                }}
-              >
-                {blog.comments.length > 0
-                  ? visible
-                    ? 'Hide'
-                    : 'View Comments'
-                  : null}
-              </Typography>
-            </a>
-          </Box>
+          ></Box>
           <Box
             style={{
               display: 'flex',
@@ -274,4 +246,4 @@ const Blog = ({ blog, user }) => {
   )
 }
 
-export default Blog
+export default BlogSingle
