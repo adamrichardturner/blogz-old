@@ -29,7 +29,9 @@ loginRouter.post('/', async (request, response) => {
   })
 
   // Sending a 200 OK response with the generated token and user information
-  response.status(200).send({ token, username: user.username, name: user.name })
+  response
+    .status(200)
+    .send({ token, username: user.username, name: user.name, id: user._id })
 })
 
 // Exporting the login router module

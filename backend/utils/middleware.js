@@ -48,7 +48,7 @@ const errorHandler = (error, request, response, next) => {
     return response.status(400).send({ error: 'malformatted id' })
   } else if (error.name === 'ValidationError') {
     return response.status(400).json({ error: error.message })
-  } else if (error.message === 'jwt must be provided') {
+  } else if (error.name === 'jwt must be provided') {
     // Check for the missing token error message
     return response.status(401).json({ error: 'token missing' })
   } else if (error.name === 'JsonWebTokenError') {
