@@ -48,12 +48,16 @@ const BlogsView = () => {
 
   return (
     <Box>
-      <Typography variant="h2" color="body" marginTop={2} marginBottom={2}>
-        Spill the beans, {user.name}! 😄
-      </Typography>
-      <Togglable buttonLabel="New Blog" ref={blogFormRef}>
-        <BlogForm createBlog={handleCreateBlog} />
-      </Togglable>
+      <Box>
+        <Typography variant="h2" color="body" marginTop={2} marginBottom={2}>
+          What&apos;s on your mind, {user.name.split(' ')[0]}! 😄
+        </Typography>
+      </Box>
+      <Box>
+        <Togglable buttonLabel="New Blog" ref={blogFormRef}>
+          <BlogForm createBlog={handleCreateBlog} />
+        </Togglable>
+      </Box>
       {list}
     </Box>
   )

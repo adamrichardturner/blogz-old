@@ -25,7 +25,7 @@ const BlogView = () => {
   }
 
   return (
-    <Box>
+    <Box marginTop={'16px'}>
       <article>
         <BlogSingle
           key={blog.id}

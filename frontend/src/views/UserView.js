@@ -8,6 +8,7 @@ import { Link as RouterLink } from 'react-router-dom'
 const UserView = () => {
   const id = useParams().id
   const allUsers = useSelector((state) => state.user.allUsers)
+
   if (!allUsers) {
     return <Loading mode="large" />
   }
@@ -26,11 +27,13 @@ const UserView = () => {
   ))
   return (
     <Box>
-      <Typography variant="h2" color="body">
-        User: {user.name}
+      <Typography variant="h2" color="body" marginTop={'16px'} marginBottom={2}>
+        Blogs by {user.name}
       </Typography>
-      <Typography variant="h3">Blogs added:</Typography>
-      <List>{blogs}</List>
+      <Typography variant="h3" padding={'1rem 1rem 0 1rem'}>
+        Blogs added:
+      </Typography>
+      <List padding={'1rem'}>{blogs}</List>
     </Box>
   )
 }

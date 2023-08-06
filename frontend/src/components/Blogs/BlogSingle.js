@@ -12,7 +12,6 @@ import {
   useMediaQuery,
   Link as MuiLink,
 } from '@mui/material'
-import readableDate from '../util/readableDate'
 import { useBlogs } from '../../hooks/blogs'
 import FavoriteIcon from '@mui/icons-material/Favorite'
 
@@ -20,8 +19,7 @@ const BlogSingle = ({ blog, user }) => {
   const { likeBlog, removeBlog, addComment } = useBlogs()
   const isSmallScreen = useMediaQuery((theme) => theme.breakpoints.down('sm'))
   const [comment, setComment] = useState('')
-  const newDate = readableDate()
-  console.log(newDate)
+
   const updatedBlog = {
     user: blog.user,
     likes: 1,

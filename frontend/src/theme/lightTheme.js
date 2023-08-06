@@ -66,7 +66,11 @@ export const lightTheme = createTheme({
     h2: {
       color: '#000000',
       padding: 0,
-      fontSize: '2rem',
+      fontSize: '2.5rem',
+      [`@media (min-width:${(theme) => theme.breakpoints.values.sm}px)`]: {
+        fontSize: '1.25rem',
+        margin: 0,
+      },
     },
     h3: {
       color: '#000000',

@@ -12,6 +12,7 @@ import {
   Link as MuiLink,
 } from '@mui/material'
 import FavoriteIcon from '@mui/icons-material/Favorite'
+import ChatBubbleOutlineRoundedIcon from '@mui/icons-material/ChatBubbleOutlineRounded'
 import { useBlogs } from '../../hooks/blogs'
 
 const Blog = ({ blog, user }) => {
@@ -60,13 +61,11 @@ const Blog = ({ blog, user }) => {
       sx={{
         display: 'flex',
       }}
-      fullWidth
       marginTop={2}
       marginBottom={2}
     >
       <Paper
         elevation={2}
-        fullWidth
         padding={2}
         background="body"
         sx={{
@@ -238,7 +237,7 @@ const Blog = ({ blog, user }) => {
                   ? visible
                     ? 'Hide'
                     : 'View Comments'
-                  : null}
+                  : 'Leave Comment'}
               </Typography>
             </a>
           </Box>
@@ -252,20 +251,49 @@ const Blog = ({ blog, user }) => {
             <Box
               style={{
                 display: 'flex',
-                alignItems: 'center',
+                alignItems: 'flex-end',
+                justifyContent: 'space-evenly',
+                minWidth: '120px',
               }}
             >
-              <Typography variant="paragraph">{blog.likes}</Typography>
-              <FavoriteIcon
-                id="add-like"
-                onClick={addNewLike}
-                sx={{
-                  borderColor: '#fff',
-                  fontSize: 26,
-                  cursor: 'pointer',
-                  paddingLeft: '3px',
+              <Box
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  minWidth: '2rem',
                 }}
-              />
+              >
+                <ChatBubbleOutlineRoundedIcon
+                  onClick={toggleDetails}
+                  cursor={'pointer'}
+                />
+                <Typography variant="paragraph" paddingLeft={0.5}>
+                  {blog.comments.length > 0 ? blog.comments.length : ''}
+                </Typography>
+              </Box>
+              <Box
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  minWidth: '2rem',
+                }}
+              >
+                <FavoriteIcon
+                  id="add-like"
+                  onClick={addNewLike}
+                  sx={{
+                    borderColor: '#fff',
+                    fontSize: 26,
+                    cursor: 'pointer',
+                    paddingLeft: '3px',
+                  }}
+                />
+                <Typography variant="paragraph" paddingLeft={0.5}>
+                  {blog.likes ? blog.likes : ''}
+                </Typography>
+              </Box>
             </Box>
           </Box>
         </Box>

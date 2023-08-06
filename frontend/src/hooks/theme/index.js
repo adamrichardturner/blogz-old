@@ -1,4 +1,4 @@
-import { setDarkMode, toggleDarkMode } from '../../reducers/themeReducer'
+import { setDarkMode } from '../../reducers/themeReducer'
 import { useDispatch, useSelector } from 'react-redux'
 import { useEffect } from 'react'
 
@@ -11,8 +11,8 @@ export const useTheme = () => {
     const storedMode = localStorage.getItem('isDarkMode')
     if (storedMode === null) {
       // if it doesn't exist, set a default value
-      localStorage.setItem('isDarkMode', JSON.stringify(true)) // Default preference
-      dispatch(setDarkMode(true)) // Also update the Redux store
+      localStorage.setItem('isDarkMode', JSON.stringify(false)) // Default preference
+      dispatch(setDarkMode(false)) // Also update the Redux store
     } else {
       // Sync the Redux store with localStorage value
       dispatch(setDarkMode(storedMode === 'true'))
@@ -20,25 +20,24 @@ export const useTheme = () => {
   }, [])
 
   const handleThemeChange = () => {
-    localStorage.setItem('isDarkMode', JSON.stringify(!isDarkMode))
-    dispatch(toggleDarkMode(!isDarkMode))
+    const newMode = !isDarkMode // derive the new mode from the current Redux state
+    localStorage.setItem('isDarkMode', JSON.stringify(newMode)) // update the localStorage
+    dispatch(setDarkMode(newMode)) // also update the Redux store
   }
+
+  // const handleThemeChange = () => {
+  //   localStorage.setItem('isDarkMode', JSON.stringify(!isDarkMode))
+  //   dispatch(toggleDarkMode(!isDarkMode))
+  // }
 
   const getDarkMode = () => {
     const storedMode = localStorage.getItem('isDarkMode')
     return storedMode === 'true'
   }
 
-  const setNewDarkMode = (isDark) => {
-    localStorage.setItem('isDarkMode', JSON.stringify(isDark))
-    // Dispatch the setDarkMode action to the reducer with the new value
-    dispatch(setDarkMode(isDark))
-  }
-
   return {
     isDarkMode,
     getDarkMode,
-    setNewDarkMode,
     handleThemeChange,
   }
 }

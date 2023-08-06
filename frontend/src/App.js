@@ -24,7 +24,7 @@ const App = () => {
   const { getAll } = useUser()
   const { user } = useAuth()
   const { isDarkMode } = useTheme()
-  const theme = isDarkMode ? lightTheme : darkTheme
+  const theme = isDarkMode ? darkTheme : lightTheme
 
   useEffect(() => {
     const getLatest = async () => {
@@ -37,7 +37,7 @@ const App = () => {
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      <Container maxWidth="md">
+      <Container maxWidth="sm">
         <Header theme={theme} user={user} />
         <Notification />
         <Routes>
