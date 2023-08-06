@@ -252,7 +252,7 @@ const Blog = ({ blog, user }) => {
               style={{
                 display: 'flex',
                 alignItems: 'flex-end',
-                justifyContent: 'space-evenly',
+                justifyContent: 'flex-end',
                 minWidth: '120px',
               }}
             >

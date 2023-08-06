@@ -7,9 +7,11 @@ import {
   commentSelectedBlog,
 } from '../../reducers/blogsReducer'
 import { initializeUsers } from '../../reducers/userReducer'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
+import blogsService from '../../services/blogs'
 
 export const useBlogs = () => {
+  const user = useSelector((state) => state.user.user)
   const dispatch = useDispatch()
 
   const getBlogs = async () => {
@@ -33,6 +35,7 @@ export const useBlogs = () => {
 
   const createBlog = async (blogData) => {
     try {
+      blogsService.setToken(user.token)
       await dispatch(createNewBlog(blogData))
       await dispatch(initializeUsers())
       dispatch(
