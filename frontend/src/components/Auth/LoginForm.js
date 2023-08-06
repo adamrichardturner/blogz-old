@@ -33,9 +33,14 @@ const LoginForm = ({ handleLogin }) => {
 
   const { username, password } = formData
 
-  const handleInputChange = (e) => {
-    const { name, value } = e.target
-    setFormData((prevData) => ({ ...prevData, [name]: value }))
+  const handleUserInput = (e) => {
+    const value = e.target.value.toLowerCase()
+    setFormData((prevData) => ({ ...prevData, username: value }))
+  }
+
+  const handlePasswordInput = (e) => {
+    const value = e.target.value
+    setFormData((prevData) => ({ ...prevData, password: value }))
   }
 
   const handleSubmit = async (e) => {
@@ -155,7 +160,7 @@ const LoginForm = ({ handleLogin }) => {
                     label="Username"
                     name="username"
                     value={username}
-                    onChange={handleInputChange}
+                    onChange={handleUserInput}
                     helperText={errors.username}
                     className="auth-textfield"
                   />
@@ -172,7 +177,7 @@ const LoginForm = ({ handleLogin }) => {
                     name="password"
                     type="password"
                     value={password}
-                    onChange={handleInputChange}
+                    onChange={handlePasswordInput}
                     helperText={errors.password}
                     className="auth-textfield"
                   />

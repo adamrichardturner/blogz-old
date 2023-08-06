@@ -39,6 +39,11 @@ const RegistrationForm = ({ handleLogin }) => {
     setFormData((prevData) => ({ ...prevData, [name]: value }))
   }
 
+  const handleUserInput = (e) => {
+    const value = e.target.value.toLowerCase()
+    setFormData((prevData) => ({ ...prevData, username: value }))
+  }
+
   const handleSubmit = async (e) => {
     e.preventDefault()
 
@@ -176,7 +181,7 @@ const RegistrationForm = ({ handleLogin }) => {
                     label="Username"
                     name="username"
                     value={username}
-                    onChange={handleInputChange}
+                    onChange={handleUserInput}
                     helperText={errors.username}
                     disabled={isLoading}
                     className="auth-textfield"
