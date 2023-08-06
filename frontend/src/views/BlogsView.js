@@ -34,7 +34,9 @@ const BlogsView = () => {
     return <Loading mode="large" />
   }
 
-  const list = blogs.map((blog, index) => {
+  const sortedBlogs = [...blogs].sort((a, b) => b.likes - a.likes)
+
+  const list = sortedBlogs.map((blog, index) => {
     return (
       <Blog
         key={blog.id || index}

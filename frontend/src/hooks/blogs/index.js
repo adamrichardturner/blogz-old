@@ -47,12 +47,14 @@ export const useBlogs = () => {
       )
     } catch (exception) {
       dispatch(setNotification('Missing title or author', 'negative', 5000))
+      console.error(exception)
     }
   }
 
   const removeBlog = (blogData) => {
     if (window.confirm(`Remove blog ${blogData.title} by ${blogData.author}`)) {
       try {
+        blogsService.setToken(user.token)
         dispatch(deleteSelectedBlog(blogData))
         dispatch(
           setNotification(
@@ -69,6 +71,7 @@ export const useBlogs = () => {
 
   const likeBlog = async (id, blogData) => {
     try {
+      blogsService.setToken(user.token)
       dispatch(likeSelectedBlog(id, blogData))
       dispatch(
         setNotification(`You liked ${blogData.title}.`, 'positive', 5000)
@@ -80,6 +83,7 @@ export const useBlogs = () => {
 
   const addComment = async (id, obj) => {
     try {
+      blogsService.setToken(user.token)
       dispatch(commentSelectedBlog(id, obj))
     } catch (exception) {
       console.error(exception)
