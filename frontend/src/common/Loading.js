@@ -19,7 +19,7 @@ const Loading = ({ mode }) => {
         }}
       >
         <img
-          src={darkMode ? loaderDarkLarge : loaderLightLarge}
+          src={darkMode ? loaderLightLarge : loaderDarkLarge}
           alt="Loading Data"
         />
       </Box>
@@ -36,7 +36,7 @@ const Loading = ({ mode }) => {
         }}
       >
         <img
-          src={darkMode ? loaderDarkSmall : loaderLightSmall}
+          src={darkMode ? loaderLightSmall : loaderDarkSmall}
           alt="Loading Data"
           style={{
             height: '4rem',
