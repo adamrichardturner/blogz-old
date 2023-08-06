@@ -23,9 +23,9 @@ loginRouter.post('/', async (request, response) => {
   // Creating a new object with user's username and id for generating the token
   const userForToken = { username: user.username, id: user._id }
 
-  // Generating a JSON Web Token with user information, a secret key, and an expiration time of 1 hour
+  // Generating a JSON Web Token with user information, a secret key, and an expiration time of 12 months
   const token = jwt.sign(userForToken, process.env.SECRET, {
-    expiresIn: 9007199254740991,
+    expiresIn: 31557600, // This equals 12 months
   })
 
   // Sending a 200 OK response with the generated token and user information

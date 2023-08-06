@@ -45,7 +45,8 @@ const LoginForm = ({ handleLogin }) => {
     }
     setIsLoading(true)
     try {
-      const response = await authenticate(username, password)
+      const user = username.toLowerCase()
+      const response = await authenticate(user, password)
       if (response?.token) {
         handleLogin()
       } else if (response?.data?.error) {
