@@ -67,7 +67,7 @@ export const darkTheme = createTheme({
       color: '#ffffff',
       padding: 0,
       fontSize: '2.5rem',
-      [`@media (min-width:${(theme) => theme.breakpoints.values.sm}px)`]: {
+      [`@media (min-width:${(theme) => theme.breakpoints.values.xs}px)`]: {
         fontSize: '1.25rem',
         margin: 0,
       },

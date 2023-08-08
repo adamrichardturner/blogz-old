@@ -73,9 +73,6 @@ export const useBlogs = () => {
     try {
       blogsService.setToken(user.token)
       dispatch(likeSelectedBlog(id, blogData))
-      dispatch(
-        setNotification(`You liked ${blogData.title}.`, 'positive', 5000)
-      )
     } catch (exception) {
       console.error(exception)
     }
