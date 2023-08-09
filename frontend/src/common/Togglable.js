@@ -1,27 +1,30 @@
 import { useState, forwardRef, useImperativeHandle } from 'react'
 import PropTypes from 'prop-types'
-import { Button } from '@mui/material'
-const Togglable = forwardRef((props, refs) => {
-  const [visible, setVisible] = useState(false)
+import { Button, Modal, Box, useMediaQuery } from '@mui/material'
+import { useSelector } from 'react-redux'
 
-  const hideWhenVisible = { display: visible ? 'none' : '' }
-  const showWhenVisible = {
-    display: visible ? 'inline' : 'none',
-  }
+const Togglable = forwardRef((props, ref) => {
+  const isDarkMode = useSelector((state) => state.theme.isDarkMode)
+  const [visible, setVisible] = useState(false)
+  console.log(isDarkMode)
 
   const toggleVisibility = () => {
     setVisible(!visible)
   }
 
-  useImperativeHandle(refs, () => {
+  useImperativeHandle(ref, () => {
     return {
       toggleVisibility,
     }
   })
 
+  const { theme } = props
+
+  const isSmallScreen = useMediaQuery((theme) => theme.breakpoints.down('sm'))
+
   return (
-    <div>
-      <div style={hideWhenVisible}>
+    <Box>
+      {!visible && (
         <Button
           variant="contained"
           sx={{
@@ -34,23 +37,40 @@ const Togglable = forwardRef((props, refs) => {
         >
           {props.buttonLabel}
         </Button>
-      </div>
-      <div style={showWhenVisible}>
-        {props.children}
-        <Button
-          variant="contained"
-          sx={{
-            color: '#fff',
-            borderColor: '#fff',
-            marginTop: 2,
-            padding: '6px 16px',
-          }}
-          onClick={toggleVisibility}
+      )}
+      <Modal
+        open={visible}
+        onClose={toggleVisibility}
+        aria-labelledby="modal-title"
+        sx={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}
+      >
+        <Box
+          bgcolor={theme.palette.paper.main}
+          boxShadow={24}
+          p={4}
+          width={isSmallScreen ? '80%' : '768px'}
+          borderRadius="8px"
         >
-          Cancel
-        </Button>
-      </div>
-    </div>
+          {props.children}
+          <Button
+            variant="contained"
+            sx={{
+              color: '#fff',
+              borderColor: '#fff',
+              marginTop: 2,
+              padding: '6px 16px',
+            }}
+            onClick={toggleVisibility}
+          >
+            Cancel
+          </Button>
+        </Box>
+      </Modal>
+    </Box>
   )
 })
 

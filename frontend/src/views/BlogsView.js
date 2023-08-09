@@ -7,7 +7,7 @@ import { useBlogs } from '../hooks/blogs'
 import Loading from '../common/Loading'
 import { Box, Typography } from '@mui/material'
 
-const BlogsView = () => {
+const BlogsView = ({ theme }) => {
   const { blogs } = useSelector((state) => state.blogs)
   const user = useSelector((state) => state.user.user)
   const { removeBlog, likeBlog, createBlog } = useBlogs()
@@ -56,8 +56,8 @@ const BlogsView = () => {
         </Typography>
       </Box>
       <Box>
-        <Togglable buttonLabel="New Blog" ref={blogFormRef}>
-          <BlogForm createBlog={handleCreateBlog} />
+        <Togglable buttonLabel="New Blog" ref={blogFormRef} theme={theme}>
+          <BlogForm createBlog={handleCreateBlog} theme={theme} />
         </Togglable>
       </Box>
       {list}

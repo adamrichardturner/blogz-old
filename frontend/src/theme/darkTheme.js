@@ -24,6 +24,9 @@ export const darkTheme = createTheme({
     background: {
       default: '#33332d',
     },
+    paper: {
+      main: '#212121',
+    },
     danger: {
       main: '#DC3545',
     },
@@ -82,6 +85,32 @@ export const darkTheme = createTheme({
     // Other typography variants and styles can be defined here
   },
   components: {
+    MuiTextareaAutosize: {
+      styleOverrides: {
+        root: {
+          '& textarea': {
+            fontFamily: 'Poppins, sans-serif',
+            width: '100%',
+            padding: '8px',
+            resize: 'none',
+            color: 'red',
+            backgroundColor: 'red',
+            borderColor: 'initial', // default border color
+            borderWidth: '1px',
+            transition: 'border-color 0.3s',
+
+            '&:hover': {
+              borderColor: 'red', // replace with the desired hover color
+            },
+
+            '&:focus': {
+              borderColor: 'blue', // replace with the desired focus color
+              borderWidth: '2px',
+            },
+          },
+        },
+      },
+    },
     MuiPaper: {
       styleOverrides: {
         root: {

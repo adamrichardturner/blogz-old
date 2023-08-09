@@ -24,6 +24,9 @@ export const lightTheme = createTheme({
     background: {
       default: '#ffffff',
     },
+    paper: {
+      main: '#ffffff',
+    },
     danger: {
       main: '#DC3545',
     },

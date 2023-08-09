@@ -18,14 +18,18 @@ const blogsSlice = createSlice({
       state.blogs = action.payload // Replace the blogs array with the payload (new array of blogs)
     },
     likeBlog(state, action) {
-      // Reducer for updating the likes count of a blog
-      const id = action.payload.id // Extract the ID of the blog to be liked from the payload
-      const blogToLike = state.blogs.find((b) => b.id === id) // Find the blog in the array based on its ID
-      const changedBlog = {
-        ...blogToLike,
-        likes: blogToLike.likes + 1, // Increment the likes count of the found blog
+      const id = action.payload.id
+      const userId = action.payload.userId
+      const blogToLike = state.blogs.find((b) => b.id === id)
+      if (blogToLike) {
+        if (blogToLike.likedBy.includes(userId)) {
+          blogToLike.likedBy = blogToLike.likedBy.filter(
+            (uid) => uid !== userId
+          ) // Remove user ID (unlike)
+        } else {
+          blogToLike.likedBy.push(userId) // Add user ID (like)
+        }
       }
-      state.blogs = state.blogs.map((b) => (b.id === id ? changedBlog : b))
     },
     deleteBlog(state, action) {
       // Reducer for deleting a blog
@@ -33,11 +37,14 @@ const blogsSlice = createSlice({
       state.blogs = state.blogs.filter((b) => b.id !== id) // Return a new array without the deleted blog
     },
     appendComment(state, action) {
-      const { id, text } = action.payload
+      console.log(action.payload)
+      const { id, comment } = action.payload
+      console.log(id, comment)
       const blogToComment = state.blogs.find((b) => b.id === id)
+
       const updatedBlog = {
         ...blogToComment,
-        comments: [...blogToComment.comments, text],
+        comments: [...blogToComment.comments, comment],
       }
 
       // Replace the blogToComment in the state.blogs array with the updatedBlog
@@ -65,12 +72,20 @@ export const createNewBlog = (blogData) => async (dispatch) => {
   }
 }
 
-export const likeSelectedBlog = (id, blogData) => async (dispatch) => {
+export const likeSelectedBlog = (id) => async (dispatch, getState) => {
   try {
-    const returnedBlog = await blogService.update(id, blogData)
-    await dispatch(likeBlog(returnedBlog))
+    const userId = getState().auth.userId
+
+    // Toggle like/unlike immediately for UI feedback
+    dispatch(likeBlog({ id, userId }))
+
+    // Send the request to the backend to persistently store the like/unlike
+    await blogService.toggleLike(id, userId)
+
+    // If needed, update the Redux state with the data returned from the backend
   } catch (error) {
     console.error(error)
+    alert('Failed to update the like. Please try again.')
   }
 }
 
@@ -84,11 +99,13 @@ export const deleteSelectedBlog = (blogData) => async (dispatch) => {
 }
 
 export const commentSelectedBlog = (id, obj) => async (dispatch) => {
-  const { text } = obj
-  console.log(text)
+  const appendObj = {
+    comment: obj,
+    id,
+  }
   try {
-    await blogService.commentBlog(id, text)
-    await dispatch(appendComment({ id, text }))
+    await blogService.commentBlog(id, obj)
+    await dispatch(appendComment(appendObj))
   } catch (error) {
     console.error(error)
   }

@@ -27,6 +27,15 @@ const update = (id, newObject) => {
   return request.then((response) => response.data)
 }
 
+const toggleLike = async (id) => {
+  const config = {
+    headers: { Authorization: token },
+  }
+
+  const response = await axios.post(`${baseUrl}/${id}/like`, {}, config)
+  return response.data
+}
+
 const deleteBlog = (id) => {
   const config = {
     headers: { Authorization: token },
@@ -36,22 +45,26 @@ const deleteBlog = (id) => {
   return request.then((response) => response.data)
 }
 
-const commentBlog = async (id, comment) => {
+const commentBlog = async (id, commentContent) => {
   const config = {
     headers: { Authorization: token },
   }
 
-  const newComment = {
-    text: comment,
-  }
-
+  // Adjusted for the updated backend structure for comments
   const response = await axios.post(
     `${baseUrl}/${id}/comments`,
-    newComment,
+    commentContent,
     config
   )
   return response.data
 }
 
-// eslint-disable-next-line import/no-anonymous-default-export
-export default { getAll, create, update, setToken, deleteBlog, commentBlog }
+export default {
+  getAll,
+  create,
+  update,
+  setToken,
+  toggleLike,
+  deleteBlog,
+  commentBlog,
+}

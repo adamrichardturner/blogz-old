@@ -77,7 +77,7 @@ const App = () => {
             path="/blogs/:id"
             element={
               <ProtectedRoute>
-                <BlogView />
+                <BlogView theme={theme} />
               </ProtectedRoute>
             }
           />

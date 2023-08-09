@@ -14,6 +14,7 @@ import {
 } from '@mui/material'
 import { useBlogs } from '../../hooks/blogs'
 import FavoriteIcon from '@mui/icons-material/Favorite'
+import formatDate from '../util/formatDate'
 
 const BlogSingle = ({ blog, user }) => {
   const { likeBlog, removeBlog, addComment } = useBlogs()
@@ -56,13 +57,11 @@ const BlogSingle = ({ blog, user }) => {
       sx={{
         display: 'flex',
       }}
-      fullWidth
       marginTop={2}
       marginBottom={2}
     >
       <Paper
         elevation={2}
-        fullWidth
         padding={2}
         background="body"
         sx={{
@@ -128,12 +127,14 @@ const BlogSingle = ({ blog, user }) => {
             <MuiLink component={RouterLink} to={`/users/${blog.user.id}`}>
               {blog.user.name}
             </MuiLink>
+            {blog.createdAt !== '2023-08-01T13:00:00.000Z' ? (
+              <span> · {formatDate(blog.createdAt)}</span>
+            ) : (
+              ''
+            )}
           </Typography>
           <Typography
             variant="paragraph"
-            href={blog.url}
-            target="_blank"
-            rel="noopener noreferrer"
             style={{
               maxWidth: '100%',
               display: 'block',
@@ -141,7 +142,7 @@ const BlogSingle = ({ blog, user }) => {
               overflowWrap: 'break-word',
             }}
           >
-            {blog.url}
+            {blog.content.text}
           </Typography>
         </Box>
         <Box
@@ -191,7 +192,7 @@ const BlogSingle = ({ blog, user }) => {
             {blog.comments.map((comment, index) => (
               <Typography variant="paragraph" key={index}>
                 <ListItem>
-                  <ListItemText>{comment}</ListItemText>
+                  <ListItemText>{comment.content.text}</ListItemText>
                 </ListItem>
               </Typography>
             ))}
@@ -225,7 +226,7 @@ const BlogSingle = ({ blog, user }) => {
                 alignItems: 'center',
               }}
             >
-              <Typography variant="paragraph">{blog.likes}</Typography>
+              <Typography variant="paragraph">{blog.likedBy.length}</Typography>
               <FavoriteIcon
                 id="add-like"
                 onClick={addNewLike}

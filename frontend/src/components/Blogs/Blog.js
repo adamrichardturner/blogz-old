@@ -14,6 +14,7 @@ import {
 import FavoriteIcon from '@mui/icons-material/Favorite'
 import ChatBubbleOutlineRoundedIcon from '@mui/icons-material/ChatBubbleOutlineRounded'
 import { useBlogs } from '../../hooks/blogs'
+import formatDate from '../util/formatDate'
 
 const Blog = ({ blog, user }) => {
   const { likeBlog, addComment, removeBlog } = useBlogs()
@@ -43,11 +44,13 @@ const Blog = ({ blog, user }) => {
   const handleComment = (event) => {
     event.preventDefault()
     const obj = {
-      id: blog.id,
-      text: comment,
+      content: {
+        text: comment,
+        giphyUrls: [],
+      },
       user: user.id,
+      likedBy: [],
     }
-
     addComment(blog.id, obj)
     return setComment('')
   }
@@ -134,12 +137,14 @@ const Blog = ({ blog, user }) => {
             <MuiLink component={RouterLink} to={`/users/${blog.user.id}`}>
               {blog.user.name}
             </MuiLink>
+            {blog.createdAt !== '2023-08-01T13:00:00.000Z' ? (
+              <span> · {formatDate(blog.createdAt)}</span>
+            ) : (
+              ''
+            )}
           </Typography>
           <Typography
             variant="paragraph"
-            href={blog.url}
-            target="_blank"
-            rel="noopener noreferrer"
             style={{
               maxWidth: '100%',
               display: 'block',
@@ -147,7 +152,7 @@ const Blog = ({ blog, user }) => {
               overflowWrap: 'break-word',
             }}
           >
-            {blog.url}
+            {blog.content.text}
           </Typography>
         </Box>
         <Box
@@ -198,7 +203,18 @@ const Blog = ({ blog, user }) => {
             {blog.comments.map((comment, index) => (
               <Typography variant="paragraph" key={index}>
                 <ListItem>
-                  <ListItemText>{comment}</ListItemText>
+                  <ListItemText>
+                    <Typography variant="paragraph">
+                      {comment.content.text}
+                    </Typography>
+                    {comment.user !== null ? (
+                      <Typography variant="paragraph">
+                        <span> · {formatDate(comment.timestamp)}</span>
+                      </Typography>
+                    ) : (
+                      ''
+                    )}
+                  </ListItemText>
                 </ListItem>
               </Typography>
             ))}
@@ -233,10 +249,10 @@ const Blog = ({ blog, user }) => {
                   textDecoration: 'underline',
                 }}
               >
-                {blog.comments.length > 0
-                  ? visible
-                    ? 'Hide'
-                    : 'View Comments'
+                {visible
+                  ? 'Hide'
+                  : blog.comments.length > 0 // eslint-disable-next-line indent
+                  ? 'View Comments' // eslint-disable-next-line indent
                   : 'Leave Comment'}
               </Typography>
             </a>
@@ -291,7 +307,7 @@ const Blog = ({ blog, user }) => {
                   }}
                 />
                 <Typography variant="paragraph" paddingLeft={0.5}>
-                  {blog.likes ? blog.likes : ''}
+                  {blog.likedBy ? blog.likedBy.length : ''}
                 </Typography>
               </Box>
             </Box>
