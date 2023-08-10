@@ -2,7 +2,8 @@ import { createSlice } from '@reduxjs/toolkit' // Importing the necessary functi
 import blogService from '../services/blogs' // Importing a blog service module
 
 const initialState = {
-  blogs: [], // Initial state with an empty array for blogs
+  blogs: [],
+  userLikedBlogs: [],
 }
 
 const blogsSlice = createSlice({
@@ -21,13 +22,18 @@ const blogsSlice = createSlice({
       const id = action.payload.id
       const userId = action.payload.userId
       const blogToLike = state.blogs.find((b) => b.id === id)
+
       if (blogToLike) {
         if (blogToLike.likedBy.includes(userId)) {
           blogToLike.likedBy = blogToLike.likedBy.filter(
             (uid) => uid !== userId
-          ) // Remove user ID (unlike)
+          )
+          state.userLikedBlogs = state.userLikedBlogs.filter(
+            (blogId) => blogId !== id
+          ) // Remove blog ID from userLikedBlogs
         } else {
-          blogToLike.likedBy.push(userId) // Add user ID (like)
+          blogToLike.likedBy.push(userId)
+          state.userLikedBlogs.push(id) // Add blog ID to userLikedBlogs
         }
       }
     },
@@ -37,9 +43,7 @@ const blogsSlice = createSlice({
       state.blogs = state.blogs.filter((b) => b.id !== id) // Return a new array without the deleted blog
     },
     appendComment(state, action) {
-      console.log(action.payload)
       const { id, comment } = action.payload
-      console.log(id, comment)
       const blogToComment = state.blogs.find((b) => b.id === id)
 
       const updatedBlog = {
@@ -74,7 +78,7 @@ export const createNewBlog = (blogData) => async (dispatch) => {
 
 export const likeSelectedBlog = (id) => async (dispatch, getState) => {
   try {
-    const userId = getState().auth.userId
+    const userId = getState().user.user.id
 
     // Toggle like/unlike immediately for UI feedback
     dispatch(likeBlog({ id, userId }))
@@ -99,13 +103,9 @@ export const deleteSelectedBlog = (blogData) => async (dispatch) => {
 }
 
 export const commentSelectedBlog = (id, obj) => async (dispatch) => {
-  const appendObj = {
-    comment: obj,
-    id,
-  }
   try {
     await blogService.commentBlog(id, obj)
-    await dispatch(appendComment(appendObj))
+    await dispatch(initializeBlogs())
   } catch (error) {
     console.error(error)
   }

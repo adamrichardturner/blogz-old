@@ -14,10 +14,12 @@ import {
 import FavoriteIcon from '@mui/icons-material/Favorite'
 import ChatBubbleOutlineRoundedIcon from '@mui/icons-material/ChatBubbleOutlineRounded'
 import { useBlogs } from '../../hooks/blogs'
+import { useUser } from '../../hooks/users'
 import formatDate from '../util/formatDate'
 
-const Blog = ({ blog, user }) => {
+const Blog = ({ blog, user, theme }) => {
   const { likeBlog, addComment, removeBlog } = useBlogs()
+  const { getUserFromId } = useUser()
   const [visible, setVisible] = useState(false)
   const [comment, setComment] = useState('')
 
@@ -54,6 +56,33 @@ const Blog = ({ blog, user }) => {
     addComment(blog.id, obj)
     return setComment('')
   }
+
+  const displayComments = blog.comments.map((comment) => {
+    const [username, name] = getUserFromId(comment.user)
+    return (
+      <ListItem key={comment._id}>
+        <ListItemText>
+          <Box
+            sx={{
+              display: 'flex',
+              flexDirection: 'column',
+            }}
+          >
+            {username && name ? (
+              <Typography variant="infoText">
+                {name}{' '}
+                <MuiLink component={RouterLink} to={`/users/${comment.user}`}>
+                  ({username})
+                </MuiLink>{' '}
+                · {formatDate(comment.timestamp)}
+              </Typography>
+            ) : null}
+          </Box>
+          <Typography variant="paragraph">{comment.content.text}</Typography>
+        </ListItemText>
+      </ListItem>
+    )
+  })
 
   if (!blog || !user) {
     return null
@@ -112,7 +141,7 @@ const Blog = ({ blog, user }) => {
                   sx={{
                     color: '#fff',
                     borderColor: '#fff',
-                    marginLeft: 1,
+                    marginTop: '0',
                     padding: '5px 5px',
                     fontSize: '.75rem',
                   }}
@@ -198,27 +227,12 @@ const Blog = ({ blog, user }) => {
               Comment
             </Button>
           </form>
-          <List>
-            <Typography variant="h3">Comments</Typography>
-            {blog.comments.map((comment, index) => (
-              <Typography variant="paragraph" key={index}>
-                <ListItem>
-                  <ListItemText>
-                    <Typography variant="paragraph">
-                      {comment.content.text}
-                    </Typography>
-                    {comment.user !== null ? (
-                      <Typography variant="paragraph">
-                        <span> · {formatDate(comment.timestamp)}</span>
-                      </Typography>
-                    ) : (
-                      ''
-                    )}
-                  </ListItemText>
-                </ListItem>
-              </Typography>
-            ))}
-          </List>
+          {blog.comments.length > 0 ? (
+            <List>
+              <Typography variant="h3">Comments</Typography>
+              {displayComments}
+            </List>
+          ) : null}
         </Box>
         <Box
           sx={{
@@ -296,16 +310,21 @@ const Blog = ({ blog, user }) => {
                   minWidth: '2rem',
                 }}
               >
-                <FavoriteIcon
-                  id="add-like"
-                  onClick={addNewLike}
-                  sx={{
-                    borderColor: '#fff',
-                    fontSize: 26,
-                    cursor: 'pointer',
-                    paddingLeft: '3px',
-                  }}
-                />
+                {
+                  <FavoriteIcon
+                    id="add-like"
+                    onClick={addNewLike}
+                    sx={{
+                      borderColor: '#fff',
+                      fontSize: 26,
+                      cursor: 'pointer',
+                      paddingLeft: '3px',
+                      color: blog.likedBy.includes(user.id)
+                        ? 'red'
+                        : theme.palette.primary.main,
+                    }}
+                  />
+                }
                 <Typography variant="paragraph" paddingLeft={0.5}>
                   {blog.likedBy ? blog.likedBy.length : ''}
                 </Typography>

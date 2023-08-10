@@ -6,18 +6,25 @@ import {
   initializeUsers,
   registerUser,
 } from '../../reducers/userReducer'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import blogService from '../../services/blogs'
 
 export const useUser = () => {
   const dispatch = useDispatch()
-
+  const users = useSelector((state) => state.user.allUsers)
   const getAll = async () => {
     try {
       await dispatch(initializeUsers())
     } catch (error) {
       console.error(error)
     }
+  }
+
+  const getUserFromId = (id) => {
+    if (!users || !Array.isArray(users)) return [null, null]
+
+    const user = users.find((user) => user.id === id)
+    return user ? [user.username, user.name] : [null, null]
   }
 
   const loginUser = async (username, password) => {
@@ -72,5 +79,6 @@ export const useUser = () => {
     logoutUser,
     getAll,
     registerNewUser,
+    getUserFromId,
   }
 }

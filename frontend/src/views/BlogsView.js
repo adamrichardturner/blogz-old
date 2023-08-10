@@ -34,7 +34,9 @@ const BlogsView = ({ theme }) => {
     return <Loading mode="large" />
   }
 
-  const sortedBlogs = [...blogs].sort((a, b) => b.likes - a.likes)
+  const sortedBlogs = [...blogs].sort(
+    (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
+  )
 
   const list = sortedBlogs.map((blog, index) => {
     return (
@@ -44,6 +46,7 @@ const BlogsView = ({ theme }) => {
         updateLikes={handleLike}
         removeBlog={handleRemove}
         user={user}
+        theme={theme}
       />
     )
   })

@@ -1,4 +1,3 @@
-import { setNotification } from '../../reducers/notificationReducer'
 import {
   initializeBlogs,
   createNewBlog,
@@ -38,15 +37,7 @@ export const useBlogs = () => {
       blogsService.setToken(user.token)
       await dispatch(createNewBlog(blogData))
       await dispatch(initializeUsers())
-      dispatch(
-        setNotification(
-          `a new blog ${blogData.title} by ${blogData.author} added`,
-          'positive',
-          5000
-        )
-      )
     } catch (exception) {
-      dispatch(setNotification('Missing title or author', 'negative', 5000))
       console.error(exception)
     }
   }
@@ -56,13 +47,6 @@ export const useBlogs = () => {
       try {
         blogsService.setToken(user.token)
         dispatch(deleteSelectedBlog(blogData))
-        dispatch(
-          setNotification(
-            `Blog ${blogData.title} by ${blogData.author} deleted`,
-            'positive',
-            5000
-          )
-        )
       } catch (exception) {
         console.error(exception)
       }

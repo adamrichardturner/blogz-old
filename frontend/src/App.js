@@ -37,7 +37,7 @@ const App = () => {
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      <Container maxWidth="sm">
+      <Container maxWidth="md">
         <Header theme={theme} user={user} />
         <Notification />
         <Routes>

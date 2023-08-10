@@ -13,11 +13,13 @@ import {
   Link as MuiLink,
 } from '@mui/material'
 import { useBlogs } from '../../hooks/blogs'
+import { useUser } from '../../hooks/users'
 import FavoriteIcon from '@mui/icons-material/Favorite'
 import formatDate from '../util/formatDate'
 
-const BlogSingle = ({ blog, user }) => {
+const BlogSingle = ({ blog, user, theme }) => {
   const { likeBlog, removeBlog, addComment } = useBlogs()
+  const { getUserFromId } = useUser()
   const isSmallScreen = useMediaQuery((theme) => theme.breakpoints.down('sm'))
   const [comment, setComment] = useState('')
 
@@ -40,13 +42,43 @@ const BlogSingle = ({ blog, user }) => {
   const handleComment = (event) => {
     event.preventDefault()
     const obj = {
-      id: blog.id,
-      text: comment,
+      content: {
+        text: comment,
+        giphyUrls: [],
+      },
       user: user.id,
+      likedBy: [],
     }
     addComment(blog.id, obj)
     return setComment('')
   }
+
+  const displayComments = blog.comments.map((comment) => {
+    const [username, name] = getUserFromId(comment.user)
+    return (
+      <ListItem key={comment._id}>
+        <ListItemText>
+          <Box
+            sx={{
+              display: 'flex',
+              flexDirection: 'column',
+            }}
+          >
+            {username && name ? (
+              <Typography variant="infoText">
+                {name}{' '}
+                <MuiLink component={RouterLink} to={`/users/${comment.user}`}>
+                  ({username})
+                </MuiLink>{' '}
+                · {formatDate(comment.timestamp)}
+              </Typography>
+            ) : null}
+          </Box>
+          <Typography variant="paragraph">{comment.content.text}</Typography>
+        </ListItemText>
+      </ListItem>
+    )
+  })
 
   if (!blog || !user) {
     return null
@@ -187,16 +219,12 @@ const BlogSingle = ({ blog, user }) => {
               Comment
             </Button>
           </form>
-          <List>
-            <Typography variant="h3">Comments</Typography>
-            {blog.comments.map((comment, index) => (
-              <Typography variant="paragraph" key={index}>
-                <ListItem>
-                  <ListItemText>{comment.content.text}</ListItemText>
-                </ListItem>
-              </Typography>
-            ))}
-          </List>
+          {blog.comments.length > 0 ? (
+            <List>
+              <Typography variant="h3">Comments</Typography>
+              {displayComments}
+            </List>
+          ) : null}
         </Box>
         <Box
           sx={{
@@ -235,6 +263,9 @@ const BlogSingle = ({ blog, user }) => {
                   fontSize: 26,
                   cursor: 'pointer',
                   paddingLeft: '3px',
+                  color: blog.likedBy.includes(user.id)
+                    ? 'red'
+                    : theme.palette.primary.main,
                 }}
               />
             </Box>

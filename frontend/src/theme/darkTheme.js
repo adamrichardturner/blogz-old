@@ -5,7 +5,7 @@ export const darkTheme = createTheme({
     values: {
       xs: 500,
       sm: 767,
-      md: 960,
+      md: 800,
       lg: 1280,
       xl: 1920,
     },
@@ -52,6 +52,10 @@ export const darkTheme = createTheme({
       // (This will override the color set in allVariants)
       color: '#ffffff', // Replace '#555' with your desired paragraph color
     },
+    infoText: {
+      color: '#ffffff',
+      fontSize: '.75rem',
+    },
     paragraphHeader: {
       // Style specific to the 'paragraph' variant
       // (This will override the color set in allVariants)
@@ -88,26 +92,25 @@ export const darkTheme = createTheme({
     MuiTextareaAutosize: {
       styleOverrides: {
         root: {
-          '& textarea': {
-            fontFamily: 'Poppins, sans-serif',
-            width: '100%',
-            padding: '8px',
-            resize: 'none',
-            color: 'red',
-            backgroundColor: 'red',
-            borderColor: 'initial', // default border color
-            borderWidth: '1px',
-            transition: 'border-color 0.3s',
-
-            '&:hover': {
-              borderColor: 'red', // replace with the desired hover color
-            },
-
-            '&:focus': {
-              borderColor: 'blue', // replace with the desired focus color
-              borderWidth: '2px',
-            },
+          borderRadius: '5px',
+          fontFamily: 'Poppins, sans-serif',
+          width: '100%',
+          padding: '8px',
+          resize: 'none',
+          color: 'red',
+          borderColor: 'initial', // default border color
+          borderWidth: '1px',
+          borderStyle: 'solid', // You might want to set the style
+          transition: 'border-color 0.3s',
+          '&:focus': {
+            borderColor: 'white', // desired focus color
+            borderWidth: '2px',
           },
+          '&:focus-visible': {
+            borderColor: 'white', // desired focus color
+            borderWidth: '2px',
+          },
+          // Since it's a direct textarea, you don't need nested selectors like `& textarea` or `& .MuiOutlinedInput-root`
         },
       },
     },

@@ -5,7 +5,7 @@ import { Box } from '@mui/material'
 import Loading from '../common/Loading'
 import { useBlogs } from '../hooks/blogs'
 
-const BlogView = () => {
+const BlogView = ({ theme }) => {
   const id = useParams().id
   const { blogs } = useSelector((state) => state.blogs)
   const user = useSelector((state) => state.user.user)
@@ -33,6 +33,7 @@ const BlogView = () => {
           user={user}
           handleLike={handleLike}
           handleRemove={handleRemove}
+          theme={theme}
         />
       </article>
     </Box>

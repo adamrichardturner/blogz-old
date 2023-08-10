@@ -9,13 +9,8 @@ import {
   TextareaAutosize,
 } from '@mui/material'
 import Loading from '../../common/Loading.js'
-import { useSelector } from 'react-redux'
 
 const BlogForm = ({ createBlog, theme }) => {
-  const isDarkMode = useSelector((state) => state.theme.darkMode)
-
-  const [isFocused, setIsFocused] = useState(false)
-
   const [newBlog, setNewBlog] = useState({
     title: '',
     content: {
@@ -101,7 +96,7 @@ const BlogForm = ({ createBlog, theme }) => {
         flexDirection: 'column',
       }}
     >
-      <Typography variant="h2" marginBottom={2}>
+      <Typography variant="h2" marginBottom={2} fontSize={'1.25rem'}>
         Create a Blog
       </Typography>
       {errors.form && <Alert severity="error">{errors.form}</Alert>}
@@ -119,7 +114,7 @@ const BlogForm = ({ createBlog, theme }) => {
             <FormControl fullWidth>
               <TextField
                 label="Blog Title"
-                variant="filled"
+                variant="outlined"
                 fullWidth
                 id="title"
                 type="text"
@@ -130,27 +125,22 @@ const BlogForm = ({ createBlog, theme }) => {
               />
             </FormControl>
             <FormControl fullWidth>
-              <label htmlFor="content">Blog Content</label>
               <TextareaAutosize
                 id="content"
                 minRows={4}
                 maxRows={10}
-                onFocus={() => setIsFocused(true)}
-                onBlur={() => setIsFocused(false)}
                 value={newBlog.content.text}
                 onChange={handleContentChange}
                 maxLength={4000}
+                placeholder="What's on your mind?"
                 style={{
                   fontFamily: 'Poppins, sans-serif',
                   width: '100%',
                   padding: '8px',
+                  marginTop: '1rem',
                   resize: 'none',
                   color: theme.palette.primary.main,
-                  backgroundColor: isDarkMode
-                    ? theme.palette.paper.main
-                    : theme.palette.background.main,
-                  borderColor: theme.palette.primary.main,
-                  borderWidth: isFocused ? '2px' : '1px',
+                  backgroundColor: theme.palette.background.default,
                 }}
               />
               {errors.content && (

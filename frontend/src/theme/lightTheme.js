@@ -5,7 +5,7 @@ export const lightTheme = createTheme({
     values: {
       xs: 500,
       sm: 767,
-      md: 960,
+      md: 800,
       lg: 1280,
       xl: 1920,
     },
@@ -58,6 +58,10 @@ export const lightTheme = createTheme({
       color: '#000000', // Replace '#555' with your desired paragraph color
       fontWeight: '600',
       fontStyle: 'italic',
+    },
+    infoText: {
+      color: '#000000',
+      fontSize: '.75rem',
     },
     h1: {
       color: '#000000',

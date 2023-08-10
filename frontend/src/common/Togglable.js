@@ -52,7 +52,7 @@ const Togglable = forwardRef((props, ref) => {
           bgcolor={theme.palette.paper.main}
           boxShadow={24}
           p={4}
-          width={isSmallScreen ? '80%' : '768px'}
+          width={isSmallScreen ? '90%' : '600px'}
           borderRadius="8px"
         >
           {props.children}
