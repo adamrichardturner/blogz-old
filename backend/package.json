@@ -7,7 +7,7 @@
     "build:ui": "rm -rf build && cd ../frontend && npm run build && cp -r build/* /Users/adamturner/Desktop/nginx/react/blogz",
     "deploy:full": "npm run build:ui && git add . && git commit -m uibuild && git push -u origin main",
     "build:ovh": "rm -rf ../../../public_html/* && cd ../frontend && npm run build && cp -r build/* ../../../public_html/",
-    "start:prod:backend": "cross-env NODE_ENV=production node index.js",
+    "start": "cross-env NODE_ENV=production node index.js",
     "start:prod:frontend": "serve -s build -l 3005",
     "start:prod:testing": "concurrently \"cross-env NODE_ENV=production nodemon index.js\" \"serve -s build\"",
     "start:test": "NODE_ENV=test node index.js",
