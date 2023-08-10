@@ -6,7 +6,6 @@ const User = require('../models/user')
 // Define route to handle GET requests to /api/blogs/, which retrieves all blog data from the MongoDB database
 blogsRouter.get('/', async (request, response) => {
   const blogs = await Blog.find({}).populate('user', { username: 1, name: 1 })
-
   response.status(200).json(blogs)
 })
 

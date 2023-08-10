@@ -32,8 +32,8 @@ mongoose
 // Setting up CORS middleware
 app.use(cors())
 
-// Run static build if present from the new location
-app.use(express.static('/home/blogz_dev/public_html'))
+// Run static build if present
+app.use(express.static('build'))
 
 // Parsing JSON data with Express
 app.use(express.json())
@@ -66,9 +66,9 @@ if (process.env.NODE_ENV === 'test') {
   app.use('/api/testing', testingRouter)
 }
 
-// Serve the React app from the new location for all other requests
+// Serve the React app for all other requests
 app.get('*', (req, res) => {
-  res.sendFile(path.join('/home/blogz_dev/public_html', 'index.html'))
+  res.sendFile(path.join(__dirname, 'build', 'index.html'))
 })
 
 // Using custom unknown endpoint middleware
