@@ -24,7 +24,7 @@ export const useUser = () => {
     if (!users || !Array.isArray(users)) return [null, null]
 
     const user = users.find((user) => user.id === id)
-    return user ? [user.username, user.name] : [null, null]
+    return user ? [user.username, user.name] : ['Anonymous', '']
   }
 
   const loginUser = async (username, password) => {

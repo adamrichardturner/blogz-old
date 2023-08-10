@@ -27,7 +27,7 @@ const BlogsView = ({ theme }) => {
   }
 
   if (user === null) {
-    return null
+    return <Loading mode="large" />
   }
 
   if (blogs.length <= 0) {

@@ -23,16 +23,25 @@ const BlogSingle = ({ blog, user, theme }) => {
   const isSmallScreen = useMediaQuery((theme) => theme.breakpoints.down('sm'))
   const [comment, setComment] = useState('')
 
-  const updatedBlog = {
-    user: blog.user,
-    likes: 1,
-    author: blog.author,
-    title: blog.title,
-    url: blog.url,
+  if (!blog || !user) {
+    return null
   }
 
+  // Store all properties of `blog` and `user` in variables to keep the JSX clean.
+  const blogId = blog.id || null
+  const blogComments = blog.comments || []
+  const blogTitle = blog.title || ''
+  const blogContentText = blog.content?.text || ''
+  const blogLikedBy = blog.likedBy || []
+  const blogCreatedAt = blog.createdAt || ''
+  const blogUsername = blog.user?.name || ''
+  const blogUserId = blog.user?.id || ''
+
+  const userName = user.name || ''
+  const userId = user.id || ''
+
   const addNewLike = () => {
-    likeBlog(blog.id, updatedBlog)
+    likeBlog(blogId)
   }
 
   const deleteBlog = () => {
@@ -46,23 +55,21 @@ const BlogSingle = ({ blog, user, theme }) => {
         text: comment,
         giphyUrls: [],
       },
-      user: user.id,
+      user: userId,
       likedBy: [],
     }
-    addComment(blog.id, obj)
+    addComment(blogId, obj)
     return setComment('')
   }
 
-  const displayComments = blog.comments.map((comment) => {
-    if (!comment || !comment.user || !comment.content) return null
-
-    const [username, name] = getUserFromId(comment.user) || []
-    if (!username || !name) return null
-
-    const commentText = comment.content.text || ''
-
-    return (
-      <ListItem key={comment._id}>
+  const displayComments = blogComments.map((comment) => {
+    const id = comment._id || null
+    const user = comment.user || null
+    const text = comment.content.text || null
+    const timestamp = comment.timestamp || null
+    const [username, name] = getUserFromId(user || null) || []
+    return id ? (
+      <ListItem key={id}>
         <ListItemText>
           <Box
             sx={{
@@ -71,22 +78,18 @@ const BlogSingle = ({ blog, user, theme }) => {
             }}
           >
             <Typography variant="infoText">
-              {name}
-              <MuiLink component={RouterLink} to={`/users/${comment.user}`}>
-                ({username})
+              {name}{' '}
+              <MuiLink component={RouterLink} to={`/users/${user}`}>
+                ({username}){' '}
               </MuiLink>
-              · {formatDate(comment.timestamp)}
+              · {formatDate(timestamp)}
             </Typography>
           </Box>
-          <Typography variant="paragraph">{commentText}</Typography>
+          <Typography variant="paragraph">{text}</Typography>
         </ListItemText>
       </ListItem>
-    )
+    ) : null
   })
-
-  if (!blog || !user) {
-    return null
-  }
 
   return (
     <Box
@@ -127,9 +130,9 @@ const BlogSingle = ({ blog, user, theme }) => {
                   fontSize: isSmallScreen ? '1.25rem' : '2rem',
                 }}
               >
-                {blog.title}
+                {blogTitle}
               </Typography>
-              {user.name === blog.user.name ? (
+              {userName === blogUsername ? (
                 <Button
                   variant="contained"
                   id="remove-blog"
@@ -160,11 +163,11 @@ const BlogSingle = ({ blog, user, theme }) => {
             }}
           >
             Blog made by{' '}
-            <MuiLink component={RouterLink} to={`/users/${blog.user.id}`}>
-              {blog.user.name}
+            <MuiLink component={RouterLink} to={`/users/${blogUserId}`}>
+              {blogUsername}
             </MuiLink>
-            {blog.createdAt !== '2023-08-01T13:00:00.000Z' ? (
-              <span> · {formatDate(blog.createdAt)}</span>
+            {blogCreatedAt !== '2023-08-01T13:00:00.000Z' ? (
+              <span> · {formatDate(blogCreatedAt)}</span>
             ) : (
               ''
             )}
@@ -179,7 +182,7 @@ const BlogSingle = ({ blog, user, theme }) => {
               marginTop: '1rem',
             }}
           >
-            {blog.content.text}
+            {blogContentText}
           </Typography>
         </Box>
         <Box
@@ -224,7 +227,7 @@ const BlogSingle = ({ blog, user, theme }) => {
               Comment
             </Button>
           </form>
-          {blog.comments.length > 0 ? (
+          {blogComments.length > 0 ? (
             <List>
               <Typography variant="h3">Comments</Typography>
               {displayComments}
@@ -259,7 +262,7 @@ const BlogSingle = ({ blog, user, theme }) => {
                 alignItems: 'center',
               }}
             >
-              <Typography variant="paragraph">{blog.likedBy.length}</Typography>
+              <Typography variant="paragraph">{blogLikedBy.length}</Typography>
               <FavoriteIcon
                 id="add-like"
                 onClick={addNewLike}
@@ -268,7 +271,7 @@ const BlogSingle = ({ blog, user, theme }) => {
                   fontSize: 26,
                   cursor: 'pointer',
                   paddingLeft: '3px',
-                  color: blog.likedBy.includes(user.id)
+                  color: blogLikedBy.includes(userId)
                     ? 'red'
                     : theme.palette.primary.main,
                 }}

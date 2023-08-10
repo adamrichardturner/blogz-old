@@ -1,3 +1,4 @@
+/* eslint-disable indent */
 import { useState } from 'react'
 import { Link as RouterLink } from 'react-router-dom'
 import {
@@ -23,20 +24,29 @@ const Blog = ({ blog, user, theme }) => {
   const [visible, setVisible] = useState(false)
   const [comment, setComment] = useState('')
 
+  if (!blog || !user) {
+    return null
+  }
+
+  // Store all properties of `blog` and `user` in variables to keep the JSX clean.
+  const blogId = blog.id || null
+  const blogComments = blog.comments || []
+  const blogTitle = blog.title || ''
+  const blogContentText = blog.content?.text || ''
+  const blogLikedBy = blog.likedBy || []
+  const blogCreatedAt = blog.createdAt || ''
+  const blogUsername = blog.user?.name || ''
+  const blogUserId = blog.user?.id || ''
+
+  const userName = user.name || ''
+  const userId = user.id || ''
+
   const toggleDetails = () => {
     setVisible(!visible)
   }
 
-  const updatedBlog = {
-    user: blog.user,
-    likes: 1,
-    author: blog.author,
-    title: blog.title,
-    url: blog.url,
-  }
-
   const addNewLike = () => {
-    likeBlog(blog.id, updatedBlog)
+    likeBlog(blogId)
   }
 
   const deleteBlog = () => {
@@ -57,16 +67,14 @@ const Blog = ({ blog, user, theme }) => {
     return setComment('')
   }
 
-  const displayComments = blog.comments.map((comment) => {
-    if (!comment || !comment.user || !comment.content) return null
-
-    const [username, name] = getUserFromId(comment.user) || []
-    if (!username || !name) return null
-
-    const commentText = comment.content.text || ''
-
-    return (
-      <ListItem key={comment._id}>
+  const displayComments = blogComments.map((comment) => {
+    const id = comment._id || null
+    const user = comment.user || null
+    const text = comment.content.text || null
+    const timestamp = comment.timestamp || null
+    const [username, name] = getUserFromId(user || null) || []
+    return id ? (
+      <ListItem key={id}>
         <ListItemText>
           <Box
             sx={{
@@ -75,22 +83,18 @@ const Blog = ({ blog, user, theme }) => {
             }}
           >
             <Typography variant="infoText">
-              {name}
-              <MuiLink component={RouterLink} to={`/users/${comment.user}`}>
-                ({username})
+              {name}{' '}
+              <MuiLink component={RouterLink} to={`/users/${user}`}>
+                ({username}){' '}
               </MuiLink>
-              · {formatDate(comment.timestamp)}
+              · {formatDate(timestamp)}
             </Typography>
           </Box>
-          <Typography variant="paragraph">{commentText}</Typography>
+          <Typography variant="paragraph">{text}</Typography>
         </ListItemText>
       </ListItem>
-    )
+    ) : null
   })
-
-  if (!blog || !user) {
-    return null
-  }
 
   return (
     <Box
@@ -123,7 +127,7 @@ const Blog = ({ blog, user, theme }) => {
                 alignItems: 'center',
               }}
             >
-              <MuiLink component={RouterLink} to={`/blogs/${blog.id}`}>
+              <MuiLink component={RouterLink} to={`/blogs/${blogId}`}>
                 <Typography
                   variant="h3"
                   color="primary"
@@ -133,10 +137,10 @@ const Blog = ({ blog, user, theme }) => {
                     overflowWrap: 'break-word',
                   }}
                 >
-                  {blog.title}
+                  {blogTitle}
                 </Typography>
               </MuiLink>
-              {user.name === blog.user.name ? (
+              {userName === blogUsername ? (
                 <Button
                   variant="contained"
                   id="remove-blog"
@@ -167,14 +171,14 @@ const Blog = ({ blog, user, theme }) => {
             }}
           >
             Blog made by{' '}
-            <MuiLink component={RouterLink} to={`/users/${blog.user.id}`}>
-              {blog.user.name}
-            </MuiLink>
-            {blog.createdAt !== '2023-08-01T13:00:00.000Z' ? (
-              <span> · {formatDate(blog.createdAt)}</span>
-            ) : (
-              ''
-            )}
+            {blogUsername !== null ? (
+              <MuiLink component={RouterLink} to={`/users/${blogUserId}`}>
+                {blogUsername}
+              </MuiLink>
+            ) : null}
+            {blogCreatedAt && blogCreatedAt !== '2023-08-01T13:00:00.000Z' ? (
+              <span> · {formatDate(blogCreatedAt)}</span>
+            ) : null}
           </Typography>
           <Typography
             variant="paragraph"
@@ -186,7 +190,7 @@ const Blog = ({ blog, user, theme }) => {
               marginTop: '1rem',
             }}
           >
-            {blog.content.text}
+            {blogContentText !== null ? blogContentText : ''}
           </Typography>
         </Box>
         <Box
@@ -232,12 +236,10 @@ const Blog = ({ blog, user, theme }) => {
               Comment
             </Button>
           </form>
-          {blog.comments.length > 0 ? (
-            <List>
-              <Typography variant="h3">Comments</Typography>
-              {displayComments}
-            </List>
-          ) : null}
+          <List>
+            <Typography variant="h3">Comments</Typography>
+            {displayComments}
+          </List>
         </Box>
         <Box
           sx={{
@@ -270,7 +272,7 @@ const Blog = ({ blog, user, theme }) => {
               >
                 {visible
                   ? 'Hide'
-                  : blog.comments.length > 0 // eslint-disable-next-line indent
+                  : blogComments.length > 0 // eslint-disable-next-line indent
                   ? 'View Comments' // eslint-disable-next-line indent
                   : 'Leave Comment'}
               </Typography>
@@ -304,7 +306,7 @@ const Blog = ({ blog, user, theme }) => {
                   cursor={'pointer'}
                 />
                 <Typography variant="paragraph" paddingLeft={0.5}>
-                  {blog.comments.length > 0 ? blog.comments.length : ''}
+                  {blogComments.length > 0 ? blogComments.length : ''}
                 </Typography>
               </Box>
               <Box
@@ -324,14 +326,14 @@ const Blog = ({ blog, user, theme }) => {
                       fontSize: 26,
                       cursor: 'pointer',
                       paddingLeft: '3px',
-                      color: blog.likedBy.includes(user.id)
+                      color: blogLikedBy.includes(userId)
                         ? 'red'
                         : theme.palette.primary.main,
                     }}
                   />
                 }
                 <Typography variant="paragraph" paddingLeft={0.5}>
-                  {blog.likedBy ? blog.likedBy.length : ''}
+                  {blogLikedBy ? blogLikedBy.length : ''}
                 </Typography>
               </Box>
             </Box>
