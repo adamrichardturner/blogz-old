@@ -54,7 +54,13 @@ const BlogSingle = ({ blog, user, theme }) => {
   }
 
   const displayComments = blog.comments.map((comment) => {
-    const [username, name] = getUserFromId(comment.user)
+    if (!comment || !comment.user || !comment.content) return null
+
+    const [username, name] = getUserFromId(comment.user) || []
+    if (!username || !name) return null
+
+    const commentText = comment.content.text || ''
+
     return (
       <ListItem key={comment._id}>
         <ListItemText>
@@ -64,17 +70,15 @@ const BlogSingle = ({ blog, user, theme }) => {
               flexDirection: 'column',
             }}
           >
-            {username && name ? (
-              <Typography variant="infoText">
-                {name}{' '}
-                <MuiLink component={RouterLink} to={`/users/${comment.user}`}>
-                  ({username})
-                </MuiLink>{' '}
-                · {formatDate(comment.timestamp)}
-              </Typography>
-            ) : null}
+            <Typography variant="infoText">
+              {name}
+              <MuiLink component={RouterLink} to={`/users/${comment.user}`}>
+                ({username})
+              </MuiLink>
+              · {formatDate(comment.timestamp)}
+            </Typography>
           </Box>
-          <Typography variant="paragraph">{comment.content.text}</Typography>
+          <Typography variant="paragraph">{commentText}</Typography>
         </ListItemText>
       </ListItem>
     )
