@@ -179,6 +179,7 @@ const Blog = ({ blog, user, theme }) => {
               display: 'block',
               wordWrap: 'break-word',
               overflowWrap: 'break-word',
+              marginTop: '1rem',
             }}
           >
             {blog.content.text}
