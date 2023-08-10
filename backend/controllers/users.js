@@ -58,11 +58,15 @@ module.exports = usersRouter
 usersRouter.get('/', async (request, response) => {
   // Finding all users in the database and populating their blogs with the specified fields
   const users = await User.find({}).populate('blogs', {
+    // Assuming 'blogs' is the field in the User model referencing the Blog model
     title: 1,
-    author: 1,
-    url: 1,
-    likes: 1,
+    'content.text': 1, // Getting the text content of the blog
+    user: 1, // This will give the ObjectId of the user who wrote each blog. If you want the actual user details, you might have to do a deeper population.
+    likedBy: 1, // This will give an array of ObjectIds of users who liked the blog.
+    // Add/remove fields as per your requirement.
   })
+
+  console.log(users)
 
   // Sending a 200 OK response with the retrieved users and their blogs
   response.json(users)

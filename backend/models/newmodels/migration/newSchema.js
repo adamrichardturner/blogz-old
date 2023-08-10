@@ -1,8 +1,10 @@
 const mongoose = require('mongoose')
-const Blog = require('../../blog')
+const OldBlog = require('../../blog') // renamed from Blog to OldBlog
 const NewBlog = require('../blog')
+const User = require('../../user') // assuming this is the correct path to the User model
 
-mongoose.connect('**MongoDB Connection String**', {
+mongoose.connect('***MONGODB URI***', {
+  // Hide your connection string
   useNewUrlParser: true,
   useUnifiedTopology: true,
 })
@@ -11,7 +13,8 @@ const specificDate = new Date('2023-08-01T13:00:00Z')
 
 const migrateData = async () => {
   try {
-    const oldBlogs = await Blog.find({})
+    const oldBlogs = await OldBlog.find({})
+    console.log(oldBlogs)
 
     for (const oldBlog of oldBlogs) {
       // Check for empty or missing title
@@ -21,15 +24,13 @@ const migrateData = async () => {
       }
 
       let blogTitle =
-        oldBlog.title && oldBlog.title.trim() !== ''
+        oldBlog.title.trim() !== ''
           ? oldBlog.title
           : 'A Blogz Title should go here...'
-
       let blogContent =
-        oldBlog.url && oldBlog.url.trim() !== ''
+        oldBlog.url.trim() !== ''
           ? oldBlog.url
           : 'Some content should go here, right?'
-
       const likesArray = Array(oldBlog.likes).fill(oldBlog.user)
 
       let newBlogData = {
@@ -42,9 +43,7 @@ const migrateData = async () => {
         user: oldBlog.user,
         comments: oldBlog.comments.map((comment) => {
           let commentContent =
-            comment && comment.trim() !== ''
-              ? comment
-              : 'This is a sample comment.'
+            comment.trim() !== '' ? comment : 'This is a sample comment.'
           return {
             content: {
               text: commentContent,
@@ -61,12 +60,19 @@ const migrateData = async () => {
 
       const newBlog = new NewBlog(newBlogData)
       await newBlog.save()
+
+      // Update user's blogs array to reference this new blog
+      await User.findByIdAndUpdate(oldBlog.user, {
+        $push: { blogs: newBlog._id },
+      })
     }
 
     console.log('Migration completed!')
+    await mongoose.disconnect() // Properly disconnect from the database
     process.exit(0)
   } catch (error) {
     console.error('Error during migration:', error)
+    await mongoose.disconnect()
     process.exit(1)
   }
 }

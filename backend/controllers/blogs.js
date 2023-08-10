@@ -131,7 +131,6 @@ blogsRouter.post('/:id/like', async (req, res) => {
 })
 
 blogsRouter.post('/:id/comments', async (request, response, next) => {
-  console.log(request.body)
   const text = request.body.content.text
   const giphyUrls = request.body.content.giphyUrls
   const user = request.user
@@ -148,13 +147,19 @@ blogsRouter.post('/:id/comments', async (request, response, next) => {
 
   try {
     const blog = await Blog.findById(request.params.id)
-
-    blog.comments.push(newComment) // Push the new comment object
+    if (!blog) {
+      return response.status(404).json({ message: 'Blog not found' })
+    }
+    blog.comments.push(newComment)
+    blog.updatedAt = Date.now()
     await blog.save()
-
     response.status(201).json(blog)
   } catch (error) {
-    response.status(500).json({ message: 'Internal server error' })
+    if (error instanceof Error.CastError) {
+      response.status(400).json({ message: 'Invalid Blog ID' })
+    } else {
+      response.status(500).json({ message: 'Internal server error' })
+    }
     next(error)
   }
 })
