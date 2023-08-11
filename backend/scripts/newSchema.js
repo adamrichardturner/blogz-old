@@ -1,7 +1,7 @@
 const mongoose = require('mongoose')
-const OldBlog = require('../../blog') // renamed from Blog to OldBlog
-const NewBlog = require('../blog')
-const User = require('../../user') // assuming this is the correct path to the User model
+const OldBlog = require('../models/blog') // renamed from Blog to OldBlog
+const NewBlog = require('../models/newmodels/blog')
+const User = require('../models/user') // assuming this is the correct path to the User model
 
 mongoose.connect('***MONGODB URI***', {
   // Hide your connection string
@@ -14,13 +14,12 @@ const specificDate = new Date('2023-08-01T13:00:00Z')
 const migrateData = async () => {
   try {
     const oldBlogs = await OldBlog.find({})
-    console.log(oldBlogs)
 
     for (const oldBlog of oldBlogs) {
       // Check for empty or missing title
       if (!oldBlog.title || oldBlog.title.trim() === '') {
         console.error('Invalid title detected for blog with ID:', oldBlog._id)
-        continue // Skip this entry and go to the next one
+        continue
       }
 
       let blogTitle =
@@ -68,7 +67,7 @@ const migrateData = async () => {
     }
 
     console.log('Migration completed!')
-    await mongoose.disconnect() // Properly disconnect from the database
+    await mongoose.disconnect()
     process.exit(0)
   } catch (error) {
     console.error('Error during migration:', error)
