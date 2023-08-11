@@ -44,18 +44,13 @@ export const lightTheme = createTheme({
   },
   typography: {
     allVariants: {
-      // Global style override for all typography variants
-      color: '#000000', // Replace '#333' with your desired paragraph color
+      color: '#000000',
     },
     paragraph: {
-      // Style specific to the 'paragraph' variant
-      // (This will override the color set in allVariants)
-      color: '#000000', // Replace '#555' with your desired paragraph color
+      color: '#000000',
     },
     paragraphHeader: {
-      // Style specific to the 'paragraph' variant
-      // (This will override the color set in allVariants)
-      color: '#000000', // Replace '#555' with your desired paragraph color
+      color: '#000000',
       fontWeight: '600',
       fontStyle: 'italic',
     },
@@ -86,9 +81,44 @@ export const lightTheme = createTheme({
       fontSize: '1.25rem',
       fontWeight: '600',
     },
-    // Other typography variants and styles can be defined here
   },
   components: {
+    MuiCssBaseline: {
+      styleOverrides: {
+        '.globalTextareaStyle': {
+          fontFamily: 'Poppins, sans-serif',
+          width: '100%',
+          padding: '8px',
+          marginTop: '1rem',
+          resize: 'none',
+          borderWidth: '1px',
+          fontSize: '1rem',
+          borderRadius: '4px',
+          borderColor: 'rgba(0, 0, 0, 0.23)',
+          '&:focus': {
+            borderWidth: '1px',
+          },
+          '&:focus-visible': {
+            borderWidth: '1px',
+            outline: '1px solid #000000',
+          },
+          '&:focus-within': {
+            borderWidth: '1px',
+          },
+          '& .MuiOutlinedInput-root': {
+            '& fieldset': {
+              borderWidth: '.5px',
+            },
+            '&:hover fieldset': {
+              borderWidth: '1px',
+            },
+            '&.Mui-focused fieldset': {
+              borderWidth: '2px',
+            },
+          },
+        },
+      },
+    },
     MuiPaper: {
       styleOverrides: {
         root: {
@@ -167,9 +197,8 @@ export const lightTheme = createTheme({
       styleOverrides: {
         root: {
           position: 'absolute',
-          top: '0px', // Adjust as per your requirement
-          right: '0', // Adjust as per your requirement
-          // Other styles if necessary
+          top: '0px',
+          right: '0',
         },
       },
     },

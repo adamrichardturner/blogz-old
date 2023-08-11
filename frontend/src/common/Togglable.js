@@ -61,7 +61,6 @@ const Togglable = forwardRef((props, ref) => {
             sx={{
               color: '#fff',
               borderColor: '#fff',
-              marginTop: 2,
               padding: '6px 16px',
             }}
             onClick={toggleVisibility}

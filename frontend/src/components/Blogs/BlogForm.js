@@ -129,22 +129,35 @@ const BlogForm = ({ createBlog, theme }) => {
                 id="content"
                 minRows={4}
                 maxRows={10}
+                helperText={errors.content}
                 value={newBlog.content.text}
                 onChange={handleContentChange}
                 maxLength={4000}
+                className="globalTextareaStyle"
                 placeholder="What's on your mind?"
-                style={{
-                  fontFamily: 'Poppins, sans-serif',
-                  width: '100%',
-                  padding: '8px',
-                  marginTop: '1rem',
-                  resize: 'none',
-                  color: theme.palette.primary.main,
-                  backgroundColor: theme.palette.background.default,
-                }}
+                // style={{
+                //   fontFamily: 'Poppins, sans-serif',
+                //   width: '100%',
+                //   padding: '8px',
+                //   marginTop: '1rem',
+                //   resize: 'none',
+                //   color: theme.palette.primary.main,
+                //   backgroundColor: theme.palette.background.default,
+                // }}
               />
               {errors.content && (
-                <div style={{ color: 'red', marginTop: '8px' }}>
+                <div
+                  style={{
+                    marginTop: '0',
+                    position: 'absolute',
+                    top: '20px',
+                    right: 0,
+                    marginRight: '13px',
+                    color: theme.palette.primary.main,
+                    opacity: 0.85,
+                    fontSize: '.65rem',
+                  }}
+                >
                   {errors.content}
                 </div>
               )}

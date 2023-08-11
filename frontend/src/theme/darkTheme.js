@@ -89,28 +89,47 @@ export const darkTheme = createTheme({
     // Other typography variants and styles can be defined here
   },
   components: {
-    MuiTextareaAutosize: {
+    MuiCssBaseline: {
       styleOverrides: {
-        root: {
-          borderRadius: '5px',
+        '.globalTextareaStyle': {
           fontFamily: 'Poppins, sans-serif',
           width: '100%',
           padding: '8px',
+          marginTop: '1rem',
           resize: 'none',
-          color: 'red',
-          borderColor: 'initial', // default border color
+          color: '#fff',
+          borderColor: '#fff',
           borderWidth: '1px',
-          borderStyle: 'solid', // You might want to set the style
-          transition: 'border-color 0.3s',
+          fontSize: '1rem',
+          borderRadius: '4px',
+          backgroundColor: '#33332d',
           '&:focus': {
-            borderColor: 'white', // desired focus color
-            borderWidth: '2px',
+            borderColor: '#fff', // desired focus color
+            borderWidth: '1px',
           },
           '&:focus-visible': {
-            borderColor: 'white', // desired focus color
-            borderWidth: '2px',
+            borderColor: '#fff', // desired focus color
+            borderWidth: '1px',
+            outline: '1px solid #fff',
           },
-          // Since it's a direct textarea, you don't need nested selectors like `& textarea` or `& .MuiOutlinedInput-root`
+          '&:focus-within': {
+            borderColor: '#fff', // desired focus color
+            borderWidth: '1px',
+          },
+          '& .MuiOutlinedInput-root': {
+            '& fieldset': {
+              borderColor: '#fff',
+              borderWidth: '.5px',
+            },
+            '&:hover fieldset': {
+              borderWidth: '1px',
+              borderColor: '#fff',
+            },
+            '&.Mui-focused fieldset': {
+              borderWidth: '2px',
+              borderColor: '#fff',
+            },
+          },
         },
       },
     },
