@@ -135,15 +135,15 @@ const BlogForm = ({ createBlog, theme }) => {
                 maxLength={4000}
                 className="globalTextareaStyle"
                 placeholder="What's on your mind?"
-                // style={{
-                //   fontFamily: 'Poppins, sans-serif',
-                //   width: '100%',
-                //   padding: '8px',
-                //   marginTop: '1rem',
-                //   resize: 'none',
-                //   color: theme.palette.primary.main,
-                //   backgroundColor: theme.palette.background.default,
-                // }}
+                style={{
+                  fontFamily: 'Poppins, sans-serif',
+                  width: '100%',
+                  padding: '8px',
+                  marginTop: '1rem',
+                  resize: 'none',
+                  color: theme.palette.primary.main,
+                  backgroundColor: theme.palette.background.default,
+                }}
               />
               {errors.content && (
                 <div
