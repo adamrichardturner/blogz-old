@@ -4,6 +4,8 @@ import {
   deleteSelectedBlog,
   likeSelectedBlog,
   commentSelectedBlog,
+  likeSelectedBlogComment,
+  deleteSelectedBlogComment,
 } from '../../reducers/blogsReducer'
 import { initializeUsers } from '../../reducers/userReducer'
 import { useDispatch, useSelector } from 'react-redux'
@@ -71,6 +73,24 @@ export const useBlogs = () => {
     }
   }
 
+  const likeBlogComment = async (blogId, commentId) => {
+    try {
+      blogsService.setToken(user.token)
+      dispatch(likeSelectedBlogComment(blogId, commentId))
+    } catch (exception) {
+      console.error(exception)
+    }
+  }
+
+  const deleteBlogComment = async (blogId, commentId) => {
+    try {
+      blogsService.setToken(user.token)
+      dispatch(deleteSelectedBlogComment(blogId, commentId))
+    } catch (exception) {
+      console.error(exception)
+    }
+  }
+
   return {
     getBlogs,
     getBlog,
@@ -78,5 +98,7 @@ export const useBlogs = () => {
     removeBlog,
     likeBlog,
     addComment,
+    likeBlogComment,
+    deleteBlogComment,
   }
 }

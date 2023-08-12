@@ -129,7 +129,6 @@ const BlogForm = ({ createBlog, theme }) => {
                 id="content"
                 minRows={4}
                 maxRows={10}
-                helperText={errors.content}
                 value={newBlog.content.text}
                 onChange={handleContentChange}
                 maxLength={4000}

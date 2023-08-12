@@ -3,67 +3,59 @@ const blogsRouter = require('express').Router()
 const Blog = require('../models/blog')
 const User = require('../models/user')
 
-// Define route to handle GET requests to /api/blogs/, which retrieves all blog data from the MongoDB database
-blogsRouter.get('/', async (request, response) => {
-  const blogs = await Blog.find({}).populate('user', { username: 1, name: 1 })
-  response.status(200).json(blogs)
+blogsRouter.get('/', async (request, response, next) => {
+  try {
+    const blogs = await Blog.find({}).populate('user', { username: 1, name: 1 })
+    response.json(blogs)
+  } catch (error) {
+    next(error)
+  }
 })
 
 blogsRouter.post('/', async (request, response, next) => {
-  const body = request.body
-  const user = request.user
-
-  const blog = new Blog({
-    title: body.title,
-    content: {
-      text: body.content.text,
-      giphyUrls: [],
-    },
-    likedBy: body.likes ? Array(body.likes).fill(user._id) : [],
-    user: user._id,
-  })
-
   try {
-    const savedBlog = await blog.save()
-    await savedBlog.populate('user', { username: 1, name: 1 })
+    if (!request.token || !request.user) {
+      return response.status(401).json({ error: 'token missing or invalid' })
+    }
 
-    user.blogs = user.blogs.concat(savedBlog._id)
-    await user.save()
+    const blog = new Blog({ ...request.body, user: request.user._id })
+    const savedBlog = await blog.save()
+
+    request.user.blogs = request.user.blogs.concat(savedBlog._id)
+    await request.user.save()
 
     response.status(201).json(savedBlog)
-  } catch (exception) {
-    next(exception)
+  } catch (error) {
+    next(error)
   }
 })
 
-blogsRouter.delete('/:id', async (request, response) => {
-  const blog = await Blog.findById(request.params.id)
+blogsRouter.delete('/:id', async (request, response, next) => {
+  try {
+    const blog = await Blog.findById(request.params.id)
 
-  // Check that the user ID associated with the token matches the ID of the user who created the blog
-  const decodedToken = jwt.verify(request.token, process.env.SECRET)
+    if (!blog) {
+      throw new Error('Blog not found')
+    }
 
-  if (!decodedToken.id) {
-    return response.status(401).json({ error: 'token invalid' })
+    if (
+      !request.decodedToken ||
+      blog.user.toString() !== request.decodedToken.id.toString()
+    ) {
+      throw new Error('only the creator can delete this blog')
+    }
+
+    await Blog.findByIdAndRemove(request.params.id)
+    const user = await User.findById(request.decodedToken.id)
+    user.blogs = user.blogs.filter(
+      (blog) => blog.toString() !== request.params.id.toString()
+    )
+    await user.save()
+
+    response.status(204).end()
+  } catch (error) {
+    next(error)
   }
-
-  if (blog.user.toString() !== decodedToken.id.toString()) {
-    return response
-      .status(401)
-      .json({ error: 'only the creator can delete this blog' })
-  }
-
-  // Delete the blog post from the database
-  await Blog.findByIdAndRemove(request.params.id)
-
-  // Remove the deleted blog's ID from the user object's blogs array in the database
-  const user = await User.findById(decodedToken.id)
-  user.blogs = user.blogs.filter(
-    (blog) => blog.toString() !== request.params.id.toString()
-  )
-  await user.save()
-
-  // Send a successful response with a 204 status code and no content
-  response.status(204).end()
 })
 
 blogsRouter.put('/:id', async (request, response, next) => {
@@ -102,7 +94,7 @@ blogsRouter.put('/:id', async (request, response, next) => {
   }
 })
 
-blogsRouter.post('/:id/like', async (req, res) => {
+blogsRouter.post('/:id/like', async (req, res, next) => {
   try {
     const blog = await Blog.findById(req.params.id)
 
@@ -110,9 +102,8 @@ blogsRouter.post('/:id/like', async (req, res) => {
       return res.status(404).send({ error: 'Blog not found' })
     }
 
-    const userId = req.user._id // Assuming you have some authentication and store user in `req.user`
+    const userId = req.user._id
 
-    // Toggle the user ID in the `likedBy` array
     if (blog.likedBy.includes(userId)) {
       blog.likedBy = blog.likedBy.filter(
         (uid) => uid.toString() !== userId.toString()
@@ -124,24 +115,114 @@ blogsRouter.post('/:id/like', async (req, res) => {
     await blog.save()
     res.status(200).send(blog)
   } catch (error) {
-    console.error('Error toggling like on the blog:', error)
-    res.status(500).send({ error: 'Internal server error' })
+    next(error)
   }
 })
 
+blogsRouter.post(
+  '/:blogId/comments/:commentId/like',
+  async (request, response, next) => {
+    try {
+      const { blogId, commentId } = request.params
+
+      const blog = await Blog.findById(blogId)
+
+      if (!blog) {
+        return response.status(404).send({ error: 'Blog not found' })
+      }
+
+      const comment = blog.comments.id(commentId)
+
+      if (!comment) {
+        return response.status(404).send({ error: 'Comment not found' })
+      }
+
+      const userId = request.user._id
+
+      // Convert ObjectId to string for the comparison
+      const stringifiedLikedBy = comment.likedBy.map((id) => id.toString())
+
+      // Toggle the user ID in the `likedBy` array for the comment
+      if (stringifiedLikedBy.includes(userId.toString())) {
+        comment.likedBy = comment.likedBy.filter(
+          (uid) => uid.toString() !== userId.toString()
+        )
+      } else {
+        comment.likedBy.push(userId)
+      }
+
+      await blog.save()
+      response.status(200).send(blog)
+    } catch (error) {
+      next(error)
+    }
+  }
+)
+
+blogsRouter.delete(
+  '/:blogId/comments/:commentId/delete',
+  async (request, response) => {
+    try {
+      const { blogId, commentId } = request.params
+
+      const blog = await Blog.findById(blogId)
+
+      if (!blog) {
+        return response.status(404).send({ error: 'Blog not found' })
+      }
+
+      const comment = blog.comments.id(commentId)
+
+      if (!comment) {
+        return response.status(404).send({ error: 'Comment not found' })
+      }
+
+      const decodedToken = jwt.verify(request.token, process.env.SECRET)
+
+      if (!decodedToken.id) {
+        return response.status(401).json({ error: 'token invalid' })
+      }
+
+      // Check that the user ID associated with the token matches the ID of the user who created the comment
+      if (comment.user.toString() !== decodedToken.id.toString()) {
+        return response
+          .status(401)
+          .json({ error: 'Only the creator can delete this comment' })
+      }
+
+      // Delete the comment
+      blog.comments = blog.comments.filter((comment) => {
+        comment._id.toString() !== commentId
+      })
+
+      console.log(blog)
+      // Save the updated blog post
+      await blog.save()
+
+      response.status(200).send({ message: 'Comment deleted successfully' })
+    } catch (error) {
+      console.error(error)
+      response.status(500).send({ error: 'Internal server error' })
+    }
+  }
+)
+
 blogsRouter.post('/:id/comments', async (request, response, next) => {
+  if (!request.user) {
+    return response.status(401).json({ message: 'User not authenticated' })
+  }
+
   const text = request.body.content.text
   const giphyUrls = request.body.content.giphyUrls
   const user = request.user
 
-  // Create the comment object based on your new schema
   const newComment = {
     content: {
       text: text,
-      giphyUrls: giphyUrls || [], // default to empty array if not provided
+      giphyUrls: giphyUrls || [],
     },
     user: user._id,
-    likedBy: [], // Assuming initially no one liked the comment
+    likedBy: [],
   }
 
   try {
@@ -154,12 +235,7 @@ blogsRouter.post('/:id/comments', async (request, response, next) => {
     await blog.save()
     response.status(201).json(blog)
   } catch (error) {
-    if (error instanceof Error.CastError) {
-      response.status(400).json({ message: 'Invalid Blog ID' })
-    } else {
-      response.status(500).json({ message: 'Internal server error' })
-    }
-    next(error)
+    next(error) // Modified to use next for error handling
   }
 })
 

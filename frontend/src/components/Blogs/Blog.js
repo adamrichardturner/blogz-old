@@ -14,15 +14,23 @@ import {
 } from '@mui/material'
 import FavoriteIcon from '@mui/icons-material/Favorite'
 import ChatBubbleOutlineRoundedIcon from '@mui/icons-material/ChatBubbleOutlineRounded'
+import ClearIcon from '@mui/icons-material/Clear'
 import { useBlogs } from '../../hooks/blogs'
 import { useUser } from '../../hooks/users'
 import formatDate from '../util/formatDate'
 
 const Blog = ({ blog, user, theme }) => {
-  const { likeBlog, addComment, removeBlog } = useBlogs()
+  const {
+    likeBlog,
+    addComment,
+    likeBlogComment,
+    removeBlog,
+    deleteBlogComment,
+  } = useBlogs()
   const { getUserFromId } = useUser()
   const [visible, setVisible] = useState(false)
   const [comment, setComment] = useState('')
+  const [commentError, setCommentError] = useState('')
 
   if (!blog || !user) {
     return null
@@ -53,8 +61,21 @@ const Blog = ({ blog, user, theme }) => {
     removeBlog(blog)
   }
 
+  const validateComment = () => {
+    let isValid = true
+    if (!comment.trim()) {
+      setCommentError('You need to write a comment.')
+      isValid = false
+    }
+    return isValid
+  }
+
   const handleComment = (event) => {
     event.preventDefault()
+
+    if (!validateComment()) {
+      return
+    }
     const obj = {
       content: {
         text: comment,
@@ -68,20 +89,40 @@ const Blog = ({ blog, user, theme }) => {
   }
 
   const displayComments = blogComments.map((comment) => {
+    const addNewCommentLike = () => {
+      likeBlogComment(blogId, id)
+    }
+
+    const handleDeleteBlogComment = () => {
+      deleteBlogComment(blogId, id)
+    }
+
     const id = comment._id || null
     const user = comment.user || null
     const text = comment.content.text || null
     const timestamp = comment.timestamp || null
+    const likedBy = comment.likedBy || []
     const [username, name] = getUserFromId(user || null) || []
     return id ? (
-      <ListItem key={id}>
-        <ListItemText>
-          <Box
-            sx={{
-              display: 'flex',
-              flexDirection: 'column',
-            }}
-          >
+      <ListItem
+        key={id}
+        sx={{
+          display: 'flex',
+          alignItems: 'stretch',
+          justifyContent: 'space-between',
+          flexDirection: 'column',
+          padding: '1rem 0',
+        }}
+      >
+        <Box
+          sx={{
+            display: 'flex',
+            flexDirection: 'row',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+          }}
+        >
+          <Box>
             <Typography variant="infoText">
               {name}{' '}
               <MuiLink component={RouterLink} to={`/users/${user}`}>
@@ -90,8 +131,48 @@ const Blog = ({ blog, user, theme }) => {
               · {formatDate(timestamp)}
             </Typography>
           </Box>
-          <Typography variant="paragraph">{text}</Typography>
-        </ListItemText>
+          {user === userId ? (
+            <ClearIcon
+              onClick={handleDeleteBlogComment}
+              color="primary"
+              cursor="pointer"
+            />
+          ) : null}
+        </Box>
+        <Box
+          sx={{
+            display: 'flex',
+            alignItems: 'stretch',
+          }}
+        >
+          <ListItemText>
+            <Typography variant="paragraph">{text}</Typography>
+          </ListItemText>
+        </Box>
+        <Box
+          sx={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'flex-end',
+          }}
+        >
+          <FavoriteIcon
+            id="add-like"
+            onClick={addNewCommentLike}
+            sx={{
+              borderColor: '#fff',
+              fontSize: 26,
+              cursor: 'pointer',
+              paddingLeft: '3px',
+              color: likedBy.includes(userId)
+                ? 'red'
+                : theme.palette.primary.main,
+            }}
+          />
+          <Typography variant="paragraph" paddingLeft={0.5}>
+            {likedBy ? likedBy.length : ''}
+          </Typography>
+        </Box>
       </ListItem>
     ) : null
   })
@@ -141,33 +222,24 @@ const Blog = ({ blog, user, theme }) => {
                 </Typography>
               </MuiLink>
               {userName === blogUsername ? (
-                <Button
-                  variant="contained"
-                  id="remove-blog"
+                <ClearIcon
                   onClick={deleteBlog}
                   color="primary"
-                  sx={{
-                    color: '#fff',
-                    borderColor: '#fff',
-                    marginTop: '0',
-                    padding: '5px 5px',
-                    fontSize: '.75rem',
-                  }}
-                >
-                  Remove
-                </Button>
+                  cursor="pointer"
+                />
               ) : null}
             </Box>
           </Box>
 
           <Typography
+            variant="paragraph"
+            fontSize={14}
             sx={{
               maxWidth: '100%',
               wordWrap: 'break-word',
               whiteSpace: 'normal',
               overflowWrap: 'break-word',
               color: 'body',
-              fontStyle: 'italic',
             }}
           >
             Blog made by{' '}
@@ -197,7 +269,7 @@ const Blog = ({ blog, user, theme }) => {
           sx={{
             display: visible ? 'flex' : 'none',
             flexDirection: 'column',
-            padding: 2,
+            padding: '1rem',
           }}
         >
           <form
@@ -214,6 +286,7 @@ const Blog = ({ blog, user, theme }) => {
               label="Leave a comment"
               variant="filled"
               id="comment"
+              helperText={commentError}
               fullWidth
               name="comment"
               value={comment}
@@ -228,18 +301,14 @@ const Blog = ({ blog, user, theme }) => {
               sx={{
                 color: '#fff',
                 borderColor: '#fff',
-                padding: '16px 16px',
-                width: '100%',
+                padding: '6px 16px',
                 borderRadius: '5px',
               }}
             >
               Comment
             </Button>
           </form>
-          <List>
-            <Typography variant="h3">Comments</Typography>
-            {displayComments}
-          </List>
+          <List>{displayComments}</List>
         </Box>
         <Box
           sx={{
@@ -317,21 +386,19 @@ const Blog = ({ blog, user, theme }) => {
                   minWidth: '2rem',
                 }}
               >
-                {
-                  <FavoriteIcon
-                    id="add-like"
-                    onClick={addNewLike}
-                    sx={{
-                      borderColor: '#fff',
-                      fontSize: 26,
-                      cursor: 'pointer',
-                      paddingLeft: '3px',
-                      color: blogLikedBy.includes(userId)
-                        ? 'red'
-                        : theme.palette.primary.main,
-                    }}
-                  />
-                }
+                <FavoriteIcon
+                  id="add-like"
+                  onClick={addNewLike}
+                  sx={{
+                    borderColor: '#fff',
+                    fontSize: 26,
+                    cursor: 'pointer',
+                    paddingLeft: '3px',
+                    color: blogLikedBy.includes(userId)
+                      ? 'red'
+                      : theme.palette.primary.main,
+                  }}
+                />
                 <Typography variant="paragraph" paddingLeft={0.5}>
                   {blogLikedBy ? blogLikedBy.length : ''}
                 </Typography>

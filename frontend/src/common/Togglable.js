@@ -1,12 +1,9 @@
 import { useState, forwardRef, useImperativeHandle } from 'react'
 import PropTypes from 'prop-types'
 import { Button, Modal, Box, useMediaQuery } from '@mui/material'
-import { useSelector } from 'react-redux'
 
 const Togglable = forwardRef((props, ref) => {
-  const isDarkMode = useSelector((state) => state.theme.isDarkMode)
   const [visible, setVisible] = useState(false)
-  console.log(isDarkMode)
 
   const toggleVisibility = () => {
     setVisible(!visible)

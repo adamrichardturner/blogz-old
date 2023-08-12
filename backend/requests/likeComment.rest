@@ -1,0 +1,4 @@
+post http://localhost:3004/api/blogs/BLOG_ID_HERE/comments/COMMENT_ID_HERE/like
+Content-Type: application/json
+Authorization: Bearer "JWT GOES HERE"
+

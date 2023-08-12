@@ -15,10 +15,19 @@ import {
 import { useBlogs } from '../../hooks/blogs'
 import { useUser } from '../../hooks/users'
 import FavoriteIcon from '@mui/icons-material/Favorite'
+import ClearIcon from '@mui/icons-material/Clear'
 import formatDate from '../util/formatDate'
+import { useNavigate } from 'react-router-dom'
 
 const BlogSingle = ({ blog, user, theme }) => {
-  const { likeBlog, removeBlog, addComment } = useBlogs()
+  const navigate = useNavigate()
+  const {
+    likeBlog,
+    removeBlog,
+    addComment,
+    likeBlogComment,
+    deleteBlogComment,
+  } = useBlogs()
   const { getUserFromId } = useUser()
   const isSmallScreen = useMediaQuery((theme) => theme.breakpoints.down('sm'))
   const [comment, setComment] = useState('')
@@ -45,6 +54,7 @@ const BlogSingle = ({ blog, user, theme }) => {
   }
 
   const deleteBlog = () => {
+    navigate('/')
     removeBlog(blog)
   }
 
@@ -63,20 +73,40 @@ const BlogSingle = ({ blog, user, theme }) => {
   }
 
   const displayComments = blogComments.map((comment) => {
+    const addNewCommentLike = () => {
+      likeBlogComment(blogId, id)
+    }
+
+    const handleDeleteBlogComment = () => {
+      deleteBlogComment(blogId, id)
+    }
+
     const id = comment._id || null
     const user = comment.user || null
     const text = comment.content.text || null
     const timestamp = comment.timestamp || null
+    const likedBy = comment.likedBy || []
     const [username, name] = getUserFromId(user || null) || []
     return id ? (
-      <ListItem key={id}>
-        <ListItemText>
-          <Box
-            sx={{
-              display: 'flex',
-              flexDirection: 'column',
-            }}
-          >
+      <ListItem
+        key={id}
+        sx={{
+          display: 'flex',
+          alignItems: 'stretch',
+          justifyContent: 'space-between',
+          flexDirection: 'column',
+          padding: '1rem 0',
+        }}
+      >
+        <Box
+          sx={{
+            display: 'flex',
+            flexDirection: 'row',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+          }}
+        >
+          <Box>
             <Typography variant="infoText">
               {name}{' '}
               <MuiLink component={RouterLink} to={`/users/${user}`}>
@@ -85,8 +115,48 @@ const BlogSingle = ({ blog, user, theme }) => {
               · {formatDate(timestamp)}
             </Typography>
           </Box>
-          <Typography variant="paragraph">{text}</Typography>
-        </ListItemText>
+          {user === userId ? (
+            <ClearIcon
+              onClick={handleDeleteBlogComment}
+              color="primary"
+              cursor="pointer"
+            />
+          ) : null}
+        </Box>
+        <Box
+          sx={{
+            display: 'flex',
+            alignItems: 'stretch',
+          }}
+        >
+          <ListItemText>
+            <Typography variant="paragraph">{text}</Typography>
+          </ListItemText>
+        </Box>
+        <Box
+          sx={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'flex-end',
+          }}
+        >
+          <FavoriteIcon
+            id="add-like"
+            onClick={addNewCommentLike}
+            sx={{
+              borderColor: '#fff',
+              fontSize: 26,
+              cursor: 'pointer',
+              paddingLeft: '3px',
+              color: likedBy.includes(userId)
+                ? 'red'
+                : theme.palette.primary.main,
+            }}
+          />
+          <Typography variant="paragraph" paddingLeft={0.5}>
+            {likedBy ? likedBy.length : ''}
+          </Typography>
+        </Box>
       </ListItem>
     ) : null
   })
@@ -133,33 +203,20 @@ const BlogSingle = ({ blog, user, theme }) => {
                 {blogTitle}
               </Typography>
               {userName === blogUsername ? (
-                <Button
-                  variant="contained"
-                  id="remove-blog"
-                  onClick={deleteBlog}
-                  color="primary"
-                  sx={{
-                    color: '#fff',
-                    borderColor: '#fff',
-                    marginLeft: 1,
-                    padding: '5px 5px',
-                    fontSize: '.75rem',
-                  }}
-                >
-                  Remove
-                </Button>
+                <ClearIcon onClick={deleteBlog} cursor="pointer" />
               ) : null}
             </Box>
           </Box>
 
           <Typography
+            variant="paragraph"
+            fontSize={14}
             sx={{
               maxWidth: '100%',
               wordWrap: 'break-word',
               whiteSpace: 'normal',
               overflowWrap: 'break-word',
               color: 'body',
-              fontStyle: 'italic',
             }}
           >
             Blog made by{' '}
