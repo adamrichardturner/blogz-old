@@ -54,7 +54,7 @@ const BlogsView = ({ theme }) => {
   return (
     <Box>
       <Box>
-        <Typography variant="h2" color="body" marginTop={2} marginBottom={2}>
+        <Typography variant="h2" color="body" marginTop={2} marginBottom={0}>
           What&apos;s on your mind, {user.name.split(' ')[0]}? 😄
         </Typography>
       </Box>

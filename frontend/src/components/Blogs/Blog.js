@@ -291,19 +291,23 @@ const Blog = ({ blog, user, theme }) => {
               name="comment"
               value={comment}
               onChange={({ target }) => setComment(target.value)}
+              sx={{
+                backgroundColor: theme.palette.background.default,
+              }}
             />
             <Button
+              className="insideContent-elements"
               type="submit"
               variant="contained"
               id="comment"
               onClick={handleComment}
-              color="primary"
-              sx={{
-                color: '#fff',
-                borderColor: '#fff',
-                padding: '6px 16px',
-                borderRadius: '5px',
-              }}
+              // sx={{
+              //   color: '#fff',
+              //   borderColor: '#fff',
+              //   padding: '6px 16px',
+              //   borderRadius: '5px',
+              //   backgroundColor: theme.palette.background.default,
+              // }}
             >
               Comment
             </Button>

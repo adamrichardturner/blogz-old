@@ -16,14 +16,13 @@ body {
 }
 
 a {
-  text-decoration: underline;
   font-weight: 400;
   color: inherit;
+  text-decoration: none;
 }
 
 a.active > .MuiTypography-root {
-  text-decoration: underline;
-  font-weight: 800;
+  text-decoration: underline !important;
 }
 
 button {
@@ -34,6 +33,10 @@ textarea,
 input {
   font-size: 1rem !important;
   font-family: 'Poppins', sans-serif !important;
+}
+
+#title-helper-text {
+  font-size: 0.65rem !important;
 }
 
 h1 {

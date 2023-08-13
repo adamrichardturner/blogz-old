@@ -68,7 +68,7 @@ export const lightTheme = createTheme({
     h2: {
       color: '#000000',
       padding: 0,
-      fontSize: '2.5rem',
+      fontSize: '1.75rem',
       [`@media (min-width:${(theme) => theme.breakpoints.values.sm}px)`]: {
         fontSize: '1.25rem',
         margin: 0,
@@ -181,7 +181,7 @@ export const lightTheme = createTheme({
     MuiLink: {
       styleOverrides: {
         root: {
-          textDecoration: 'underline',
+          textDecoration: 'none',
           fontWeight: '600',
         },
       },

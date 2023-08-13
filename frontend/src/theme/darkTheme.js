@@ -68,7 +68,7 @@ export const darkTheme = createTheme({
     h2: {
       color: '#ffffff',
       padding: 0,
-      fontSize: '2.5rem',
+      fontSize: '1.75rem',
       [`@media (min-width:${(theme) => theme.breakpoints.values.xs}px)`]: {
         fontSize: '1.25rem',
         margin: 0,
@@ -147,6 +147,12 @@ export const darkTheme = createTheme({
           '&:hover': {
             backgroundColor: '#0c121c',
             color: '#fff',
+          },
+          '&.insideContent-elements': {
+            backgroundColor: '#1E293B',
+            '&:hover': {
+              backgroundColor: '#1E293B',
+            },
           },
         },
       },
