@@ -90,7 +90,6 @@ const BlogForm = ({ createBlog, theme }) => {
 
   return (
     <Box
-      backgroundColor="paper"
       sx={{
         display: 'flex',
         flexDirection: 'column',
@@ -115,6 +114,7 @@ const BlogForm = ({ createBlog, theme }) => {
               <TextField
                 label="Blog Title"
                 variant="outlined"
+                fontSize={'1rem'}
                 fullWidth
                 id="title"
                 type="text"
@@ -127,8 +127,8 @@ const BlogForm = ({ createBlog, theme }) => {
             <FormControl fullWidth>
               <TextareaAutosize
                 id="content"
-                minRows={4}
-                maxRows={10}
+                minRows={2}
+                maxRows={8}
                 value={newBlog.content.text}
                 onChange={handleContentChange}
                 maxLength={4000}
@@ -137,11 +137,9 @@ const BlogForm = ({ createBlog, theme }) => {
                 style={{
                   fontFamily: 'Poppins, sans-serif',
                   width: '100%',
-                  padding: '8px',
                   marginTop: '1rem',
                   resize: 'none',
                   color: theme.palette.primary.main,
-                  backgroundColor: theme.palette.background.default,
                 }}
               />
               {errors.content && (

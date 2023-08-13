@@ -170,9 +170,8 @@ const BlogSingle = ({ blog, user, theme }) => {
       marginBottom={2}
     >
       <Paper
-        elevation={2}
+        elevation={3}
         padding={2}
-        background="body"
         sx={{
           width: '100%',
         }}

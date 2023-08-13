@@ -46,9 +46,9 @@ const Togglable = forwardRef((props, ref) => {
         }}
       >
         <Box
-          bgcolor={theme.palette.paper.main}
+          bgcolor={theme.palette.background.default}
           boxShadow={24}
-          p={4}
+          padding={3}
           width={isSmallScreen ? '90%' : '600px'}
           borderRadius="8px"
         >

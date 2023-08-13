@@ -22,10 +22,10 @@ export const darkTheme = createTheme({
       main: '#fff',
     },
     background: {
-      default: '#33332d',
+      default: '#1E293B',
     },
     paper: {
-      main: '#212121',
+      main: '#0c121c',
     },
     danger: {
       main: '#DC3545',
@@ -44,22 +44,17 @@ export const darkTheme = createTheme({
   },
   typography: {
     allVariants: {
-      // Global style override for all typography variants
-      color: '#ffffff', // Replace '#333' with your desired paragraph color
+      color: '#ffffff',
     },
     paragraph: {
-      // Style specific to the 'paragraph' variant
-      // (This will override the color set in allVariants)
-      color: '#ffffff', // Replace '#555' with your desired paragraph color
+      color: '#ffffff',
     },
     infoText: {
       color: '#ffffff',
       fontSize: '.75rem',
     },
     paragraphHeader: {
-      // Style specific to the 'paragraph' variant
-      // (This will override the color set in allVariants)
-      color: '#ffffff', // Replace '#555' with your desired paragraph color
+      color: '#ffffff',
       fontWeight: '600',
       fontStyle: 'italic',
     },
@@ -86,7 +81,6 @@ export const darkTheme = createTheme({
       fontSize: '1.25rem',
       fontWeight: '600',
     },
-    // Other typography variants and styles can be defined here
   },
   components: {
     MuiCssBaseline: {
@@ -94,27 +88,27 @@ export const darkTheme = createTheme({
         '.globalTextareaStyle': {
           fontFamily: 'Poppins, sans-serif',
           width: '100%',
-          padding: '8px',
+          padding: '14px',
           marginTop: '1rem',
           resize: 'none',
           color: '#fff',
           borderColor: '#fff',
-          borderWidth: '1px',
+          borderWidth: '.5px',
           fontSize: '1rem',
           borderRadius: '4px',
-          backgroundColor: '#33332d',
+          backgroundColor: '#0c121c',
           '&:focus': {
-            borderColor: '#fff', // desired focus color
-            borderWidth: '1px',
+            borderColor: '#fff',
+            borderWidth: '0px',
           },
           '&:focus-visible': {
-            borderColor: '#fff', // desired focus color
-            borderWidth: '1px',
+            borderColor: '#fff',
+            borderWidth: '0px',
             outline: '1px solid #fff',
           },
           '&:focus-within': {
-            borderColor: '#fff', // desired focus color
-            borderWidth: '1px',
+            borderColor: '#fff',
+            borderWidth: '.5px',
           },
           '& .MuiOutlinedInput-root': {
             '& fieldset': {
@@ -126,7 +120,7 @@ export const darkTheme = createTheme({
               borderColor: '#fff',
             },
             '&.Mui-focused fieldset': {
-              borderWidth: '2px',
+              borderWidth: '1px',
               borderColor: '#fff',
             },
           },
@@ -138,7 +132,7 @@ export const darkTheme = createTheme({
         root: {
           borderRadius: '8px',
           boxShadow: '0px 4px 10px rgba(0, 0, 0, 0.1)',
-          background: '#212121',
+          background: '#0c121c',
         },
       },
     },
@@ -149,10 +143,10 @@ export const darkTheme = createTheme({
           textDecoration: 'none',
           borderColor: '#fff',
           marginTop: '10px',
-          background: '#222a41',
+          background: '#0c121c',
           '&:hover': {
-            backgroundColor: '#222a41', // Change the background color on hover
-            color: '#fff', // Change the text color on hover
+            backgroundColor: '#0c121c',
+            color: '#fff',
           },
         },
       },
@@ -160,7 +154,6 @@ export const darkTheme = createTheme({
     MuiInputLabel: {
       styleOverrides: {
         root: {
-          // Add your custom label styles here
           color: '#fff',
           fontSize: '0.85rem',
           fontWeight: 'bold',
@@ -171,8 +164,9 @@ export const darkTheme = createTheme({
       styleOverrides: {
         root: {
           marginBottom: 2,
-          background: '#33332d',
+          background: '#0c121c',
           opacity: '0.85',
+          fontSize: '1rem',
           borderRadius: '5px',
           color: '#fff',
           '& .MuiOutlinedInput-root': {
@@ -203,7 +197,6 @@ export const darkTheme = createTheme({
           color: '#fff',
           textDecoration: 'underline',
           fontWeight: '600',
-          // Add any other specific styles you want for the Link component
         },
       },
     },

@@ -186,9 +186,9 @@ const Blog = ({ blog, user, theme }) => {
       marginBottom={2}
     >
       <Paper
-        elevation={2}
+        elevation={3}
         padding={2}
-        background="body"
+        variant="outlined"
         sx={{
           width: '100%',
         }}

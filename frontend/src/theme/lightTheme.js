@@ -88,32 +88,40 @@ export const lightTheme = createTheme({
         '.globalTextareaStyle': {
           fontFamily: 'Poppins, sans-serif',
           width: '100%',
-          padding: '8px',
+          padding: '14px',
           marginTop: '1rem',
           resize: 'none',
-          borderWidth: '1px',
+          color: 'currentColor',
+          // borderColor: '#000',
+          borderWidth: '.5px',
           fontSize: '1rem',
           borderRadius: '4px',
-          borderColor: 'rgba(0, 0, 0, 0.23)',
+          backgroundColor: '#ffffff',
           '&:focus': {
-            borderWidth: '1px',
+            //borderColor: '#000',
+            borderWidth: '0px',
           },
           '&:focus-visible': {
+            // borderColor: '#000',
             borderWidth: '1px',
-            outline: '1px solid #000000',
+            outline: '1px solid #000',
           },
           '&:focus-within': {
-            borderWidth: '1px',
+            // borderColor: '#000',
+            borderWidth: '.5px',
           },
           '& .MuiOutlinedInput-root': {
             '& fieldset': {
+              //borderColor: '#000',
               borderWidth: '.5px',
             },
             '&:hover fieldset': {
               borderWidth: '1px',
+              //borderColor: '#000',
             },
             '&.Mui-focused fieldset': {
-              borderWidth: '2px',
+              borderWidth: '1px',
+              // borderColor: '#000',
             },
           },
         },
@@ -158,6 +166,7 @@ export const lightTheme = createTheme({
           borderRadius: '5px',
           color: '#000000',
           height: '3.5rem',
+          fontSize: '1rem',
         },
       },
     },
@@ -165,6 +174,7 @@ export const lightTheme = createTheme({
       styleOverrides: {
         root: {
           color: '#000000',
+          fontSize: '1rem',
         },
       },
     },

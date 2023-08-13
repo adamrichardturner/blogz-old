@@ -30,6 +30,12 @@ button {
   font-weight: 800 !important;
 }
 
+textarea,
+input {
+  font-size: 1rem !important;
+  font-family: 'Poppins', sans-serif !important;
+}
+
 h1 {
   font-family: 'League Spartan', sans-serif;
   margin: 0;
@@ -42,11 +48,6 @@ h2,
 h3 {
   font-family: 'Roboto', sans-serif;
 }
-
-/* h2 {
-  font-size: 2rem !important;
-  margin: 1.25rem 0 !important;
-} */
 
 h3 {
   font-size: 1.25rem !important;
