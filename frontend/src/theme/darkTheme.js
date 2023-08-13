@@ -201,7 +201,7 @@ export const darkTheme = createTheme({
       styleOverrides: {
         root: {
           color: '#fff',
-          textDecoration: 'underline',
+          textDecoration: 'none',
           fontWeight: '600',
         },
       },

@@ -34,7 +34,14 @@ const UserSummaryView = () => {
               <TableCell>
                 <Typography variant="paragraph" color="primary">
                   {user.name}{' '}
-                  <Link to={`/users/${user.id}`}> {`(${user.username})`}</Link>
+                  <Link to={`/users/${user.id}`}>
+                    {' '}
+                    <span
+                      style={{
+                        fontWeight: 800,
+                      }}
+                    >{`(${user.username})`}</span>
+                  </Link>
                 </Typography>
               </TableCell>
               <TableCell>{user.blogs.length}</TableCell>

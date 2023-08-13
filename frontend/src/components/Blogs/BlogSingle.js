@@ -31,6 +31,7 @@ const BlogSingle = ({ blog, user, theme }) => {
   const { getUserFromId } = useUser()
   const isSmallScreen = useMediaQuery((theme) => theme.breakpoints.down('sm'))
   const [comment, setComment] = useState('')
+  const [commentError, setCommentError] = useState('')
 
   if (!blog || !user) {
     return null
@@ -58,17 +59,30 @@ const BlogSingle = ({ blog, user, theme }) => {
     removeBlog(blog)
   }
 
+  const validateComment = () => {
+    let isValid = true
+    if (!comment.trim()) {
+      setCommentError('You need to write a comment.')
+      isValid = false
+    }
+    return isValid
+  }
+
   const handleComment = (event) => {
     event.preventDefault()
+
+    if (!validateComment()) {
+      return
+    }
     const obj = {
       content: {
         text: comment,
         giphyUrls: [],
       },
-      user: userId,
+      user: user.id,
       likedBy: [],
     }
-    addComment(blogId, obj)
+    addComment(blog.id, obj)
     return setComment('')
   }
 
@@ -102,7 +116,7 @@ const BlogSingle = ({ blog, user, theme }) => {
           sx={{
             display: 'flex',
             flexDirection: 'row',
-            alignItems: 'center',
+            alignItems: 'flex-start',
             justifyContent: 'space-between',
           }}
         >
@@ -120,6 +134,10 @@ const BlogSingle = ({ blog, user, theme }) => {
               onClick={handleDeleteBlogComment}
               color="primary"
               cursor="pointer"
+              sx={{
+                marginRight: '-5px',
+                marginTop: '-2px',
+              }}
             />
           ) : null}
         </Box>
@@ -170,7 +188,7 @@ const BlogSingle = ({ blog, user, theme }) => {
       marginBottom={2}
     >
       <Paper
-        elevation={3}
+        variant="outlined"
         padding={2}
         sx={{
           width: '100%',
@@ -195,6 +213,7 @@ const BlogSingle = ({ blog, user, theme }) => {
                 variant="h2"
                 color="primary"
                 marginBottom={0}
+                lineHeight={1}
                 sx={{
                   fontSize: isSmallScreen ? '1.25rem' : '2rem',
                 }}
@@ -261,34 +280,26 @@ const BlogSingle = ({ blog, user, theme }) => {
               label="Leave a comment"
               variant="filled"
               id="comment"
+              helperText={commentError}
               fullWidth
               name="comment"
               value={comment}
               onChange={({ target }) => setComment(target.value)}
+              sx={{
+                backgroundColor: theme.palette.background.default,
+              }}
             />
             <Button
+              className="insideContent-elements"
               type="submit"
               variant="contained"
               id="comment"
               onClick={handleComment}
-              color="primary"
-              sx={{
-                color: '#fff',
-                borderColor: '#fff',
-                padding: '16px 16px',
-                width: '100%',
-                borderRadius: '5px',
-              }}
             >
               Comment
             </Button>
           </form>
-          {blogComments.length > 0 ? (
-            <List>
-              <Typography variant="h3">Comments</Typography>
-              {displayComments}
-            </List>
-          ) : null}
+          {blogComments.length > 0 ? <List>{displayComments}</List> : null}
         </Box>
         <Box
           sx={{
@@ -318,7 +329,6 @@ const BlogSingle = ({ blog, user, theme }) => {
                 alignItems: 'center',
               }}
             >
-              <Typography variant="paragraph">{blogLikedBy.length}</Typography>
               <FavoriteIcon
                 id="add-like"
                 onClick={addNewLike}
@@ -332,6 +342,9 @@ const BlogSingle = ({ blog, user, theme }) => {
                     : theme.palette.primary.main,
                 }}
               />
+              <Typography variant="paragraph" paddingLeft={'4px'}>
+                {blogLikedBy.length}
+              </Typography>
             </Box>
           </Box>
         </Box>

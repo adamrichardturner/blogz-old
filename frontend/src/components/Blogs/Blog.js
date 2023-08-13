@@ -118,7 +118,7 @@ const Blog = ({ blog, user, theme }) => {
           sx={{
             display: 'flex',
             flexDirection: 'row',
-            alignItems: 'center',
+            alignItems: 'flex-start',
             justifyContent: 'space-between',
           }}
         >
@@ -136,6 +136,10 @@ const Blog = ({ blog, user, theme }) => {
               onClick={handleDeleteBlogComment}
               color="primary"
               cursor="pointer"
+              sx={{
+                marginRight: '-5px',
+                marginTop: '-2px',
+              }}
             />
           ) : null}
         </Box>
@@ -186,7 +190,6 @@ const Blog = ({ blog, user, theme }) => {
       marginBottom={2}
     >
       <Paper
-        elevation={3}
         padding={2}
         variant="outlined"
         sx={{
@@ -205,7 +208,7 @@ const Blog = ({ blog, user, theme }) => {
                 display: 'flex',
                 flexDirection: 'row',
                 justifyContent: 'space-between',
-                alignItems: 'center',
+                alignItems: 'flex-start',
               }}
             >
               <MuiLink component={RouterLink} to={`/blogs/${blogId}`}>
@@ -226,6 +229,10 @@ const Blog = ({ blog, user, theme }) => {
                   onClick={deleteBlog}
                   color="primary"
                   cursor="pointer"
+                  sx={{
+                    marginRight: '-5px',
+                    marginTop: '-2px',
+                  }}
                 />
               ) : null}
             </Box>
@@ -301,13 +308,6 @@ const Blog = ({ blog, user, theme }) => {
               variant="contained"
               id="comment"
               onClick={handleComment}
-              // sx={{
-              //   color: '#fff',
-              //   borderColor: '#fff',
-              //   padding: '6px 16px',
-              //   borderRadius: '5px',
-              //   backgroundColor: theme.palette.background.default,
-              // }}
             >
               Comment
             </Button>

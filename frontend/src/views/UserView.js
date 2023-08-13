@@ -14,17 +14,19 @@ const UserView = () => {
   }
 
   const user = allUsers.find((a) => a.id === id)
-  const blogs = user.blogs.map((blog) => (
-    <MuiLink component={RouterLink} to={`/blogs/${blog.id}`} key={blog.id}>
-      <ListItem>
-        <ListItemText>
-          <Typography varianet="paragraph" color="primary">
-            {blog.title}
-          </Typography>
-        </ListItemText>
-      </ListItem>
-    </MuiLink>
-  ))
+  const blogs = user.blogs.map((blog) => {
+    return (
+      <MuiLink component={RouterLink} to={`/blogs/${blog.id}`} key={blog.id}>
+        <ListItem>
+          <ListItemText>
+            <Typography varianet="paragraph" color="primary">
+              {blog.title}
+            </Typography>
+          </ListItemText>
+        </ListItem>
+      </MuiLink>
+    )
+  })
   return (
     <Box>
       <Typography variant="h2" color="body" marginTop={'16px'} marginBottom={2}>
