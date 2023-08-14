@@ -45,13 +45,11 @@ export const useBlogs = () => {
   }
 
   const removeBlog = (blogData) => {
-    if (window.confirm(`Remove blog ${blogData.title} by ${blogData.author}`)) {
-      try {
-        blogsService.setToken(user.token)
-        dispatch(deleteSelectedBlog(blogData))
-      } catch (exception) {
-        console.error(exception)
-      }
+    try {
+      blogsService.setToken(user.token)
+      dispatch(deleteSelectedBlog(blogData))
+    } catch (exception) {
+      console.error(exception)
     }
   }
 

@@ -53,17 +53,6 @@ const Togglable = forwardRef((props, ref) => {
           borderRadius="8px"
         >
           {props.children}
-          <Button
-            variant="contained"
-            sx={{
-              color: '#fff',
-              borderColor: '#fff',
-              padding: '6px 16px',
-            }}
-            onClick={toggleVisibility}
-          >
-            Cancel
-          </Button>
         </Box>
       </Modal>
     </Box>

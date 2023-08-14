@@ -12,6 +12,7 @@ import {
   Paper,
   Link as MuiLink,
 } from '@mui/material'
+import GiphySearchModal from '../GiphySearchModal/GiphySearchModal'
 import FavoriteIcon from '@mui/icons-material/Favorite'
 import ChatBubbleOutlineRoundedIcon from '@mui/icons-material/ChatBubbleOutlineRounded'
 import ClearIcon from '@mui/icons-material/Clear'
@@ -29,7 +30,33 @@ const Blog = ({ blog, user, theme }) => {
   } = useBlogs()
   const { getUserFromId } = useUser()
   const [visible, setVisible] = useState(false)
-  const [comment, setComment] = useState('')
+  const [comment, setComment] = useState({
+    content: {
+      text: '',
+      giphyUrls: [],
+    },
+  })
+
+  const handleCommentText = ({ target }) => {
+    setComment((prevComment) => ({
+      ...prevComment,
+      content: {
+        ...prevComment.content,
+        text: target.value,
+      },
+    }))
+  }
+
+  const handleGifSelect = (selectedGiphyUrl) => {
+    setComment((prevComment) => ({
+      ...prevComment,
+      content: {
+        ...prevComment.content,
+        giphyUrls: [selectedGiphyUrl],
+      },
+    }))
+  }
+
   const [commentError, setCommentError] = useState('')
 
   if (!blog || !user) {
@@ -41,6 +68,7 @@ const Blog = ({ blog, user, theme }) => {
   const blogComments = blog.comments || []
   const blogTitle = blog.title || ''
   const blogContentText = blog.content?.text || ''
+  const blogContentGiphyUrls = blog.content?.giphyUrls || []
   const blogLikedBy = blog.likedBy || []
   const blogCreatedAt = blog.createdAt || ''
   const blogUsername = blog.user?.name || ''
@@ -63,29 +91,34 @@ const Blog = ({ blog, user, theme }) => {
 
   const validateComment = () => {
     let isValid = true
-    if (!comment.trim()) {
+
+    if (!comment.content.text.trim()) {
       setCommentError('You need to write a comment.')
       isValid = false
     }
+    if (comment.content.giphyUrls.length > 0) {
+      setCommentError('')
+      isValid = true
+    }
+
     return isValid
   }
 
-  const handleComment = (event) => {
+  const submitComment = (event) => {
     event.preventDefault()
 
     if (!validateComment()) {
       return
     }
-    const obj = {
+
+    addComment(blog.id, comment)
+
+    return setComment({
       content: {
-        text: comment,
+        text: '',
         giphyUrls: [],
       },
-      user: user.id,
-      likedBy: [],
-    }
-    addComment(blog.id, obj)
-    return setComment('')
+    })
   }
 
   const displayComments = blogComments.map((comment) => {
@@ -100,6 +133,7 @@ const Blog = ({ blog, user, theme }) => {
     const id = comment._id || null
     const user = comment.user || null
     const text = comment.content.text || null
+    const giphyUrls = comment.content.giphyUrls || []
     const timestamp = comment.timestamp || null
     const likedBy = comment.likedBy || []
     const [username, name] = getUserFromId(user || null) || []
@@ -152,6 +186,18 @@ const Blog = ({ blog, user, theme }) => {
           <ListItemText>
             <Typography variant="paragraph">{text}</Typography>
           </ListItemText>
+        </Box>
+        <Box>
+          {giphyUrls.length > 0 ? (
+            <img
+              src={giphyUrls[0]}
+              style={{
+                width: '100%',
+                height: 'auto',
+                display: 'block',
+              }}
+            />
+          ) : null}
         </Box>
         <Box
           sx={{
@@ -271,6 +317,18 @@ const Blog = ({ blog, user, theme }) => {
           >
             {blogContentText !== null ? blogContentText : ''}
           </Typography>
+          <Box>
+            {blogContentGiphyUrls.length > 0 ? (
+              <img
+                src={blogContentGiphyUrls[0]}
+                style={{
+                  width: '100%',
+                  height: 'auto',
+                  display: 'block',
+                }}
+              />
+            ) : null}
+          </Box>
         </Box>
         <Box
           sx={{
@@ -281,7 +339,7 @@ const Blog = ({ blog, user, theme }) => {
         >
           <form
             className="commentForm"
-            onSubmit={handleComment}
+            onSubmit={submitComment}
             style={{
               display: 'flex',
               flexDirection: 'column',
@@ -296,21 +354,37 @@ const Blog = ({ blog, user, theme }) => {
               helperText={commentError}
               fullWidth
               name="comment"
-              value={comment}
-              onChange={({ target }) => setComment(target.value)}
+              value={comment.content.text}
+              onChange={handleCommentText}
               sx={{
                 backgroundColor: theme.palette.background.default,
               }}
             />
-            <Button
-              className="insideContent-elements"
-              type="submit"
-              variant="contained"
-              id="comment"
-              onClick={handleComment}
+            <Box
+              sx={{
+                display: 'flex',
+                flexDirection: 'row',
+              }}
             >
-              Comment
-            </Button>
+              <GiphySearchModal
+                onGifSelect={(selectedUrl) => handleGifSelect(selectedUrl)}
+                insideContent={true}
+                theme={theme}
+              />
+              <Button
+                className="insideContent-elements"
+                type="submit"
+                variant="contained"
+                color="primary"
+                id="comment"
+                onClick={submitComment}
+                sx={{
+                  marginLeft: 1,
+                }}
+              >
+                Comment
+              </Button>
+            </Box>
           </form>
           <List>{displayComments}</List>
         </Box>

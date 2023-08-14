@@ -60,7 +60,11 @@ const BlogsView = ({ theme }) => {
       </Box>
       <Box>
         <Togglable buttonLabel="New Blog" ref={blogFormRef} theme={theme}>
-          <BlogForm createBlog={handleCreateBlog} theme={theme} />
+          <BlogForm
+            createBlog={handleCreateBlog}
+            theme={theme}
+            modalRef={blogFormRef}
+          />
         </Togglable>
       </Box>
       {list}

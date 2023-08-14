@@ -162,6 +162,7 @@ export const deleteSelectedBlog = (blogData) => async (dispatch) => {
 }
 
 export const commentSelectedBlog = (id, obj) => async (dispatch) => {
+  console.log(obj)
   try {
     await blogService.commentBlog(id, obj)
     await dispatch(initializeBlogs())

@@ -8,13 +8,16 @@ import {
   Alert,
   TextareaAutosize,
 } from '@mui/material'
+import GiphySearchModal from '../GiphySearchModal/GiphySearchModal'
 import Loading from '../../common/Loading.js'
+import ClearIcon from '@mui/icons-material/Clear'
 
-const BlogForm = ({ createBlog, theme }) => {
+const BlogForm = ({ createBlog, theme, modalRef }) => {
   const [newBlog, setNewBlog] = useState({
     title: '',
     content: {
       text: '',
+      giphyUrls: [],
     },
   })
 
@@ -39,6 +42,16 @@ const BlogForm = ({ createBlog, theme }) => {
       content: {
         ...prevState.content,
         text: target.value,
+      },
+    }))
+  }
+
+  const handleGifSelect = (selectedGiphyUrl) => {
+    setNewBlog((prevState) => ({
+      ...prevState,
+      content: {
+        ...prevState.content,
+        giphyUrls: [selectedGiphyUrl],
       },
     }))
   }
@@ -95,90 +108,126 @@ const BlogForm = ({ createBlog, theme }) => {
         flexDirection: 'column',
       }}
     >
-      <Typography variant="h2" marginBottom={2} fontSize={'1.25rem'}>
-        Create a Blog
-      </Typography>
-      {errors.form && <Alert severity="error">{errors.form}</Alert>}
       <Box
-        width="100%"
         sx={{
           display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'stretch',
-          justifyContent: 'center',
+          flexDirection: 'row',
+          justifyContent: 'flex-end',
+          alignItems: 'flex-start',
         }}
       >
-        {!isLoading ? (
-          <form onSubmit={handleSubmit} style={{ width: '100%' }}>
-            <FormControl fullWidth>
-              <TextField
-                label="Blog Title"
-                variant="outlined"
-                fontSize={'1rem'}
-                fullWidth
-                id="title"
-                type="text"
-                value={newBlog.title}
-                onChange={handleTitleChange}
-                helperText={errors.title}
-                inputProps={{ maxLength: 120 }}
-              />
-            </FormControl>
-            <FormControl fullWidth>
-              <TextareaAutosize
-                id="content"
-                minRows={2}
-                maxRows={8}
-                value={newBlog.content.text}
-                onChange={handleContentChange}
-                maxLength={4000}
-                className="globalTextareaStyle"
-                placeholder="What's on your mind?"
-                style={{
-                  fontFamily: 'Poppins, sans-serif',
-                  width: '100%',
-                  marginTop: '1rem',
-                  resize: 'none',
-                  color: theme.palette.primary.main,
-                }}
-              />
-              {errors.content && (
-                <div
+        <ClearIcon
+          onClick={() => modalRef.current.toggleVisibility()}
+          cursor={'pointer'}
+          sx={{
+            marginRight: '-5px',
+            marginTop: '-2px',
+          }}
+        />
+      </Box>
+
+      <Box>
+        <Typography
+          variant="h2"
+          paddingBottom={'.5rem'}
+          marginTop={'0 !important'}
+          fontSize={'1.25rem'}
+        >
+          Create a Blog
+        </Typography>
+        {errors.form && <Alert severity="error">{errors.form}</Alert>}
+        <Box
+          width="100%"
+          sx={{
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'stretch',
+            justifyContent: 'center',
+          }}
+        >
+          {!isLoading ? (
+            <form onSubmit={handleSubmit} style={{ width: '100%' }}>
+              <FormControl fullWidth>
+                <TextField
+                  label="Blog Title"
+                  variant="outlined"
+                  fontSize={'1rem'}
+                  fullWidth
+                  id="title"
+                  type="text"
+                  value={newBlog.title}
+                  onChange={handleTitleChange}
+                  helperText={errors.title}
+                  inputProps={{ maxLength: 120 }}
+                />
+              </FormControl>
+              <FormControl fullWidth>
+                <TextareaAutosize
+                  id="content"
+                  minRows={2}
+                  maxRows={8}
+                  value={newBlog.content.text}
+                  onChange={handleContentChange}
+                  maxLength={4000}
+                  className="globalTextareaStyle"
+                  placeholder="What's on your mind?"
                   style={{
-                    marginTop: '0',
-                    position: 'absolute',
-                    top: '20px',
-                    right: 0,
-                    marginRight: '13px',
+                    fontFamily: 'Poppins, sans-serif',
+                    width: '100%',
+                    marginTop: '1rem',
+                    resize: 'none',
                     color: theme.palette.primary.main,
-                    opacity: 0.85,
-                    fontSize: '.65rem',
+                  }}
+                />
+                {errors.content && (
+                  <div
+                    style={{
+                      marginTop: '0',
+                      position: 'absolute',
+                      top: '20px',
+                      right: 0,
+                      marginRight: '13px',
+                      color: theme.palette.primary.main,
+                      opacity: 0.85,
+                      fontSize: '.65rem',
+                    }}
+                  >
+                    {errors.content}
+                  </div>
+                )}
+              </FormControl>
+              <Box
+                sx={{
+                  display: 'flex',
+                  flexDirection: 'row',
+                }}
+              >
+                <GiphySearchModal
+                  onGifSelect={(selectedUrl) => handleGifSelect(selectedUrl)}
+                  theme={theme}
+                  btnColor={theme.palette.paper.main}
+                />
+                <Button
+                  variant="contained"
+                  id="add-blog"
+                  type="submit"
+                  color="primary"
+                  sx={{
+                    color: '#fff',
+                    borderColor: '#fff',
+                    padding: '6px 16px',
+                    borderRadius: '5px',
+                    marginLeft: 1,
                   }}
                 >
-                  {errors.content}
-                </div>
-              )}
-            </FormControl>
-            <Button
-              variant="contained"
-              id="add-blog"
-              type="submit"
-              color="primary"
-              sx={{
-                color: '#fff',
-                borderColor: '#fff',
-                padding: '16px 16px',
-                width: '100%',
-                borderRadius: '5px',
-                marginTop: 2,
-              }}
-            >
-              Create Blog
-            </Button>
-          </form>
-        ) : (
-          <Loading mode="small" />
-        )}
+                  Create Blog
+                </Button>
+              </Box>
+            </form>
+          ) : (
+            <Loading mode="small" />
+          )}
+        </Box>
       </Box>
     </Box>
   )

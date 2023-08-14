@@ -149,9 +149,19 @@ export const darkTheme = createTheme({
             color: '#fff',
           },
           '&.insideContent-elements': {
-            backgroundColor: '#1E293B',
-            '&:hover': {
+            '&.MuiButton-root': {
               backgroundColor: '#1E293B',
+              '&:hover': {
+                backgroundColor: '#1E293B',
+              },
+            },
+          },
+          '&.outsideContent-elements': {
+            '&.MuiButton-root': {
+              backgroundColor: '#0c121c',
+              '&:hover': {
+                backgroundColor: '#1E293B',
+              },
             },
           },
         },

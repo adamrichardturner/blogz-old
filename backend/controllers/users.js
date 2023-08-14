@@ -66,8 +66,6 @@ usersRouter.get('/', async (request, response) => {
     // Add/remove fields as per your requirement.
   })
 
-  console.log(users)
-
   // Sending a 200 OK response with the retrieved users and their blogs
   response.json(users)
 })

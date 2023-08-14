@@ -18,7 +18,16 @@ blogsRouter.post('/', async (request, response, next) => {
       return response.status(401).json({ error: 'token missing or invalid' })
     }
 
-    const blog = new Blog({ ...request.body, user: request.user._id })
+    const newBlog = {
+      title: request.body.title,
+      content: {
+        text: request.body.content.text,
+        giphyUrls: request.body.content.giphyUrls,
+      },
+    }
+
+    const blog = new Blog({ ...newBlog, user: request.user._id })
+    console.log(blog)
     const savedBlog = await blog.save()
 
     request.user.blogs = request.user.blogs.concat(savedBlog._id)
