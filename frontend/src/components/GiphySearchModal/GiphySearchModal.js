@@ -21,13 +21,13 @@ const GiphySearchModal = ({ onGifSelect, theme, insideContent }) => {
 
   const fetchGifs = async (search = '') => {
     // eslint-disable-next-line no-undef
-    const key = 'ErbqWYHV4kstKnep1qVZaHlqavGFJOIV'
+    const KEY = process.env.REACT_APP_GIPHY_API_KEY
     const endpoint = search
       ? 'https://api.giphy.com/v1/gifs/search'
       : 'https://api.giphy.com/v1/gifs/trending'
     const params = search
-      ? { q: searchTerm, api_key: key, limit: 15 }
-      : { api_key: key, limit: 15 }
+      ? { q: searchTerm, api_key: KEY, limit: 15 }
+      : { api_key: KEY, limit: 15 }
 
     try {
       const response = await axios.get(endpoint, { params })
