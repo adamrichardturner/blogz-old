@@ -1,42 +1,10 @@
 function formatDate(inputStr) {
   const date = new Date(inputStr)
 
-  // Convert current time to UK time
   const now = new Date()
-  const ukTime = new Date(
-    now.getUTCFullYear(),
-    now.getUTCMonth(),
-    now.getUTCDate(),
-    now.getUTCHours(),
-    now.getUTCMinutes(),
-    now.getUTCSeconds(),
-    now.getUTCMilliseconds()
-  )
-
-  // Factor in the Daylight Saving Time (BST) for the UK
-  // Assuming DST starts on the last Sunday of March and ends on the last Sunday of October
-  if (ukTime.getUTCMonth() > 2 && ukTime.getUTCMonth() < 10) {
-    const lastSundayOfMarch = new Date(
-      Date.UTC(ukTime.getUTCFullYear(), 2, 31, 1)
-    )
-    const lastSundayOfOctober = new Date(
-      Date.UTC(ukTime.getUTCFullYear(), 9, 31, 1)
-    )
-
-    if (
-      !(
-        (ukTime.getUTCMonth() === 3 &&
-          ukTime.getUTCDate() < lastSundayOfMarch.getUTCDate()) ||
-        (ukTime.getUTCMonth() === 9 &&
-          ukTime.getUTCDate() >= lastSundayOfOctober.getUTCDate())
-      )
-    ) {
-      ukTime.setHours(ukTime.getHours() + 1)
-    }
-  }
 
   // Get the time difference in milliseconds
-  const diffMs = ukTime - date
+  const diffMs = now - date
   const diffSeconds = Math.floor(diffMs / 1000)
   const diffMinutes = Math.floor(diffSeconds / 60)
   const diffHours = Math.floor(diffMinutes / 60)
@@ -76,11 +44,11 @@ function formatDate(inputStr) {
       'Dec',
     ]
 
-    const dayWithSuffix = ordinalize(date.getUTCDate())
-    const monthName = months[date.getUTCMonth()]
-    const year = date.getUTCFullYear()
-    const time = `${String(date.getUTCHours()).padStart(2, '0')}:${String(
-      date.getUTCMinutes()
+    const dayWithSuffix = ordinalize(date.getDate())
+    const monthName = months[date.getMonth()]
+    const year = date.getFullYear()
+    const time = `${String(date.getHours()).padStart(2, '0')}:${String(
+      date.getMinutes()
     ).padStart(2, '0')}`
 
     return `${dayWithSuffix} ${monthName} ${year} ${time}`
