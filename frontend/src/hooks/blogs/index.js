@@ -30,8 +30,6 @@ export const useBlogs = () => {
 
   const handleCloseDialog = () => {
     setDialogOpen(false)
-    setActionData(null)
-    setCurrentAction(null)
   }
 
   const handleConfirm = async () => {
