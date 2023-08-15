@@ -96,6 +96,7 @@ export const darkTheme = createTheme({
           borderWidth: '.5px',
           fontSize: '1rem',
           borderRadius: '4px',
+          opacity: 0.85,
           backgroundColor: '#0c121c',
           '&:focus': {
             borderColor: '#fff',

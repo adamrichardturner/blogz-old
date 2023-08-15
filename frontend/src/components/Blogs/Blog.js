@@ -16,6 +16,7 @@ import GiphySearchModal from '../GiphySearchModal/GiphySearchModal'
 import FavoriteIcon from '@mui/icons-material/Favorite'
 import ChatBubbleOutlineRoundedIcon from '@mui/icons-material/ChatBubbleOutlineRounded'
 import ClearIcon from '@mui/icons-material/Clear'
+import ConfirmationDialog from '../ConfirmationDialog/ConfirmationDialog'
 import { useBlogs } from '../../hooks/blogs'
 import { useUser } from '../../hooks/users'
 import formatDate from '../util/formatDate'
@@ -27,6 +28,10 @@ const Blog = ({ blog, user, theme }) => {
     likeBlogComment,
     removeBlog,
     deleteBlogComment,
+    isDialogOpen,
+    getDialogMessage,
+    handleConfirm,
+    handleCloseDialog,
   } = useBlogs()
   const { getUserFromId } = useUser()
   const [visible, setVisible] = useState(false)
@@ -187,7 +192,7 @@ const Blog = ({ blog, user, theme }) => {
             <Typography variant="paragraph">{text}</Typography>
           </ListItemText>
         </Box>
-        <Box>
+        <Box marginTop={1}>
           {giphyUrls.length > 0 ? (
             <img
               src={giphyUrls[0]}
@@ -204,6 +209,7 @@ const Blog = ({ blog, user, theme }) => {
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'flex-end',
+            marginTop: 2,
           }}
         >
           <FavoriteIcon
@@ -313,6 +319,7 @@ const Blog = ({ blog, user, theme }) => {
               wordWrap: 'break-word',
               overflowWrap: 'break-word',
               marginTop: '1rem',
+              marginBottom: '.5rem',
             }}
           >
             {blogContentText !== null ? blogContentText : ''}
@@ -360,6 +367,15 @@ const Blog = ({ blog, user, theme }) => {
                 backgroundColor: theme.palette.background.default,
               }}
             />
+            <Box marginTop={2} width={'100%'}>
+              {comment.content.giphyUrls.length > 0 ? (
+                <img
+                  src={comment.content.giphyUrls[0]}
+                  width={'100%'}
+                  height="auto"
+                />
+              ) : null}
+            </Box>
             <Box
               sx={{
                 display: 'flex',
@@ -485,6 +501,12 @@ const Blog = ({ blog, user, theme }) => {
           </Box>
         </Box>
       </Paper>
+      <ConfirmationDialog
+        open={isDialogOpen}
+        content={getDialogMessage()}
+        onConfirm={handleConfirm}
+        onClose={handleCloseDialog}
+      />
     </Box>
   )
 }

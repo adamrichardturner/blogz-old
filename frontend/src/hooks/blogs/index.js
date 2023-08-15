@@ -1,3 +1,5 @@
+/* eslint-disable indent */
+import { useState } from 'react'
 import {
   initializeBlogs,
   createNewBlog,
@@ -14,6 +16,50 @@ import blogsService from '../../services/blogs'
 export const useBlogs = () => {
   const user = useSelector((state) => state.user.user)
   const dispatch = useDispatch()
+
+  // State to control dialog visibility and action type
+  const [isDialogOpen, setDialogOpen] = useState(false)
+  const [currentAction, setCurrentAction] = useState(null)
+  const [actionData, setActionData] = useState(null)
+
+  const handleOpenDialog = (actionType, data) => {
+    setCurrentAction(actionType)
+    setActionData(data)
+    setDialogOpen(true)
+  }
+
+  const handleCloseDialog = () => {
+    setDialogOpen(false)
+    setActionData(null)
+    setCurrentAction(null)
+  }
+
+  const handleConfirm = async () => {
+    try {
+      blogsService.setToken(user.token)
+      if (currentAction === 'removeBlog') {
+        await dispatch(deleteSelectedBlog(actionData.blogData))
+      } else if (currentAction === 'deleteBlogComment') {
+        await dispatch(
+          deleteSelectedBlogComment(actionData.blogId, actionData.commentId)
+        )
+      }
+      handleCloseDialog()
+    } catch (exception) {
+      console.error(exception)
+    }
+  }
+
+  const getDialogMessage = () => {
+    switch (currentAction) {
+      case 'removeBlog':
+        return 'Are you sure you want to delete your blog?'
+      case 'deleteBlogComment':
+        return 'Are you sure you want to delete your comment?'
+      default:
+        return 'Are you sure you want to proceed?'
+    }
+  }
 
   const getBlogs = async () => {
     try {
@@ -45,12 +91,11 @@ export const useBlogs = () => {
   }
 
   const removeBlog = (blogData) => {
-    try {
-      blogsService.setToken(user.token)
-      dispatch(deleteSelectedBlog(blogData))
-    } catch (exception) {
-      console.error(exception)
-    }
+    handleOpenDialog('removeBlog', { blogData })
+  }
+
+  const deleteBlogComment = (blogId, commentId) => {
+    handleOpenDialog('deleteBlogComment', { blogId, commentId })
   }
 
   const likeBlog = async (id, blogData) => {
@@ -80,15 +125,6 @@ export const useBlogs = () => {
     }
   }
 
-  const deleteBlogComment = async (blogId, commentId) => {
-    try {
-      blogsService.setToken(user.token)
-      dispatch(deleteSelectedBlogComment(blogId, commentId))
-    } catch (exception) {
-      console.error(exception)
-    }
-  }
-
   return {
     getBlogs,
     getBlog,
@@ -98,5 +134,9 @@ export const useBlogs = () => {
     addComment,
     likeBlogComment,
     deleteBlogComment,
+    isDialogOpen,
+    getDialogMessage,
+    handleConfirm,
+    handleCloseDialog,
   }
 }

@@ -59,7 +59,7 @@ const BlogsView = ({ theme }) => {
         </Typography>
       </Box>
       <Box>
-        <Togglable buttonLabel="New Blog" ref={blogFormRef} theme={theme}>
+        <Togglable buttonLabel="New Post" ref={blogFormRef} theme={theme}>
           <BlogForm
             createBlog={handleCreateBlog}
             theme={theme}

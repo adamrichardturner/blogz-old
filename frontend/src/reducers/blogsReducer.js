@@ -8,17 +8,17 @@ const initialState = {
 }
 
 const blogsSlice = createSlice({
-  name: 'blogs', // Name of the slice
-  initialState, // Initial state object
+  name: 'blogs',
+  initialState,
   reducers: {
     appendBlog(state, action) {
       // Reducer for appending a new blog to the state
-      state.blogs.push(action.payload) // Add the payload (new blog) to the blogs array
+      state.blogs.push(action.payload)
     },
 
     setBlogs(state, action) {
       // Reducer for setting the blogs array to a new value
-      state.blogs = action.payload // Replace the blogs array with the payload (new array of blogs)
+      state.blogs = action.payload
     },
 
     likeBlog(state, action) {
@@ -82,7 +82,6 @@ const blogsSlice = createSlice({
     },
 
     deleteComment(state, action) {
-      console.log(action.payload)
       const { blogId, commentId } = action.payload
       const blog = state.blogs.find((b) => b.id === blogId)
       if (blog) {
@@ -162,7 +161,6 @@ export const deleteSelectedBlog = (blogData) => async (dispatch) => {
 }
 
 export const commentSelectedBlog = (id, obj) => async (dispatch) => {
-  console.log(obj)
   try {
     await blogService.commentBlog(id, obj)
     await dispatch(initializeBlogs())

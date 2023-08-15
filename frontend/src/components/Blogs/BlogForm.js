@@ -129,9 +129,10 @@ const BlogForm = ({ createBlog, theme, modalRef }) => {
       <Box>
         <Typography
           variant="h2"
-          paddingBottom={'.5rem'}
+          paddingBottom={'.75rem'}
           marginTop={'0 !important'}
           fontSize={'1.25rem'}
+          textAlign={'center'}
         >
           Create a Blog
         </Typography>
@@ -196,6 +197,11 @@ const BlogForm = ({ createBlog, theme, modalRef }) => {
                   </div>
                 )}
               </FormControl>
+              <Box marginTop={2}>
+                {newBlog.content.giphyUrls.length > 0 ? (
+                  <img src={newBlog.content.giphyUrls[0]} width={'100%'} />
+                ) : null}
+              </Box>
               <Box
                 sx={{
                   display: 'flex',
