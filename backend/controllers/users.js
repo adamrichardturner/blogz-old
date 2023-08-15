@@ -52,8 +52,6 @@ usersRouter.post('/', async (request, response) => {
   }
 })
 
-module.exports = usersRouter
-
 // Route for retrieving all users and their associated blogs
 usersRouter.get('/', async (request, response) => {
   // Finding all users in the database and populating their blogs with the specified fields
