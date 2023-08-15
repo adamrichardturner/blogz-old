@@ -102,25 +102,42 @@ const GiphySearchModal = ({ onGifSelect, theme, insideContent }) => {
             Search
           </Button>
 
-          <Grid container spacing={3}>
-            {gifs.map((gif) => (
-              <Grid item xs={6} lg={4} key={gif.id}>
-                <Tooltip title={gif.title}>
-                  <Card
-                    onClick={() => handleSelect(gif)}
-                    style={{ cursor: 'pointer' }}
-                  >
-                    <CardMedia
-                      component="img"
-                      alt={gif.title}
-                      height="200"
-                      image={gif.images.preview_gif.url}
-                    />
-                  </Card>
-                </Tooltip>
-              </Grid>
-            ))}
-          </Grid>
+          <Box style={{ maxHeight: 'calc(100vh - 100px)' }}>
+            <Grid
+              container
+              spacing={3}
+              style={isSmallScreen ? { flexWrap: 'nowrap !important' } : {}}
+              paddingBottom={3}
+            >
+              {gifs.map((gif) => (
+                <Grid
+                  item
+                  xs={isSmallScreen ? 12 : 4}
+                  lg={4}
+                  key={gif.id}
+                  style={
+                    isSmallScreen
+                      ? { flex: '0 0 50% !important', width: '100%' }
+                      : {}
+                  }
+                >
+                  <Tooltip title={gif.title}>
+                    <Card
+                      onClick={() => handleSelect(gif)}
+                      style={{ cursor: 'pointer' }}
+                    >
+                      <CardMedia
+                        component="img"
+                        alt={gif.title}
+                        height="200"
+                        image={gif.images.preview_gif.url}
+                      />
+                    </Card>
+                  </Tooltip>
+                </Grid>
+              ))}
+            </Grid>
+          </Box>
         </Box>
       </Modal>
     </div>
