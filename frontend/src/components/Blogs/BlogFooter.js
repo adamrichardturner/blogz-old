@@ -1,140 +1,68 @@
-import { useState } from 'react'
-import { useBlogs } from '../../hooks/blogs'
+import React from 'react'
+import { Box, Typography } from '@mui/material'
 import FavoriteIcon from '@mui/icons-material/Favorite'
-import {
-  Box,
-  Button,
-  TextField,
-  Typography,
-  List,
-  ListItem,
-  ListItemText,
-} from '@mui/material'
+import ChatBubbleOutlineRoundedIcon from '@mui/icons-material/ChatBubbleOutlineRounded'
+import { useBlogs } from '../../hooks/blogs'
+import { useSelector } from 'react-redux'
+import { useTheme } from '@mui/material'
 
-const BlogFooter = ({ blog, user }) => {
-  const { id } = blog
-  const [comment, setComment] = useState('')
-  const { likeBlog, addComment, removeBlog } = useBlogs()
+function BlogFooter({ blogId, likedBy, commentCount }) {
+  const userId = useSelector((state) => state.user.user.id)
 
-  const handleLike = async () => {
-    await likeBlog(id, blog)
-  }
+  const { handleToggleComments, likeBlog } = useBlogs()
+  const theme = useTheme()
 
-  const handleDelete = () => {
-    removeBlog(blog)
-  }
-
-  const handleComment = (event) => {
-    event.preventDefault()
-    const obj = {
-      id,
-      text: comment,
-    }
-    addComment(id, obj)
-    return setComment('')
-  }
   return (
-    <Box>
+    <Box paddingBottom={'1rem'} paddingTop={'.5rem'}>
       <Box
         style={{
           display: 'flex',
-          flexDirection: 'row',
+          alignItems: 'flex-end',
           justifyContent: 'flex-end',
+          minWidth: '120px',
         }}
       >
         <Box
           style={{
             display: 'flex',
             alignItems: 'center',
-            padding: '1.25rem',
+            justifyContent: 'center',
+            minWidth: '2rem',
           }}
         >
-          <Typography variant="paragraph">{blog.likes}</Typography>
+          <Typography variant="paragraph" paddingRight={0.5}>
+            {commentCount || null}
+          </Typography>
+          <ChatBubbleOutlineRoundedIcon
+            onClick={() => handleToggleComments(blogId)}
+            cursor={'pointer'}
+          />
+        </Box>
+        <Box
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            minWidth: '2rem',
+          }}
+        >
+          <Typography variant="paragraph" paddingLeft={0.5}>
+            {likedBy.length && likedBy.length}
+          </Typography>
           <FavoriteIcon
             id="add-like"
-            onClick={handleLike}
-            color="danger"
+            onClick={() => likeBlog(blogId)}
             sx={{
               borderColor: '#fff',
               fontSize: 26,
               cursor: 'pointer',
               paddingLeft: '3px',
+              color: likedBy.includes(userId)
+                ? 'red'
+                : theme.palette.primary.main,
             }}
           />
         </Box>
-        <Box>
-          {user.name === blog.user.name ? (
-            <Button
-              variant="contained"
-              id="remove-blog"
-              onClick={handleDelete}
-              color="danger"
-              sx={{
-                color: '#fff',
-                borderColor: '#fff',
-                marginLeft: 1,
-                padding: '6px 10px',
-              }}
-            >
-              Remove
-            </Button>
-          ) : null}
-        </Box>
-      </Box>
-      <Box
-        style={{
-          marginTop: '2rem',
-        }}
-      >
-        <form
-          className="commentForm"
-          onSubmit={handleComment}
-          style={{
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'flex-start',
-            justifySelf: 'flex-start',
-          }}
-        >
-          <TextField
-            label="Leave a comment"
-            variant="filled"
-            id="comment"
-            fullWidth
-            name="comment"
-            value={comment}
-            onChange={({ target }) => setComment(target.value)}
-          />
-          <Button
-            type="submit"
-            variant="contained"
-            id="comment"
-            onClick={handleComment}
-            color="primary"
-            sx={{
-              color: '#fff',
-              borderColor: '#fff',
-              padding: '16px 16px',
-              width: '100%',
-              borderRadius: '5px',
-            }}
-          >
-            Comment
-          </Button>
-        </form>
-        <List
-          sx={{
-            paddingTop: '2rem',
-          }}
-        >
-          {blog.comments.map((comment, index) => (
-            <Typography variant="paragraph" key={index}>
-              <ListItem>
-                <ListItemText>{comment}</ListItemText>
-              </ListItem>
-            </Typography>
-          ))}
-        </List>
       </Box>
     </Box>
   )

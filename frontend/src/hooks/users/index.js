@@ -24,7 +24,7 @@ export const useUser = () => {
     if (!users || !Array.isArray(users)) return [null, null]
 
     const user = users.find((user) => user.id === id)
-    return user ? [user.username, user.name] : ['Anonymous', '']
+    return user ? user.name : 'Anonymous'
   }
 
   const loginUser = async (username, password) => {
@@ -66,7 +66,6 @@ export const useUser = () => {
       dispatch(
         setNotification(`${user.name} joined and logged in`, 'positive', 5000)
       )
-      console.log(user)
       return user
     } catch (error) {
       console.error(error)

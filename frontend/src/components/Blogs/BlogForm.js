@@ -7,12 +7,18 @@ import {
   FormControl,
   Alert,
   TextareaAutosize,
+  Dialog,
+  DialogContent,
 } from '@mui/material'
+import { useBlogs } from '../../hooks/blogs'
 import GiphySearchModal from '../GiphySearchModal/GiphySearchModal'
 import Loading from '../../common/Loading.js'
 import ClearIcon from '@mui/icons-material/Clear'
+import { useTheme } from '@mui/material/styles'
 
-const BlogForm = ({ createBlog, theme, modalRef }) => {
+const BlogForm = ({ modalRef }) => {
+  const theme = useTheme()
+  const { createBlog } = useBlogs()
   const [newBlog, setNewBlog] = useState({
     title: '',
     content: {
@@ -71,8 +77,10 @@ const BlogForm = ({ createBlog, theme, modalRef }) => {
         title: '',
         content: {
           text: '',
+          giphyUrls: [],
         },
       })
+      modalRef.current.toggleVisibility()
     } catch (err) {
       setErrors((prevErrors) => ({
         ...prevErrors,
@@ -99,6 +107,16 @@ const BlogForm = ({ createBlog, theme, modalRef }) => {
 
     setErrors(newErrors)
     return isValid
+  }
+
+  const [open, setOpen] = useState(false)
+
+  const handleClickOpen = () => {
+    setOpen(true)
+  }
+
+  const handleClose = () => {
+    setOpen(false)
   }
 
   return (
@@ -197,10 +215,43 @@ const BlogForm = ({ createBlog, theme, modalRef }) => {
                   </div>
                 )}
               </FormControl>
-              <Box marginTop={2}>
-                {newBlog.content.giphyUrls.length > 0 ? (
-                  <img src={newBlog.content.giphyUrls[0]} width={'100%'} />
-                ) : null}
+              <Box marginTop={1}>
+                {newBlog.content.giphyUrls[0] && (
+                  <>
+                    <img
+                      src={newBlog.content.giphyUrls[0]}
+                      alt="Gif Comment"
+                      onClick={handleClickOpen}
+                      style={{
+                        cursor: 'pointer',
+                        marginTop: '.5rem',
+                        maxHeight: '400px',
+                        width: '100%',
+                        objectFit: 'cover',
+                      }}
+                    />
+                    <Dialog
+                      open={open}
+                      onClose={handleClose}
+                      maxWidth="md"
+                      fullWidth
+                    >
+                      <DialogContent>
+                        <img
+                          src={newBlog.content.giphyUrls[0]}
+                          alt="Gif Comment in Modal"
+                          style={{
+                            width: '100%',
+                            height: 'auto',
+                            display: 'block',
+                            marginLeft: 'auto',
+                            marginRight: 'auto',
+                          }}
+                        />
+                      </DialogContent>
+                    </Dialog>
+                  </>
+                )}
               </Box>
               <Box
                 sx={{

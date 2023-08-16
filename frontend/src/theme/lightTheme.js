@@ -186,13 +186,6 @@ export const lightTheme = createTheme({
         },
       },
     },
-    MuiListItem: {
-      styleOverrides: {
-        root: {
-          borderBottom: '1px solid black',
-        },
-      },
-    },
     MuiAlert: {
       styleOverrides: {
         root: {

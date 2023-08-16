@@ -217,14 +217,6 @@ export const darkTheme = createTheme({
         },
       },
     },
-    MuiListItem: {
-      styleOverrides: {
-        root: {
-          opacity: '1',
-          borderBottom: '1px solid white',
-        },
-      },
-    },
     MuiList: {
       styleOverrides: {
         root: {},

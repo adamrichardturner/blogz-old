@@ -1,4 +1,3 @@
-/* eslint-disable indent */
 import { useState } from 'react'
 import {
   initializeBlogs,
@@ -8,14 +7,17 @@ import {
   commentSelectedBlog,
   likeSelectedBlogComment,
   deleteSelectedBlogComment,
+  toggleCommentsVisibility,
 } from '../../reducers/blogsReducer'
 import { initializeUsers } from '../../reducers/userReducer'
 import { useDispatch, useSelector } from 'react-redux'
 import blogsService from '../../services/blogs'
+import { useNavigate } from 'react-router-dom'
 
 export const useBlogs = () => {
   const user = useSelector((state) => state.user.user)
   const dispatch = useDispatch()
+  const navigate = useNavigate()
 
   // State to control dialog visibility and action type
   const [isDialogOpen, setDialogOpen] = useState(false)
@@ -37,12 +39,13 @@ export const useBlogs = () => {
       blogsService.setToken(user.token)
       if (currentAction === 'removeBlog') {
         await dispatch(deleteSelectedBlog(actionData.blogData))
+        navigate('/')
+        handleCloseDialog()
       } else if (currentAction === 'deleteBlogComment') {
         await dispatch(
           deleteSelectedBlogComment(actionData.blogId, actionData.commentId)
         )
       }
-      handleCloseDialog()
     } catch (exception) {
       console.error(exception)
     }
@@ -123,6 +126,10 @@ export const useBlogs = () => {
     }
   }
 
+  const handleToggleComments = (blogId) => {
+    dispatch(toggleCommentsVisibility(blogId))
+  }
+
   return {
     getBlogs,
     getBlog,
@@ -136,5 +143,6 @@ export const useBlogs = () => {
     getDialogMessage,
     handleConfirm,
     handleCloseDialog,
+    handleToggleComments,
   }
 }

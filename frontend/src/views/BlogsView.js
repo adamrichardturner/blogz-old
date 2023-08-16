@@ -1,30 +1,15 @@
-import { useRef } from 'react'
 import { useSelector } from 'react-redux'
-import Togglable from '../common/Togglable'
-import BlogForm from '../components/Blogs/BlogForm'
+import { useRef } from 'react'
 import Blog from '../components/Blogs/Blog'
-import { useBlogs } from '../hooks/blogs'
 import Loading from '../common/Loading'
 import { Box, Typography } from '@mui/material'
+import Togglable from '../common/Togglable'
+import BlogForm from '../components/Blogs/BlogForm'
 
-const BlogsView = ({ theme }) => {
+const BlogsView = () => {
   const { blogs } = useSelector((state) => state.blogs)
   const user = useSelector((state) => state.user.user)
-  const { removeBlog, likeBlog, createBlog } = useBlogs()
   const blogFormRef = useRef()
-
-  const handleLike = async (id, updatedBlog) => {
-    await likeBlog(id, updatedBlog)
-  }
-
-  const handleRemove = async (blogToRemove) => {
-    await removeBlog(blogToRemove)
-  }
-
-  const handleCreateBlog = (blogData) => {
-    blogFormRef.current.toggleVisibility()
-    createBlog(blogData)
-  }
 
   if (user === null) {
     return <Loading mode="large" />
@@ -38,17 +23,8 @@ const BlogsView = ({ theme }) => {
     (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
   )
 
-  const list = sortedBlogs.map((blog, index) => {
-    return (
-      <Blog
-        key={blog.id || index}
-        blog={blog}
-        updateLikes={handleLike}
-        removeBlog={handleRemove}
-        user={user}
-        theme={theme}
-      />
-    )
+  const blogList = sortedBlogs.map((blog) => {
+    return <Blog blog={blog} key={blog.id} />
   })
 
   return (
@@ -59,15 +35,11 @@ const BlogsView = ({ theme }) => {
         </Typography>
       </Box>
       <Box>
-        <Togglable buttonLabel="New Post" ref={blogFormRef} theme={theme}>
-          <BlogForm
-            createBlog={handleCreateBlog}
-            theme={theme}
-            modalRef={blogFormRef}
-          />
+        <Togglable buttonLabel="New Post" ref={blogFormRef}>
+          <BlogForm modalRef={blogFormRef} />
         </Togglable>
       </Box>
-      {list}
+      {blogList}
     </Box>
   )
 }

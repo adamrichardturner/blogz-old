@@ -1,10 +1,11 @@
-import { createSlice } from '@reduxjs/toolkit' // Importing the necessary function from Redux Toolkit
-import blogService from '../services/blogs' // Importing a blog service module
+import { createSlice } from '@reduxjs/toolkit'
+import blogService from '../services/blogs'
 
 const initialState = {
   blogs: [],
   userLikedBlogs: [],
   userLikedComments: [],
+  commentsVisibility: {},
 }
 
 const blogsSlice = createSlice({
@@ -12,12 +13,10 @@ const blogsSlice = createSlice({
   initialState,
   reducers: {
     appendBlog(state, action) {
-      // Reducer for appending a new blog to the state
       state.blogs.push(action.payload)
     },
 
     setBlogs(state, action) {
-      // Reducer for setting the blogs array to a new value
       state.blogs = action.payload
     },
 
@@ -33,10 +32,10 @@ const blogsSlice = createSlice({
           )
           state.userLikedBlogs = state.userLikedBlogs.filter(
             (blogId) => blogId !== id
-          ) // Remove blog ID from userLikedBlogs
+          )
         } else {
           blogToLike.likedBy.push(userId)
-          state.userLikedBlogs.push(id) // Add blog ID to userLikedBlogs
+          state.userLikedBlogs.push(id)
         }
       }
     },
@@ -90,6 +89,11 @@ const blogsSlice = createSlice({
         )
       }
     },
+
+    toggleCommentsVisibility(state, action) {
+      const blogId = action.payload
+      state.commentsVisibility[blogId] = !state.commentsVisibility[blogId]
+    },
   },
 })
 
@@ -101,6 +105,7 @@ export const {
   appendComment,
   likeBlogComment,
   deleteComment,
+  toggleCommentsVisibility,
 } = blogsSlice.actions // Exporting the reducer functions as named exports
 
 export const initializeBlogs = () => {
@@ -151,10 +156,11 @@ export const likeSelectedBlogComment =
     }
   }
 
-export const deleteSelectedBlog = (blogData) => async (dispatch) => {
+export const deleteSelectedBlog = (blogId) => async (dispatch) => {
   try {
-    await blogService.deleteBlog(blogData.id)
-    await dispatch(deleteBlog(blogData))
+    await blogService.deleteBlog(blogId)
+    await dispatch(deleteBlog(blogId))
+    await dispatch(initializeBlogs())
   } catch (error) {
     console.error(error)
   }

@@ -1,10 +1,11 @@
 import { useState, forwardRef, useImperativeHandle } from 'react'
 import PropTypes from 'prop-types'
 import { Button, Modal, Box, useMediaQuery } from '@mui/material'
+import { useTheme } from '@mui/material/styles'
 
 const Togglable = forwardRef((props, ref) => {
   const [visible, setVisible] = useState(false)
-
+  const theme = useTheme()
   const toggleVisibility = () => {
     setVisible(!visible)
   }
@@ -14,8 +15,6 @@ const Togglable = forwardRef((props, ref) => {
       toggleVisibility,
     }
   })
-
-  const { theme } = props
 
   const isSmallScreen = useMediaQuery((theme) => theme.breakpoints.down('sm'))
 
