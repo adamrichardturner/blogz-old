@@ -13,7 +13,7 @@ function BlogFooter({ blogId, likedBy, commentCount }) {
   const theme = useTheme()
 
   return (
-    <Box paddingBottom={'1rem'} paddingTop={'.5rem'}>
+    <Box paddingTop={'.5rem'}>
       <Box
         style={{
           display: 'flex',
