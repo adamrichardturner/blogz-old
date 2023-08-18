@@ -9,7 +9,7 @@ describe('when we have one user in the db', () => {
   beforeEach(async () => {
     await User.deleteMany({})
 
-    const passwordHash = await bcrypt.hash('sekret', 10)
+    const passwordHash = await bcrypt.hash('sekret1', 10)
     const user = new User({ username: 'root', passwordHash })
 
     await user.save()
@@ -20,7 +20,7 @@ describe('when we have one user in the db', () => {
     const testUser = {
       username: 'aturner',
       name: 'Adam Turner',
-      password: 'sisu',
+      password: 'salmiakki12',
     }
 
     await api
@@ -51,7 +51,7 @@ describe('when we have one user in the db', () => {
       .expect(400)
       .expect('Content-Type', /application\/json/)
 
-    expect(result.body.error).toContain('expected `username` to be unique')
+    expect(result.body.error).toContain('Username already exists')
 
     const usersAtEnd = await helper.usersInDb()
     expect(usersAtEnd).toEqual(usersAtStart)
@@ -61,7 +61,7 @@ describe('when we have one user in the db', () => {
     const newUser = {
       username: 'ro',
       name: 'Superuser',
-      password: 'salainen',
+      password: 'salainen1',
     }
 
     const result = await api
@@ -75,11 +75,11 @@ describe('when we have one user in the db', () => {
     )
   })
 
-  test('creation fails with proper status code and message if password less than 3 characters', async () => {
+  test('creation fails with proper status code and message if password less than 5 characters and does not contain a number', async () => {
     const newUser = {
-      username: 'root',
+      username: 'rooty',
       name: 'Superuser',
-      password: 'sa',
+      password: 's1a',
     }
 
     const result = await api
@@ -89,7 +89,7 @@ describe('when we have one user in the db', () => {
       .expect('Content-Type', /application\/json/)
 
     expect(result.body.error).toContain(
-      'Password length must be at least 3 characters'
+      'Password must be at least 5 characters long and contain a number'
     )
   })
 })

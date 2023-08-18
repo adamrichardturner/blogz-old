@@ -1,9 +1,0 @@
-post http://localhost:3003/api/blogs
-Content-Type: application/json
-
-{
-    "title": "Example Title",
-    "author": "Johns Stuart Mill",
-    "url": "https://website.com",
-    "likes": 7
-}

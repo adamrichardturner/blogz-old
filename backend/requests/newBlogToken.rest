@@ -1,9 +1,0 @@
-post http://localhost:3003/api/blogs
-Content-Type: application/json
-Authorization: Bearer JWT_TOKEN_HERE
-{
-    "title": "Title here",
-    "author": "Author Name",
-    "url": "Any string here",
-    "likes": 50000
-}

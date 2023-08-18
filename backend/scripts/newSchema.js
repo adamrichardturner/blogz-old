@@ -66,7 +66,6 @@ const migrateData = async () => {
       })
     }
 
-    console.log('Migration completed!')
     await mongoose.disconnect()
     process.exit(0)
   } catch (error) {

@@ -4,7 +4,8 @@ const app = require('../app')
 const api = supertest(app)
 const helper = require('./test_helper')
 const Blog = require('../models/blog')
-const testToken = 'JWT TOKEN HERE'
+const testToken = process.env.TEST_TOKEN
+
 // Delete all blogs from the database and insert the initial blogs before each test
 beforeEach(async () => {
   await Blog.deleteMany({})
@@ -43,9 +44,11 @@ test('blog posts added increases blog count and content is stored correctly in d
   // Define a test blog post object
   const testBlog = {
     title: 'Test Blog',
-    author: 'Adam Turner',
-    url: 'https://google.com/',
-    likes: 7,
+    content: {
+      text: 'This is the content of the test blog',
+      giphyUrls: [],
+    },
+    likedBy: [],
   }
 
   // Add the test blog post to the database using the supertest API
@@ -78,8 +81,10 @@ test('blog posts added increases blog count and content is stored correctly in d
 test('adding a blog without a token fails with status code 401', async () => {
   const testBlog = {
     title: 'Test Blog',
-    author: 'Adam Turner',
-    url: 'https://google.com/',
+    content: {
+      text: 'Content without token',
+      giphyUrls: [],
+    },
   }
 
   await api.post('/api/blogs').send(testBlog).expect(401)
@@ -87,9 +92,11 @@ test('adding a blog without a token fails with status code 401', async () => {
 
 test('likes property defaults to 0 if not included when adding a blog', async () => {
   const testBlog = {
-    title: 'Test Blog Likes Default',
-    author: 'Arron Turner',
-    url: 'https://googles.com/',
+    title: 'Test Blog',
+    content: {
+      text: 'Content without token',
+      giphyUrls: [],
+    },
   }
   // Add the test blog post to the database using the supertest API
   await api
@@ -100,15 +107,14 @@ test('likes property defaults to 0 if not included when adding a blog', async ()
     .expect('Content-Type', /application\/json/) // Expect a response with JSON content type
 
   // Check if the test blog added has a likes property with value 0
-  const addedBlog = await Blog.findOne({ title: 'Test Blog Likes Default' })
-  expect(addedBlog.likes).toEqual(0)
+  const addedBlog = await Blog.findOne({ title: 'Test Blog' })
+  expect(addedBlog.likedBy.length).toEqual(0)
 })
 
-// Test if title or url is missing that the server responds with a 400 status code
-test('if title or url is missing when adding a blog, server responds with 400 status', async () => {
+// Test if title or content is missing that the server responds with a 400 status code
+test('if title or content.text is missing when adding a blog, server responds with 400 status', async () => {
   const testBlog = {
-    author: 'Alvo Aalto',
-    likes: 25,
+    likedBy: [],
   }
   await api
     .post('/api/blogs')
@@ -120,36 +126,43 @@ test('if title or url is missing when adding a blog, server responds with 400 st
 
 // Group tests related to deleting a blog
 describe('deletion of a blog', () => {
-  // Test that deleting a blog with a valid id returns a 204 status code
-  test('succeeds with status code 204 if id is valid', async () => {
-    const blogsAtStart = await helper.blogsInDb()
-    const blogToDelete = blogsAtStart[0]
+  // DELETE /:id
+  test('succeeds with status code 204 if id is valid and user is the creator', async () => {
+    // Add a blog as the logged-in user
+    const newBlog = {
+      title: 'Test Blog for Deletion',
+      content: { text: 'Some content', giphyUrls: [] },
+    }
 
-    await api.delete(`/api/blogs/${blogToDelete.id}`).expect(204)
+    const addedBlog = await api
+      .post('/api/blogs')
+      .set('Authorization', `Bearer ${testToken}`)
+      .send(newBlog)
 
+    await api
+      .delete(`/api/blogs/${addedBlog.body.id}`)
+      .set('Authorization', `Bearer ${testToken}`)
+      .expect(204)
+
+    // Confirm the blog is deleted
     const blogsAtEnd = await helper.blogsInDb()
-
-    // Expect the length of the blogs array to decrease by 1 after deleting a blog
-    expect(blogsAtEnd).toHaveLength(helper.initialBlogs.length - 1)
-
-    // Create an array of blog titles from the blogs in the database
-    const titles = blogsAtEnd.map((blog) => blog.title)
-
-    // Expect the array of blog titles to not contain the title of the deleted blog post
-    expect(titles).not.toContain(blogToDelete.title)
+    expect(blogsAtEnd).toHaveLength(helper.initialBlogs.length) // Assuming initialBlogs were the starting state
   })
 })
 
 // Group tests related to updating a blog
 describe('updating a blog', () => {
-  // Test that updating a blog returns a 200 status code
+  // PUT /:id
   test('succeeds with status code 200', async () => {
     const testBlog = {
       title: 'Updating this Blog',
-      author: 'Mac n Cheese',
-      url: 'https://google.com/',
-      likes: 20,
+      content: {
+        text: 'Updated content for the blog',
+        giphyUrls: [],
+      },
+      likedBy: [],
     }
+
     const blogs = await helper.blogsInDb()
     const blogToUpdate = blogs[0]
 

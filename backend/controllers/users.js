@@ -18,6 +18,13 @@ usersRouter.post('/', async (request, response) => {
       return response.status(400).json({ error: 'Invalid username' })
     }
 
+    // Validate username
+    if (username.length < 3) {
+      return response
+        .status(400)
+        .json({ error: 'Username should be at least 3 characters long' })
+    }
+
     // Validate name
     if (!name || typeof name !== 'string' || name.trim() === '') {
       return response.status(400).json({ error: 'Invalid name' })
@@ -59,7 +66,7 @@ usersRouter.get('/', async (request, response) => {
     // Assuming 'blogs' is the field in the User model referencing the Blog model
     title: 1,
     'content.text': 1, // Getting the text content of the blog
-    user: 1, // This will give the ObjectId of the user who wrote each blog. If you want the actual user details, you might have to do a deeper population.
+    user: 1, // This will give the ObjectId of the user who wrote each blog.
     likedBy: 1, // This will give an array of ObjectIds of users who liked the blog.
     // Add/remove fields as per your requirement.
   })
@@ -68,5 +75,4 @@ usersRouter.get('/', async (request, response) => {
   response.json(users)
 })
 
-// Exporting the users router module
 module.exports = usersRouter
