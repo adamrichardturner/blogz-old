@@ -1,3 +1,3 @@
-delete http://localhost:3003/api/blogs/BLOG_ID_HERE
+delete http://localhost:3004/api/blogs/BLOG_ID_HERE
 Content-Type: application/json
 Authorization: Bearer JWT_TOKEN_HERE

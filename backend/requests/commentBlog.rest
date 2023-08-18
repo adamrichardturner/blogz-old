@@ -1,4 +1,4 @@
-post http://localhost:3003/api/blogs/BLOG_ID_GOES_HERE/comments/
+post http://localhost:3004/api/blogs/BLOG_ID_GOES_HERE/comments/
 Content-Type: application/json
 Authorization: Bearer JWT_TOKEN_GOES_HERE
 {
