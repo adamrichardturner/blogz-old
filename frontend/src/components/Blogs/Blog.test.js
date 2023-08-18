@@ -1,61 +1,65 @@
 import React from 'react'
+import { render } from '@testing-library/react'
 import '@testing-library/jest-dom/extend-expect'
-import { render, screen } from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
+import { useSelector } from 'react-redux'
 import Blog from './Blog'
 
-describe('<Blog />', () => {
-  const testBlog = {
-    title: 'Chips are for frying',
-    author: 'James Bond',
-    url: 'www.doglistener.co.uk',
-    likes: 15,
+jest.mock('react-redux', () => ({
+  ...jest.requireActual('react-redux'),
+  useSelector: jest.fn(),
+}))
+
+// Mock the child components for a shallow render
+jest.mock('./BlogHeader', () => () => <div>BlogHeader</div>)
+jest.mock('./BlogContent', () => () => <div>BlogContent</div>)
+jest.mock('./Comment/CommentForm', () => () => <div>CommentForm</div>)
+jest.mock('./Comment/CommentList', () => () => <div>CommentsList</div>)
+
+describe('Blog', () => {
+  const mockBlog = {
+    id: 1,
+    title: 'Sample Blog',
     user: {
-      id: '64397c0f28cff7eeed4a2758',
-      name: 'Adam R Turner',
-      username: 'aturner',
+      name: 'Author',
+      id: 2,
     },
+    createdAt: '2023-01-01',
+    content: {
+      text: 'Sample content',
+      giphyUrls: ['https://example.com/gif1.gif'],
+    },
+    likedBy: [],
+    comments: [],
   }
-  const testUser = {
-    id: '64397c0f28cff7eeed4a2758',
-    name: 'Adam R Turner',
-    username: 'aturner',
-  }
-
-  let container
-
-  const mockHandler = jest.fn()
 
   beforeEach(() => {
-    container = render(
-      <Blog blog={testBlog} user={testUser} updateLikes={mockHandler} />
-    ).container
+    useSelector.mockClear()
   })
 
-  test('renders title and author but not likes and url by default', () => {
-    const blogComponent = container.querySelector('.blog')
-    expect(blogComponent).toHaveTextContent('Chips are for frying')
-    expect(blogComponent).toHaveTextContent('James Bond')
-    const blogExtraDetails = container.querySelector('.blog-extra-details')
+  it('renders children components', () => {
+    useSelector.mockReturnValue(false)
+    const { getByText } = render(<Blog blog={mockBlog} />)
 
-    expect(blogExtraDetails).toHaveStyle('display: none;')
+    expect(getByText('BlogHeader')).toBeInTheDocument()
+    expect(getByText('BlogContent')).toBeInTheDocument()
+    expect(getByText('CommentForm')).toBeInTheDocument()
   })
 
-  test('url and likes are shown when the view button is pressed', async () => {
-    const user = userEvent.setup()
-    const button = screen.getByText('view')
-    await user.click(button)
+  it('renders CommentsList if comments are visible', () => {
+    useSelector.mockReturnValue(true) // Comments are visible
 
-    const blogExtraDetails = container.querySelector('.blog-extra-details')
-    expect(blogExtraDetails).toHaveStyle('display: block')
+    const { getByText } = render(<Blog blog={mockBlog} />)
+    expect(getByText('CommentsList')).toBeInTheDocument()
   })
 
-  test('clicking the like button twice calls the event handler twice', async () => {
-    const user = userEvent.setup()
-    const button = screen.getByText('like')
-    await user.click(button)
-    await user.click(button)
+  it('does not render CommentsList if comments are hidden', () => {
+    useSelector.mockReturnValue(false) // Comments are hidden
 
-    expect(mockHandler.mock.calls).toHaveLength(2)
+    const { queryByText } = render(<Blog blog={mockBlog} />)
+    expect(queryByText('CommentsList')).not.toBeInTheDocument()
   })
+})
+
+afterEach(() => {
+  useSelector.mockClear()
 })

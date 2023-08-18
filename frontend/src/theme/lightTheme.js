@@ -38,7 +38,7 @@ export const lightTheme = createTheme({
     },
     text: {
       primary: '#111111',
-      secondary: '#000000',
+      secondary: '#ffffff',
       tertiary: '#111111',
     },
   },

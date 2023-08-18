@@ -14,8 +14,10 @@ import {
 import AssignmentIcon from '@mui/icons-material/Assignment'
 import { Link as RouterLink } from 'react-router-dom'
 import Loading from '../../common/Loading.js'
+import { useTheme } from '@mui/material'
 
 const LoginForm = ({ handleLogin }) => {
+  const theme = useTheme()
   const { authenticate } = useAuth()
 
   const [formData, setFormData] = useState({
@@ -88,7 +90,7 @@ const LoginForm = ({ handleLogin }) => {
 
   return (
     <Box
-      minHeight="90vh"
+      minHeight="92vh"
       sx={{
         display: 'flex',
         alignItems: 'center',
@@ -163,6 +165,7 @@ const LoginForm = ({ handleLogin }) => {
                     onChange={handleUserInput}
                     helperText={errors.username}
                     className="auth-textfield"
+                    disabled={isLoading}
                   />
                 </FormControl>
               </Box>
@@ -180,6 +183,7 @@ const LoginForm = ({ handleLogin }) => {
                     onChange={handlePasswordInput}
                     helperText={errors.password}
                     className="auth-textfield"
+                    disabled={isLoading}
                   />
                 </FormControl>
               </Box>
@@ -188,9 +192,10 @@ const LoginForm = ({ handleLogin }) => {
                   id="login-button"
                   variant="contained"
                   type="submit"
-                  color="primary"
+                  color="body"
+                  disabled={isLoading}
                   sx={{
-                    color: '#fff',
+                    color: theme.palette.text.secondary,
                     borderColor: '#fff',
                     padding: '16px 16px',
                     width: '100%',

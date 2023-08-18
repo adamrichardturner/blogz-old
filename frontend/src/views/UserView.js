@@ -1,41 +1,198 @@
 import { useParams } from 'react-router-dom'
 import { useSelector } from 'react-redux'
-import { Box, Typography, List, ListItem, ListItemText } from '@mui/material'
+import {
+  Box,
+  Typography,
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableRow,
+  ButtonBase,
+} from '@mui/material'
 import Loading from '../common/Loading'
-import { Link as MuiLink } from '@mui/material'
-import { Link as RouterLink } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 
 const UserView = () => {
   const id = useParams().id
-  const allUsers = useSelector((state) => state.user.allUsers)
+  const blogs = useSelector((state) => state.blogs.blogs)
 
-  if (!allUsers) {
+  if (!blogs) {
     return <Loading mode="large" />
   }
 
-  const user = allUsers.find((a) => a.id === id)
-  const blogs = user.blogs.map((blog) => {
-    return (
-      <MuiLink component={RouterLink} to={`/blogs/${blog.id}`} key={blog.id}>
-        <ListItem>
-          <ListItemText>
-            <Typography varianet="paragraph" color="primary">
-              {blog.title}
-            </Typography>
-          </ListItemText>
-        </ListItem>
-      </MuiLink>
-    )
-  })
+  // Filtering the blogs based on user id
+  const userBlogs = blogs.filter((blog) => blog.user.id === id)
+
+  const blogRows = userBlogs.map((blog) => (
+    <TableRow key={blog.id} hover role="checkbox">
+      <TableCell
+        sx={{
+          padding: 0,
+        }}
+      >
+        <ButtonBase
+          component={Link}
+          to={`/blogs/${blog.id}`}
+          style={{
+            width: '100%',
+            display: 'flex',
+            flexDirection: 'row',
+            alignItems: 'center',
+            justifyContent: 'flex-start',
+            padding: '1.25rem 1rem 1.25rem 0',
+            lineHeight: '1',
+          }}
+        >
+          <Typography variant="paragraph" color="primary">
+            {blog.title}
+          </Typography>
+        </ButtonBase>
+      </TableCell>
+      <TableCell
+        sx={{
+          padding: 0,
+        }}
+      >
+        <ButtonBase
+          component={Link}
+          to={`/blogs/${blog.id}`}
+          style={{
+            width: '100%',
+            display: 'flex',
+            flexDirection: 'row',
+            alignItems: 'center',
+            justifyContent: 'flex-start',
+            padding: '1.25rem 1rem 1.25rem 0',
+            lineHeight: '1',
+          }}
+        >
+          <Box>
+            {new Date(blog.createdAt).toLocaleDateString()}{' '}
+            {new Date(blog.createdAt).toLocaleTimeString([], {
+              hour: '2-digit',
+              minute: '2-digit',
+            })}
+          </Box>
+        </ButtonBase>
+      </TableCell>
+      <TableCell
+        sx={{
+          padding: 0,
+        }}
+      >
+        <ButtonBase
+          component={Link}
+          to={`/blogs/${blog.id}`}
+          style={{
+            width: '100%',
+            display: 'flex',
+            flexDirection: 'row',
+            alignItems: 'center',
+            justifyContent: 'flex-start',
+            padding: '1.25rem 1rem 1.25rem 0',
+            lineHeight: '1',
+          }}
+        >
+          <Box>{blog.comments.length}</Box>
+        </ButtonBase>
+      </TableCell>
+      <TableCell
+        sx={{
+          padding: 0,
+        }}
+      >
+        <ButtonBase
+          component={Link}
+          to={`/blogs/${blog.id}`}
+          style={{
+            width: '100%',
+            display: 'flex',
+            flexDirection: 'row',
+            alignItems: 'center',
+            justifyContent: 'flex-start',
+            padding: '1.25rem 1rem 1.25rem 0',
+            lineHeight: '1',
+          }}
+        >
+          <Box>{blog.likedBy.length || 0}</Box>
+        </ButtonBase>
+      </TableCell>
+    </TableRow>
+  ))
+
   return (
     <Box>
       <Typography variant="h2" color="body" marginTop={'16px'} marginBottom={2}>
-        Blogs by {user.name}
+        Blogs by {userBlogs[0]?.user.name || 'User'}
       </Typography>
-      <Typography variant="h3" padding={'1rem 1rem 0 1rem'}>
-        Blogs added:
-      </Typography>
-      <List padding={'1rem'}>{blogs}</List>
+      <Table
+        sx={{
+          marginTop: '.5rem',
+        }}
+      >
+        <TableHead>
+          <TableRow>
+            <TableCell
+              sx={{
+                padding: 0,
+              }}
+            >
+              <Typography
+                variant="paragraph"
+                color="primary"
+                fontWeight={'600'}
+                paddingRight={'1rem'}
+              >
+                Title
+              </Typography>
+            </TableCell>
+            <TableCell
+              sx={{
+                padding: 0,
+              }}
+            >
+              <Typography
+                variant="paragraph"
+                color="primary"
+                fontWeight={'600'}
+                paddingRight={'1rem'}
+              >
+                Date Posted
+              </Typography>
+            </TableCell>
+            <TableCell
+              sx={{
+                padding: 0,
+              }}
+            >
+              <Typography
+                variant="paragraph"
+                color="primary"
+                fontWeight={'600'}
+                paddingRight={'1rem'}
+              >
+                Comments
+              </Typography>
+            </TableCell>
+            <TableCell
+              sx={{
+                padding: 0,
+              }}
+            >
+              <Typography
+                variant="paragraph"
+                color="primary"
+                fontWeight={'600'}
+                paddingRight={'1rem'}
+              >
+                Likes
+              </Typography>
+            </TableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>{blogRows}</TableBody>
+      </Table>
     </Box>
   )
 }

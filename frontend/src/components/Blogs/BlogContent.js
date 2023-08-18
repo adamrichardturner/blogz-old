@@ -1,6 +1,5 @@
 import React, { useState } from 'react'
 import { Box, Typography, Dialog, DialogContent } from '@mui/material'
-import PropTypes from 'prop-types'
 import BlogFooter from './BlogFooter'
 
 function BlogContent({ blogId, likedBy, commentCount, content, gif }) {
@@ -57,10 +56,6 @@ function BlogContent({ blogId, likedBy, commentCount, content, gif }) {
       />
     </Box>
   )
-}
-
-BlogContent.propTypes = {
-  content: PropTypes.string.isRequired,
 }
 
 export default BlogContent

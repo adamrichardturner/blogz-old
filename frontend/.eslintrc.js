@@ -29,6 +29,7 @@ module.exports = {
     'no-console': 0,
     'react/prop-types': 0,
     'react/react-in-jsx-scope': 'off',
+    'react/display-name': 'off',
   },
   settings: {
     react: {

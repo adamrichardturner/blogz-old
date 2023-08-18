@@ -19,6 +19,10 @@ export const useBlogs = () => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
 
+  const handleScrollToTop = () => {
+    window.scrollTo(0, 0)
+  }
+
   // State to control dialog visibility and action type
   const [isDialogOpen, setDialogOpen] = useState(false)
   const [currentAction, setCurrentAction] = useState(null)
@@ -32,6 +36,7 @@ export const useBlogs = () => {
 
   const handleCloseDialog = () => {
     setDialogOpen(false)
+    handleScrollToTop()
   }
 
   const handleConfirm = async () => {

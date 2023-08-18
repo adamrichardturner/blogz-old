@@ -3,13 +3,12 @@ import { Box, Typography, Divider } from '@mui/material'
 const Footer = () => {
   return (
     <Box
-      minHeight="3vh"
+      minHeight="2vh"
       sx={{
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
         flexDirection: 'column',
-        marginTop: '2rem',
       }}
     >
       <Divider

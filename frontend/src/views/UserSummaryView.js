@@ -1,5 +1,5 @@
 import { useSelector } from 'react-redux'
-import { Link } from 'react-router-dom'
+import { ButtonBase } from '@mui/material'
 import {
   Box,
   Typography,
@@ -10,6 +10,7 @@ import {
   TableBody,
 } from '@mui/material'
 import Loading from '../common/Loading'
+import { Link } from 'react-router-dom'
 
 const UserSummaryView = () => {
   const allUsers = useSelector((state) => state.user.allUsers)
@@ -19,32 +20,90 @@ const UserSummaryView = () => {
   return (
     <Box>
       <Typography variant="h2" color="body" marginTop={2} marginBottom={2}>
-        Users Summary
+        Blogz Users
       </Typography>
-      <Table>
+      <Table
+        sx={{
+          marginTop: '.5rem',
+        }}
+      >
         <TableHead>
           <TableRow>
-            <TableCell>Username</TableCell>
-            <TableCell>Blogs Created</TableCell>
+            <TableCell
+              sx={{
+                padding: 0,
+              }}
+            >
+              <Typography
+                variant="paragraph"
+                color="primary"
+                fontWeight={'600'}
+              >
+                Username
+              </Typography>
+            </TableCell>
+            <TableCell
+              sx={{
+                padding: 0,
+              }}
+            >
+              <Typography
+                variant="paragraph"
+                color="primary"
+                fontWeight={'600'}
+              >
+                Blogs Created
+              </Typography>
+            </TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
           {allUsers.map((user) => (
-            <TableRow key={user.username}>
-              <TableCell>
-                <Typography variant="paragraph" color="primary">
-                  {user.name}{' '}
-                  <Link to={`/users/${user.id}`}>
-                    {' '}
+            <TableRow key={user.id} hover role="checkbox">
+              <TableCell
+                sx={{
+                  padding: 0,
+                }}
+              >
+                <ButtonBase
+                  component={Link}
+                  to={`/users/${user.id}`}
+                  style={{
+                    width: '100%',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'flex-start',
+                    padding: '1.25rem 1rem 1.25rem 0',
+                    lineHeight: '1',
+                  }}
+                >
+                  <Typography variant="paragraph" color="primary">
+                    {user.name}{' '}
                     <span
-                      style={{
-                        fontWeight: 800,
-                      }}
+                      style={{ fontWeight: 800 }}
                     >{`(${user.username})`}</span>
-                  </Link>
-                </Typography>
+                  </Typography>
+                </ButtonBase>
               </TableCell>
-              <TableCell>{user.blogs.length}</TableCell>
+              <TableCell
+                sx={{
+                  padding: 0,
+                }}
+              >
+                <ButtonBase
+                  component={Link}
+                  to={`/users/${user.id}`}
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'flex-start',
+                    padding: '1.25rem 1rem 1.25rem 0',
+                    lineHeight: '1',
+                  }}
+                >
+                  {user.blogs.length}
+                </ButtonBase>
+              </TableCell>
             </TableRow>
           ))}
         </TableBody>

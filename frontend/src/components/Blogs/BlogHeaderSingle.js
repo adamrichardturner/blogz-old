@@ -24,6 +24,10 @@ function BlogHeaderSingle({ blog }) {
 
   const userId = useSelector((state) => state.user.user.id)
 
+  const handleScrollToTop = () => {
+    window.scrollTo(0, 0)
+  }
+
   return (
     <Box
       sx={{
@@ -79,7 +83,11 @@ function BlogHeaderSingle({ blog }) {
         >
           Post made by{' '}
           {author !== null ? (
-            <MuiLink component={RouterLink} to={`/users/${authorId}`}>
+            <MuiLink
+              component={RouterLink}
+              to={`/users/${authorId}`}
+              onClick={handleScrollToTop}
+            >
               {author}
             </MuiLink>
           ) : null}

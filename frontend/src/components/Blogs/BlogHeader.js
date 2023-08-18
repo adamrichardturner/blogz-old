@@ -5,7 +5,6 @@ import ClearIcon from '@mui/icons-material/Clear'
 import { useBlogs } from '../../hooks/blogs'
 import { useSelector } from 'react-redux'
 import formatDate from '../util/formatDate'
-import PropTypes from 'prop-types'
 import ConfirmationDialog from '../ConfirmationDialog/ConfirmationDialog'
 
 function BlogHeader({ title, blogId, author, authorId, date }) {
@@ -17,6 +16,11 @@ function BlogHeader({ title, blogId, author, authorId, date }) {
     handleCloseDialog,
   } = useBlogs()
   const userId = useSelector((state) => state.user.user.id)
+
+  const handleScrollToTop = () => {
+    window.scrollTo(0, 0)
+  }
+
   return (
     <Box
       sx={{
@@ -33,7 +37,11 @@ function BlogHeader({ title, blogId, author, authorId, date }) {
           alignItems: 'flex-start',
         }}
       >
-        <MuiLink component={RouterLink} to={`/blogs/${blogId}`}>
+        <MuiLink
+          component={RouterLink}
+          to={`/blogs/${blogId}`}
+          onClick={handleScrollToTop}
+        >
           <Typography
             variant="h3"
             color="primary"
@@ -74,7 +82,11 @@ function BlogHeader({ title, blogId, author, authorId, date }) {
         >
           Post made by{' '}
           {author !== null ? (
-            <MuiLink component={RouterLink} to={`/users/${authorId}`}>
+            <MuiLink
+              component={RouterLink}
+              to={`/users/${authorId}`}
+              onClick={handleScrollToTop}
+            >
               {author}
             </MuiLink>
           ) : null}
@@ -91,12 +103,6 @@ function BlogHeader({ title, blogId, author, authorId, date }) {
       />
     </Box>
   )
-}
-
-BlogHeader.propTypes = {
-  title: PropTypes.string.isRequired,
-  blogId: PropTypes.string.isRequired,
-  onDelete: PropTypes.func,
 }
 
 export default BlogHeader
