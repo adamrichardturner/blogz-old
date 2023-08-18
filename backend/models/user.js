@@ -1,6 +1,5 @@
-// Importing necessary modules
-const mongoose = require('mongoose') // Mongoose library
-const uniqueValidator = require('mongoose-unique-validator') // Unique validation plugin for Mongoose
+const mongoose = require('mongoose')
+const uniqueValidator = require('mongoose-unique-validator')
 
 // Defining the user schema with the necessary fields and validators
 const userSchema = new mongoose.Schema({
@@ -28,7 +27,8 @@ const userSchema = new mongoose.Schema({
   },
 })
 
-// Transforming the user schema object to a JSON object to remove unnecessary fields and include the id field
+// Transforming the user schema object to a JSON object to
+// remove unnecessary fields and include the id field
 userSchema.set('toJSON', {
   transform: (document, returnedObject) => {
     returnedObject.id = returnedObject._id.toString()

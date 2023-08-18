@@ -1,10 +1,9 @@
 const mongoose = require('mongoose')
-const OldBlog = require('../models/blog') // renamed from Blog to OldBlog
+const OldBlog = require('../models/blog')
 const NewBlog = require('../models/newmodels/blog')
-const User = require('../models/user') // assuming this is the correct path to the User model
+const User = require('../models/user')
 
 mongoose.connect('***MONGODB URI***', {
-  // Hide your connection string
   useNewUrlParser: true,
   useUnifiedTopology: true,
 })

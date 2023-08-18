@@ -146,7 +146,7 @@ describe('deletion of a blog', () => {
 
     // Confirm the blog is deleted
     const blogsAtEnd = await helper.blogsInDb()
-    expect(blogsAtEnd).toHaveLength(helper.initialBlogs.length) // Assuming initialBlogs were the starting state
+    expect(blogsAtEnd).toHaveLength(helper.initialBlogs.length)
   })
 })
 
