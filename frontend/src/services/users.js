@@ -11,7 +11,6 @@ const registerUser = async (credentials) => {
     const response = await axios.post(baseUrl, credentials)
 
     if (response.status === 201) {
-      console.log('User registered successfully:', response.data)
       return response.data
     } else {
       console.error('Error registering user:', response.data)

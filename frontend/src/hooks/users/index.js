@@ -1,4 +1,3 @@
-import { setNotification } from '../../reducers/notificationReducer'
 import { initializeBlogs } from '../../reducers/blogsReducer'
 import {
   setLogin,
@@ -33,7 +32,6 @@ export const useUser = () => {
       if (user) {
         window.localStorage.setItem('loggedBlogzApp', JSON.stringify(user))
         blogService.setToken(user.token)
-        dispatch(setNotification(`${user.name} logged in`, 'positive', 5000))
         return user
       }
     } catch (error) {
@@ -63,9 +61,6 @@ export const useUser = () => {
       blogService.setToken(user.token)
       await dispatch(initializeUsers())
       await dispatch(initializeBlogs())
-      dispatch(
-        setNotification(`${user.name} joined and logged in`, 'positive', 5000)
-      )
       return user
     } catch (error) {
       console.error(error)

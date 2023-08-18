@@ -1,7 +1,6 @@
 import { useEffect } from 'react'
 import { Routes, Route } from 'react-router-dom'
 import Header from './Layout/Header/Header'
-import Notification from './components/Notification/Notification'
 import Footer from './Layout/Footer/Footer'
 import BlogsView from './views/BlogsView'
 import BlogView from './views/BlogView'
@@ -39,7 +38,6 @@ const App = () => {
       <CssBaseline />
       <Container maxWidth="md">
         <Header theme={theme} user={user} />
-        <Notification />
         <Routes>
           <Route
             path="/login"
