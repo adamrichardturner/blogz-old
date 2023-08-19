@@ -18,7 +18,7 @@ const UserSummaryView = () => {
     return <Loading mode="large" />
   }
   return (
-    <Box>
+    <Box marginBottom={5}>
       <Typography variant="h2" color="body" marginTop={2} marginBottom={2}>
         Blogz Users
       </Typography>

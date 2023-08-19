@@ -22,7 +22,11 @@ const UserView = () => {
   }
 
   // Filtering the blogs based on user id
-  const userBlogs = blogs.filter((blog) => blog.user.id === id)
+  const rawBlogs = blogs.filter((blog) => blog.user.id === id)
+
+  const userBlogs = [...rawBlogs].sort(
+    (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
+  )
 
   const blogRows = userBlogs.map((blog) => (
     <TableRow key={blog.id} hover role="checkbox">
@@ -122,7 +126,7 @@ const UserView = () => {
   ))
 
   return (
-    <Box>
+    <Box marginBottom={5}>
       <Typography variant="h2" color="body" marginTop={'16px'} marginBottom={2}>
         Blogs by {userBlogs[0]?.user.name || 'User'}
       </Typography>

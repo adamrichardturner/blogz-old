@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { Box, Typography, Dialog, DialogContent } from '@mui/material'
-import BlogFooter from './BlogFooter'
+import BlogFooterSingle from './BlogFooterSingle'
 
 function BlogContent({ blogId, likedBy, commentCount, content, gif }) {
   const [open, setOpen] = useState(false)
@@ -59,7 +59,7 @@ function BlogContent({ blogId, likedBy, commentCount, content, gif }) {
           </Dialog>
         </>
       )}
-      <BlogFooter
+      <BlogFooterSingle
         blogId={blogId}
         likedBy={likedBy}
         commentCount={commentCount}

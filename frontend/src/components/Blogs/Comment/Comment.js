@@ -94,7 +94,14 @@ function Comment({
         }}
       >
         <ListItemText>
-          <Typography variant="paragraph">{text}</Typography>
+          <Typography
+            variant="paragraph"
+            sx={{
+              wordWrap: 'break-word',
+            }}
+          >
+            {text}
+          </Typography>
         </ListItemText>
       </Box>
       <Box marginTop={1}>

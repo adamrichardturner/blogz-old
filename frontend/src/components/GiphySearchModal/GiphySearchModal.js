@@ -50,6 +50,11 @@ const GiphySearchModal = ({ onGifSelect, theme, insideContent }) => {
     setOpen(false)
   }
 
+  const handleCloseModal = () => {
+    setSearchTerm('')
+    setOpen(false)
+  }
+
   return (
     <div>
       <Button
@@ -63,7 +68,7 @@ const GiphySearchModal = ({ onGifSelect, theme, insideContent }) => {
 
       <Modal
         open={open}
-        onClose={() => setOpen(false)}
+        onClose={handleCloseModal}
         aria-labelledby="giphy-search-modal-title"
         aria-describedby="giphy-search-modal-description"
       >
@@ -109,33 +114,36 @@ const GiphySearchModal = ({ onGifSelect, theme, insideContent }) => {
               style={isSmallScreen ? { flexWrap: 'nowrap !important' } : {}}
               paddingBottom={3}
             >
-              {gifs.map((gif) => (
-                <Grid
-                  item
-                  xs={isSmallScreen ? 12 : 4}
-                  lg={4}
-                  key={gif.id}
-                  style={
-                    isSmallScreen
-                      ? { flex: '0 0 50% !important', width: '100%' }
-                      : {}
-                  }
-                >
-                  <Tooltip title={gif.title}>
-                    <Card
-                      onClick={() => handleSelect(gif)}
-                      style={{ cursor: 'pointer' }}
+              {gifs.map(
+                (gif) =>
+                  gif.images.preview_gif.url && (
+                    <Grid
+                      item
+                      xs={isSmallScreen ? 12 : 4}
+                      lg={4}
+                      key={gif.id}
+                      style={
+                        isSmallScreen
+                          ? { flex: '0 0 50% !important', width: '100%' }
+                          : {}
+                      }
                     >
-                      <CardMedia
-                        component="img"
-                        alt={gif.title}
-                        height="200"
-                        image={gif.images.preview_gif.url}
-                      />
-                    </Card>
-                  </Tooltip>
-                </Grid>
-              ))}
+                      <Tooltip title={gif.title}>
+                        <Card
+                          onClick={() => handleSelect(gif)}
+                          style={{ cursor: 'pointer' }}
+                        >
+                          <CardMedia
+                            component="img"
+                            alt={gif.title}
+                            height="200"
+                            image={gif.images.preview_gif.url}
+                          />
+                        </Card>
+                      </Tooltip>
+                    </Grid>
+                  )
+              )}
             </Grid>
           </Box>
         </Box>

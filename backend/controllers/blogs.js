@@ -20,16 +20,16 @@ blogsRouter.post('/', async (request, response, next) => {
       return response.status(401).json({ error: 'token missing or invalid' })
     }
 
-    // Check if title or content is missing
-    if (!request.body.title || !request.body.content.text) {
-      return response.status(400).json({ error: 'Bad Request' })
+    // Check if title
+    if (!request.body.title || !request.body.content.giphyUrls) {
+      return response.status(400).json({ error: 'Title or GIF required' })
     }
 
     const newBlog = {
       title: request.body.title,
       content: {
-        text: request.body.content.text,
-        giphyUrls: request.body.content.giphyUrls,
+        text: request.body.content.text || '',
+        giphyUrls: request.body.content.giphyUrls || [],
       },
     }
 
@@ -233,9 +233,15 @@ blogsRouter.post('/:id/comments', async (request, response, next) => {
   const giphyUrls = request.body.content.giphyUrls
   const user = request.user
 
+  if (text.length === 0 && giphyUrls.length === 0) {
+    return response
+      .status(404)
+      .json({ message: 'Text or GIF required to comment.' })
+  }
+
   const newComment = {
     content: {
-      text: text,
+      text: text || '',
       giphyUrls: giphyUrls || [],
     },
     user: user._id,

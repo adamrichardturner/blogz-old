@@ -6,7 +6,7 @@ import { useTheme } from '@mui/material/styles'
 import GiphySearchModal from '../../GiphySearchModal/GiphySearchModal'
 
 function CommentForm({ blogId }) {
-  const { addComment, handleToggleComments } = useBlogs()
+  const { addComment, visibleComment, handleToggleComments } = useBlogs()
   const theme = useTheme()
 
   const [comment, setComment] = useState({
@@ -39,18 +39,14 @@ function CommentForm({ blogId }) {
   }
 
   const validateComment = () => {
-    let isValid = true
+    const gifLength = comment.content.giphyUrls.length
 
-    if (!comment.content.text.trim()) {
+    if (gifLength === 0 && !comment.content.text.trim()) {
       setCommentError('You need to write a comment.')
-      isValid = false
-    }
-    if (comment.content.giphyUrls.length > 0) {
-      setCommentError('')
-      isValid = true
+      return false
     }
 
-    return isValid
+    return true
   }
 
   const handleFormSubmit = (event) => {
@@ -61,7 +57,9 @@ function CommentForm({ blogId }) {
     }
 
     addComment(blogId, comment)
-    handleToggleComments(blogId)
+    if (!visibleComment[blogId]) {
+      handleToggleComments(blogId)
+    }
 
     return setComment({
       content: {
@@ -146,7 +144,6 @@ function CommentForm({ blogId }) {
       >
         <GiphySearchModal
           onGifSelect={(selectedUrl) => handleGifSelect(selectedUrl)}
-          insideContent={true}
           theme={theme}
         />
         <Button

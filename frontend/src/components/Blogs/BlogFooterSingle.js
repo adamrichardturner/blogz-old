@@ -1,23 +1,15 @@
 import React from 'react'
 import { Box, Typography } from '@mui/material'
 import FavoriteIcon from '@mui/icons-material/Favorite'
-import ChatBubbleOutlineRoundedIcon from '@mui/icons-material/ChatBubbleOutlineRounded'
 import { useBlogs } from '../../hooks/blogs'
 import { useSelector } from 'react-redux'
 import { useTheme } from '@mui/material'
 
-function BlogFooter({ blogId, likedBy, commentCount }) {
+function BlogFooterSingle({ blogId, likedBy }) {
   const userId = useSelector((state) => state.user.user.id)
 
-  const { handleToggleComments, likeBlog } = useBlogs()
+  const { likeBlog } = useBlogs()
   const theme = useTheme()
-
-  const handleComment = () => {
-    if (!commentCount) {
-      return
-    }
-    handleToggleComments(blogId)
-  }
 
   return (
     <Box paddingTop={'.5rem'}>
@@ -29,22 +21,6 @@ function BlogFooter({ blogId, likedBy, commentCount }) {
           minWidth: '120px',
         }}
       >
-        <Box
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            minWidth: '2rem',
-          }}
-        >
-          <Typography variant="paragraph" paddingRight={0.5}>
-            {commentCount || null}
-          </Typography>
-          <ChatBubbleOutlineRoundedIcon
-            onClick={handleComment}
-            cursor={commentCount > 0 ? 'pointer' : 'cursor'}
-          />
-        </Box>
         <Box
           style={{
             display: 'flex',
@@ -75,4 +51,4 @@ function BlogFooter({ blogId, likedBy, commentCount }) {
   )
 }
 
-export default BlogFooter
+export default BlogFooterSingle

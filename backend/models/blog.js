@@ -1,4 +1,4 @@
-const mongoose = require('mongoose') // Import mongoose library for MongoDB operations
+const mongoose = require('mongoose')
 
 // Define a schema for comments
 const commentSchema = new mongoose.Schema({
@@ -6,7 +6,6 @@ const commentSchema = new mongoose.Schema({
     text: {
       // Each comment will have a text field
       type: String, // This field will store strings
-      required: true,
     },
     giphyUrls: [String], // Array of Giphy URLs associated with the comment
   },
@@ -37,7 +36,6 @@ const newBlogSchema = new mongoose.Schema({
     text: {
       // Content of the blog
       type: String, // This field will store strings
-      required: true,
     },
     giphyUrls: [String], // Array of Giphy URLs associated with the blog
   },

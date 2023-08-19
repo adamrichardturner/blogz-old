@@ -92,21 +92,21 @@ const BlogForm = ({ modalRef }) => {
   }
 
   const validateForm = () => {
-    let isValid = true
     const newErrors = {}
 
     if (!newBlog.title.trim()) {
       newErrors.title = 'Title is required'
-      isValid = false
+      setErrors(newErrors)
+      return false
     }
 
-    if (!newBlog.content.text.trim()) {
-      newErrors.content = 'Content is required'
-      isValid = false
+    if (!newBlog.content.giphyUrls && !newBlog.content.text.trim()) {
+      newErrors.content = 'Content or GIF required'
+      setErrors(newErrors)
+      return false
     }
 
-    setErrors(newErrors)
-    return isValid
+    return true
   }
 
   const [open, setOpen] = useState(false)

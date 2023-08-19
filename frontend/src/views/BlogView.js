@@ -15,7 +15,7 @@ const BlogView = () => {
   }
 
   return (
-    <Box marginTop={'16px'}>
+    <Box marginTop={'16px'} marginBottom={5}>
       <article>
         <BlogSingle blog={blog} user={user} />
       </article>

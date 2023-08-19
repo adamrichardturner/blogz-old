@@ -131,6 +131,8 @@ export const useBlogs = () => {
     }
   }
 
+  const visibleComment = useSelector((state) => state.blogs.commentsVisibility)
+
   const handleToggleComments = (blogId) => {
     dispatch(toggleCommentsVisibility(blogId))
   }
@@ -149,5 +151,6 @@ export const useBlogs = () => {
     handleConfirm,
     handleCloseDialog,
     handleToggleComments,
+    visibleComment,
   }
 }

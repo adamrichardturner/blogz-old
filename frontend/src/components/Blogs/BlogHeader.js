@@ -62,6 +62,7 @@ function BlogHeader({ title, blogId, author, authorId, date }) {
             sx={{
               marginRight: '-13px',
               marginTop: '-10px',
+              paddingBottom: 0,
             }}
           >
             <ClearIcon />

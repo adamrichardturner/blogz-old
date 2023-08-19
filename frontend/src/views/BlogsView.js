@@ -39,7 +39,7 @@ const BlogsView = () => {
           <BlogForm modalRef={blogFormRef} />
         </Togglable>
       </Box>
-      {blogList}
+      <Box marginBottom={5}>{blogList}</Box>
     </Box>
   )
 }

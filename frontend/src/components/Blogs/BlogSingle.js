@@ -1,6 +1,6 @@
 import { Box, Paper } from '@mui/material'
 import BlogHeaderSingle from './BlogHeaderSingle'
-import BlogContent from './BlogContent'
+import BlogContentSingle from './BlogContentSingle'
 import CommentForm from './Comment/CommentForm'
 import CommentsList from './Comment/CommentList'
 
@@ -25,7 +25,7 @@ const BlogSingle = ({ blog, user }) => {
         }}
       >
         <BlogHeaderSingle blog={blog} />
-        <BlogContent
+        <BlogContentSingle
           content={blog.content.text}
           gif={blog.content.giphyUrls[0]}
           blogId={blog.id}
