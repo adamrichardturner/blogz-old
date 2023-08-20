@@ -1,5 +1,11 @@
 import { useState, useEffect } from 'react'
-import { Container, Box, Typography, useMediaQuery } from '@mui/material'
+import {
+  Container,
+  Box,
+  Typography,
+  useMediaQuery,
+  ButtonBase,
+} from '@mui/material'
 import AssignmentIcon from '@mui/icons-material/Assignment'
 import { useTheme } from '../../hooks/theme'
 import Navigation from './Navigation'
@@ -17,7 +23,7 @@ const Header = ({ theme }) => {
 
   const handleScroll = () => {
     setScrollPosition(window.scrollY)
-    setIsVisible(window.scrollY > 220)
+    setIsVisible(window.scrollY > 10)
   }
 
   useEffect(() => {
@@ -27,16 +33,20 @@ const Header = ({ theme }) => {
     }
   }, [])
 
+  const handleScrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth', // Smooth scroll
+    })
+  }
+
   const handleSwitch = () => {
     handleThemeChange()
   }
 
   const handleHomeButton = () => {
     navigate('/')
-    window.scrollTo({
-      top: 0,
-      behavior: 'smooth', // Smooth scroll
-    })
+    handleScrollToTop()
   }
 
   const headerStyle = {
@@ -44,8 +54,9 @@ const Header = ({ theme }) => {
     top: 0,
     left: 0,
     right: 0,
+    height: isVisible ? '60px' : '82px',
     zIndex: 10,
-    transform: isVisible ? 'translateY(0)' : 'translateY(-20%)',
+    transform: isVisible ? 'translateY(0)' : 'translateY(-10%)',
     transition: 'transform 0.3s ease-in-out',
     backgroundColor: theme.palette.background.default,
   }
@@ -62,52 +73,61 @@ const Header = ({ theme }) => {
         style={{
           display: 'flex',
           flexDirection: 'row',
-          alignItems: 'flex-end',
+          alignItems: 'center',
           justifyContent: 'space-between',
-          padding: '.75rem 0',
-          marginBottom: 0,
+          padding: 0,
+          margin: '1rem 0',
         }}
       >
-        <Box className="logo-container">
-          {scrollPosition < 220 && (
-            <Box
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                paddingTop: '1.5rem',
-              }}
-            >
-              <Box>
-                <Typography
-                  variant="h1"
-                  sx={{
-                    fontSize: isSmallScreen ? '1.75rem' : '3rem',
-                    marginRight: isSmallScreen ? '2px' : '5px',
-                    transition: 'all 0.3s',
-                  }}
-                  color="primary"
-                >
-                  Blogz
-                </Typography>
-              </Box>
+        <Box>
+          <ButtonBase
+            className="logo-container"
+            onClick={handleHomeButton}
+            cursor={'pointer'}
+            sx={{
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'flex-start',
+              justifyContent: 'flex-start',
+            }}
+          >
+            {!isVisible && (
               <Box
-                sx={{
+                style={{
                   display: 'flex',
                   alignItems: 'center',
-                  justifyContent: 'center',
                 }}
               >
-                <AssignmentIcon
-                  style={{
-                    color: iconColor,
-                    fontSize: isSmallScreen ? '1.25rem' : '2rem',
+                <Box>
+                  <Typography
+                    variant="h1"
+                    sx={{
+                      fontSize: isSmallScreen ? '2.5rem' : '3rem',
+                      marginRight: isSmallScreen ? '2px' : '5px',
+                      transition: 'all 0.3s',
+                    }}
+                    color="primary"
+                  >
+                    Blogz
+                  </Typography>
+                </Box>
+                <Box
+                  sx={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
                   }}
-                  onClick={handleHomeButton}
-                  cursor={'pointer'}
-                />
+                >
+                  <AssignmentIcon
+                    style={{
+                      color: iconColor,
+                      fontSize: isSmallScreen ? '1.65rem' : '2rem',
+                    }}
+                  />
+                </Box>
               </Box>
-            </Box>
-          )}
+            )}
+          </ButtonBase>
           <Navigation
             isSmallScreen={isSmallScreen}
             scroll={scrollPosition}
@@ -141,7 +161,7 @@ const Header = ({ theme }) => {
                 justifyContent: 'center',
               }}
             >
-              <AccountMenu user={user} />
+              <AccountMenu user={user} onClick={handleScrollToTop} />
             </Box>
           </Box>
         </Box>

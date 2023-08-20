@@ -9,11 +9,13 @@ import {
   TableHead,
   TableRow,
   ButtonBase,
+  useTheme,
 } from '@mui/material'
 import Loading from '../common/Loading'
 import { Link } from 'react-router-dom'
 
 const UserView = () => {
+  const theme = useTheme()
   const id = useParams().id
   const blogs = useSelector((state) => state.blogs.blogs)
 
@@ -30,6 +32,10 @@ const UserView = () => {
         <Loading mode="large" />
       </Box>
     )
+  }
+
+  const handleScrollToTop = () => {
+    window.scrollTo(0, 0)
   }
 
   // Filtering the blogs based on user id
@@ -49,13 +55,14 @@ const UserView = () => {
         <ButtonBase
           component={Link}
           to={`/blogs/${blog.id}`}
+          onClick={handleScrollToTop}
           style={{
             width: '100%',
             display: 'flex',
             flexDirection: 'row',
             alignItems: 'center',
             justifyContent: 'flex-start',
-            padding: '1.25rem 1rem 1.25rem 0',
+            padding: '1rem 1rem 1rem .5rem',
             lineHeight: '1',
           }}
         >
@@ -72,13 +79,14 @@ const UserView = () => {
         <ButtonBase
           component={Link}
           to={`/blogs/${blog.id}`}
+          onClick={handleScrollToTop}
           style={{
             width: '100%',
             display: 'flex',
             flexDirection: 'row',
             alignItems: 'center',
             justifyContent: 'flex-start',
-            padding: '1.25rem 1rem 1.25rem 0',
+            padding: '1rem 1rem 1rem .5rem',
             lineHeight: '1',
           }}
         >
@@ -91,42 +99,39 @@ const UserView = () => {
           </Box>
         </ButtonBase>
       </TableCell>
-      <TableCell
-        sx={{
-          padding: 0,
-        }}
-      >
+      <TableCell align="center">
         <ButtonBase
           component={Link}
           to={`/blogs/${blog.id}`}
+          onClick={handleScrollToTop}
           style={{
             width: '100%',
             display: 'flex',
             flexDirection: 'row',
             alignItems: 'center',
-            justifyContent: 'flex-start',
-            padding: '1.25rem 1rem 1.25rem 0',
+            justifyContent: 'center',
+            padding: '1rem 1rem 1rem .5rem',
             lineHeight: '1',
+            textAlign: 'center',
           }}
         >
-          <Box>{blog.comments.length}</Box>
+          <Typography variant="paragraph" color="primary">
+            {blog.comments.length}
+          </Typography>
         </ButtonBase>
       </TableCell>
-      <TableCell
-        sx={{
-          padding: 0,
-        }}
-      >
+      <TableCell align="center">
         <ButtonBase
           component={Link}
           to={`/blogs/${blog.id}`}
+          onClick={handleScrollToTop}
           style={{
             width: '100%',
             display: 'flex',
             flexDirection: 'row',
             alignItems: 'center',
-            justifyContent: 'flex-start',
-            padding: '1.25rem 1rem 1.25rem 0',
+            justifyContent: 'center',
+            padding: '1rem 1rem 1rem .5rem',
             lineHeight: '1',
           }}
         >
@@ -155,17 +160,27 @@ const UserView = () => {
             marginTop: '.5rem',
           }}
         >
-          <TableHead>
+          <TableHead
+            sx={{
+              backgroundColor: theme.palette.head.main,
+              '& .MuiTableRow-root:hover': {
+                backgroundColor: `${theme.palette.head.main} !important`,
+              },
+            }}
+          >
             <TableRow>
               <TableCell
                 sx={{
-                  padding: 0,
+                  padding: '1.25rem .5rem',
+                  lineHeight: '1rem',
                 }}
               >
                 <Typography
                   variant="paragraph"
                   color="primary"
-                  fontWeight={'600'}
+                  fontWeight={'700'}
+                  backgroundColor="primary"
+                  fontSize={'1rem'}
                   paddingRight={'1rem'}
                 >
                   Title
@@ -173,42 +188,52 @@ const UserView = () => {
               </TableCell>
               <TableCell
                 sx={{
-                  padding: 0,
+                  padding: '1.25rem .5rem',
+                  lineHeight: '1rem',
                 }}
               >
                 <Typography
                   variant="paragraph"
                   color="primary"
-                  fontWeight={'600'}
+                  fontWeight={'700'}
+                  backgroundColor="primary"
+                  fontSize={'1rem'}
                   paddingRight={'1rem'}
+                  lineHeight={'1rem'}
                 >
                   Date Posted
                 </Typography>
               </TableCell>
               <TableCell
+                align="center"
                 sx={{
-                  padding: 0,
+                  padding: '1.25rem .5rem',
+                  lineHeight: '1rem',
                 }}
               >
                 <Typography
                   variant="paragraph"
                   color="primary"
-                  fontWeight={'600'}
-                  paddingRight={'1rem'}
+                  fontWeight={'700'}
+                  backgroundColor="primary"
+                  fontSize={'1rem'}
                 >
                   Comments
                 </Typography>
               </TableCell>
               <TableCell
+                align="center"
                 sx={{
-                  padding: 0,
+                  padding: '1.25rem .5rem',
+                  lineHeight: '1rem',
                 }}
               >
                 <Typography
                   variant="paragraph"
                   color="primary"
-                  fontWeight={'600'}
-                  paddingRight={'1rem'}
+                  fontWeight={'700'}
+                  backgroundColor="primary"
+                  fontSize={'1rem'}
                 >
                   Likes
                 </Typography>

@@ -14,6 +14,13 @@ function Navigation({ isSmallScreen, scroll, iconColor }) {
     })
   }
 
+  const scrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth', // Smooth scroll
+    })
+  }
+
   return (
     <Box
       sx={{
@@ -22,7 +29,7 @@ function Navigation({ isSmallScreen, scroll, iconColor }) {
         justifyContent: 'flex-start',
       }}
     >
-      {scroll > 221 && (
+      {scroll > 10 && (
         <AssignmentIcon
           style={{
             color: iconColor,
@@ -38,11 +45,12 @@ function Navigation({ isSmallScreen, scroll, iconColor }) {
         {
           <MuiLink
             component="div"
-            marginRight={1}
+            paddingRight={'1rem'}
             sx={{
               fontWeight: '500',
               fontSize: isSmallScreen ? '1rem' : '1.125rem',
             }}
+            onClick={scrollToTop}
           >
             Posts
           </MuiLink>
@@ -57,6 +65,7 @@ function Navigation({ isSmallScreen, scroll, iconColor }) {
               fontWeight: '500',
               fontSize: isSmallScreen ? '1rem' : '1.125rem',
             }}
+            onClick={scrollToTop}
           >
             Users
           </MuiLink>

@@ -8,12 +8,15 @@ import {
   TableRow,
   TableCell,
   TableBody,
+  useTheme,
 } from '@mui/material'
 import Loading from '../common/Loading'
 import { Link } from 'react-router-dom'
 
 const UserSummaryView = () => {
+  const theme = useTheme()
   const allUsers = useSelector((state) => state.user.allUsers)
+
   if (!allUsers) {
     return (
       <Box
@@ -28,6 +31,11 @@ const UserSummaryView = () => {
       </Box>
     )
   }
+
+  const handleScrollToTop = () => {
+    window.scrollTo(0, 0)
+  }
+
   return (
     <Box marginBottom={5} marginTop={'110px'}>
       <Typography variant="h2" color="body" marginTop={2} marginBottom={2}>
@@ -38,30 +46,45 @@ const UserSummaryView = () => {
           marginTop: '.5rem',
         }}
       >
-        <TableHead>
-          <TableRow>
+        <TableHead
+          sx={{
+            backgroundColor: theme.palette.head.main,
+            '& .MuiTableRow-root:hover': {
+              backgroundColor: `${theme.palette.head.main} !important`,
+            },
+          }}
+        >
+          <TableRow
+            sx={{
+              borderBottom: '1px solid black',
+            }}
+          >
             <TableCell
               sx={{
-                padding: 0,
+                padding: '1.25rem .5rem',
               }}
             >
               <Typography
                 variant="paragraph"
                 color="primary"
-                fontWeight={'600'}
+                fontWeight={'700'}
+                backgroundColor="primary"
+                fontSize={'1rem'}
               >
-                Username
+                User
               </Typography>
             </TableCell>
             <TableCell
               sx={{
-                padding: 0,
+                padding: '1.25rem .5rem',
               }}
             >
               <Typography
                 variant="paragraph"
                 color="primary"
-                fontWeight={'600'}
+                fontWeight={'700'}
+                fontSize={'1rem'}
+                lineHeight={1}
               >
                 Blogs Created
               </Typography>
@@ -77,15 +100,22 @@ const UserSummaryView = () => {
                 }}
               >
                 <ButtonBase
-                  component={Link}
-                  to={`/users/${user.id}`}
+                  component={user.blogs.length <= 0 ? 'div' : Link}
+                  to={user.blogs.length > 0 ? `/users/${user.id}` : '#'}
+                  onClick={(e) => {
+                    if (user.blogs.length > 0) {
+                      handleScrollToTop()
+                    } else {
+                      e.preventDefault()
+                    }
+                  }}
                   style={{
-                    width: '100%',
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'flex-start',
-                    padding: '1.25rem 1rem 1.25rem 0',
+                    padding: '1rem 1rem 1rem .5rem',
                     lineHeight: '1',
+                    cursor: user.blogs.length <= 0 ? 'not-allowed' : 'pointer',
                   }}
                 >
                   <Typography variant="paragraph" color="primary">
@@ -102,14 +132,22 @@ const UserSummaryView = () => {
                 }}
               >
                 <ButtonBase
-                  component={Link}
-                  to={`/users/${user.id}`}
+                  component={user.blogs.length <= 0 ? 'div' : Link}
+                  to={user.blogs.length > 0 ? `/users/${user.id}` : '#'}
+                  onClick={(e) => {
+                    if (user.blogs.length > 0) {
+                      handleScrollToTop()
+                    } else {
+                      e.preventDefault()
+                    }
+                  }}
                   style={{
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'flex-start',
-                    padding: '1.25rem 1rem 1.25rem 0',
+                    padding: '1rem 1rem 1rem .5rem',
                     lineHeight: '1',
+                    cursor: user.blogs.length <= 0 ? 'not-allowed' : 'pointer',
                   }}
                 >
                   {user.blogs.length}

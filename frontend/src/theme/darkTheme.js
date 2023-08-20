@@ -24,6 +24,9 @@ export const darkTheme = createTheme({
     background: {
       default: '#1E293B',
     },
+    head: {
+      main: '#0c121c',
+    },
     paper: {
       main: '#0c121c',
     },
@@ -124,6 +127,15 @@ export const darkTheme = createTheme({
               borderWidth: '1px',
               borderColor: '#fff',
             },
+          },
+        },
+      },
+    },
+    MuiTableRow: {
+      styleOverrides: {
+        root: {
+          '&:hover': {
+            backgroundColor: 'rgba(255, 255, 255, 0.08) !important', // Change to your desired hover color.
           },
         },
       },

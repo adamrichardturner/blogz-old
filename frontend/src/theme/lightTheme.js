@@ -24,6 +24,9 @@ export const lightTheme = createTheme({
     background: {
       default: '#ffffff',
     },
+    head: {
+      main: 'rgba(0, 0, 0, 0.04) !important',
+    },
     paper: {
       main: '#ffffff',
     },
