@@ -12,11 +12,33 @@ const BlogsView = () => {
   const blogFormRef = useRef()
 
   if (user === null) {
-    return <Loading mode="large" />
+    return (
+      <Box
+        minHeight={'72vh'}
+        sx={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}
+      >
+        <Loading mode="large" />
+      </Box>
+    )
   }
 
   if (blogs.length <= 0) {
-    return <Loading mode="large" />
+    return (
+      <Box
+        minHeight={'72vh'}
+        sx={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}
+      >
+        <Loading mode="large" />
+      </Box>
+    )
   }
 
   const sortedBlogs = [...blogs].sort(
@@ -28,7 +50,7 @@ const BlogsView = () => {
   })
 
   return (
-    <Box>
+    <Box marginTop={'10vh'}>
       <Box>
         <Typography variant="h2" color="body" marginTop={2} marginBottom={0}>
           What&apos;s on your mind, {user.name.split(' ')[0]}? 😄

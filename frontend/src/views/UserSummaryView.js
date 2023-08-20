@@ -15,10 +15,21 @@ import { Link } from 'react-router-dom'
 const UserSummaryView = () => {
   const allUsers = useSelector((state) => state.user.allUsers)
   if (!allUsers) {
-    return <Loading mode="large" />
+    return (
+      <Box
+        minHeight={'72vh'}
+        sx={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}
+      >
+        <Loading mode="large" />
+      </Box>
+    )
   }
   return (
-    <Box marginBottom={5}>
+    <Box marginBottom={5} marginTop={'10vh'}>
       <Typography variant="h2" color="body" marginTop={2} marginBottom={2}>
         Blogz Users
       </Typography>

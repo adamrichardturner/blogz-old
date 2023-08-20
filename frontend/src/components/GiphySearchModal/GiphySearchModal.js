@@ -10,9 +10,11 @@ import {
   Button,
   Box,
   useMediaQuery,
+  useTheme,
 } from '@mui/material'
 
-const GiphySearchModal = ({ onGifSelect, theme, insideContent }) => {
+const GiphySearchModal = ({ onGifSelect, insideContent }) => {
+  const theme = useTheme()
   const [open, setOpen] = useState(false)
   const [searchTerm, setSearchTerm] = useState('')
   const [gifs, setGifs] = useState([])

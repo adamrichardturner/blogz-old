@@ -8,11 +8,12 @@
 
 html {
   font-size: 16px;
-  overflow-y: scroll;
+  overflow-y: scroll !important;
 }
 
 body {
   font-family: 'Poppins', sans-serif;
+  padding-right: 0 !important;
 }
 
 a {

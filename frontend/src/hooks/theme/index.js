@@ -7,14 +7,19 @@ export const useTheme = () => {
   const isDarkMode = useSelector((state) => state.theme.darkMode) // Access the darkMode state from the theme reducer
 
   useEffect(() => {
-    // Check if isDarkMode exists in local storage
     const storedMode = localStorage.getItem('isDarkMode')
+
+    // Check if the user's computer or browser has dark mode settings enabled
+    const userPrefersDark =
+      window.matchMedia &&
+      window.matchMedia('(prefers-color-scheme: dark)').matches
+
     if (storedMode === null) {
-      // if it doesn't exist, set a default value
-      localStorage.setItem('isDarkMode', JSON.stringify(false)) // Default preference
-      dispatch(setDarkMode(false)) // Also update the Redux store
+      // Set the default value based on user's computer/browser settings
+      const defaultMode = userPrefersDark ? true : false
+      localStorage.setItem('isDarkMode', JSON.stringify(defaultMode))
+      dispatch(setDarkMode(defaultMode))
     } else {
-      // Sync the Redux store with localStorage value
       dispatch(setDarkMode(storedMode === 'true'))
     }
   }, [])

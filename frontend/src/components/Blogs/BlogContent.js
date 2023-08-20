@@ -16,7 +16,7 @@ function BlogContent({ blogId, likedBy, commentCount, content, gif }) {
   // For the GIF preview
   const gifPreviewStyle = {
     cursor: 'pointer',
-    marginTop: '.5rem',
+    marginTop: '5px',
     width: '100%',
     maxHeight: '420px',
     objectFit: 'cover',
@@ -24,9 +24,9 @@ function BlogContent({ blogId, likedBy, commentCount, content, gif }) {
 
   // For the GIF in the modal
   const gifModalStyle = {
-    width: '100%', // Set width to 70% of viewport width
-    height: 'auto', // Adjust the height automatically
-    maxHeight: '70vh', // But don't let it exceed 70% of viewport height
+    width: '100%',
+    height: 'auto',
+    maxHeight: '70vh',
     display: 'block',
     marginLeft: 'auto',
     marginRight: 'auto',

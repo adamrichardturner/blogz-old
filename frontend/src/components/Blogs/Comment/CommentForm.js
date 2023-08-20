@@ -145,6 +145,7 @@ function CommentForm({ blogId }) {
         <GiphySearchModal
           onGifSelect={(selectedUrl) => handleGifSelect(selectedUrl)}
           theme={theme}
+          insideContent={true}
         />
         <Button
           className="insideContent-elements"

@@ -11,11 +11,22 @@ const BlogView = () => {
   const blog = blogs.find((b) => b.id === id)
 
   if (!blog) {
-    return <Loading mode="large" />
+    return (
+      <Box
+        minHeight={'72vh'}
+        sx={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}
+      >
+        <Loading mode="large" />
+      </Box>
+    )
   }
 
   return (
-    <Box marginTop={'16px'} marginBottom={5}>
+    <Box marginTop={'10vh'} marginBottom={5}>
       <article>
         <BlogSingle blog={blog} user={user} />
       </article>

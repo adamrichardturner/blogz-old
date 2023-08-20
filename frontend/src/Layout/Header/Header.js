@@ -1,44 +1,43 @@
-import {
-  Box,
-  FormGroup,
-  FormControlLabel,
-  Button,
-  Typography,
-  Switch,
-  useMediaQuery,
-  Link,
-} from '@mui/material'
-import { Link as RouterLink } from 'react-router-dom'
+import { useState, useEffect } from 'react'
+import { Container, Box, Typography, useMediaQuery } from '@mui/material'
 import AssignmentIcon from '@mui/icons-material/Assignment'
-import LightbulbIcon from '@mui/icons-material/Lightbulb'
-import { useAuth } from '../../hooks/auth'
 import { useTheme } from '../../hooks/theme'
 import Navigation from './Navigation'
+import AccountMenu from '../../common/AccountMenu'
+import DarkModeToggle from '../../common/DarkModeToggle'
 
 const Header = ({ theme }) => {
-  const { signout } = useAuth()
+  const [scrollPosition, setScrollPosition] = useState(0)
+  const [isVisible, setIsVisible] = useState(false)
   const { handleThemeChange, isDarkMode } = useTheme()
   const user = JSON.parse(localStorage.getItem('loggedBlogzApp'))
+  const isSmallScreen = useMediaQuery((theme) => theme.breakpoints.down('sm'))
 
-  const handleLogout = () => {
-    window.localStorage.removeItem('loggedBlogzApp')
-    signout()
+  const handleScroll = () => {
+    setScrollPosition(window.scrollY)
+    setIsVisible(window.scrollY > 220)
   }
+
+  useEffect(() => {
+    window.addEventListener('scroll', handleScroll)
+    return () => {
+      window.removeEventListener('scroll', handleScroll)
+    }
+  }, [])
 
   const handleSwitch = () => {
     handleThemeChange()
   }
 
-  const isSmallScreen = useMediaQuery((theme) => theme.breakpoints.down('sm'))
-
-  const styles = {
-    display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'flex-end',
-    justifyContent: 'space-between',
-    borderBottom: `1px solid ${theme.palette.text.primary}`,
-    paddingBottom: 10,
-    marginTop: '1.75rem',
+  const headerStyle = {
+    position: 'fixed',
+    top: 0,
+    left: 0,
+    right: 0,
+    zIndex: 10,
+    transform: isVisible ? 'translateY(0)' : 'translateY(-20%)',
+    transition: 'transform 0.3s ease-in-out',
+    backgroundColor: theme.palette.background.default,
   }
 
   const iconColor = theme.palette.type === 'dark' ? '#ffffff' : '#201b2d'
@@ -48,131 +47,94 @@ const Header = ({ theme }) => {
   }
 
   return (
-    <Box style={{ color: iconColor }}>
-      <Box style={styles}>
-        <Box>
+    <Container maxWidth="md" style={{ ...headerStyle, color: iconColor }}>
+      <Box
+        style={{
+          display: 'flex',
+          flexDirection: 'row',
+          alignItems: 'flex-end',
+          justifyContent: 'space-between',
+          padding: '.75rem 0',
+          marginBottom: 0,
+        }}
+      >
+        <Box className="logo-container">
+          {scrollPosition < 220 && (
+            <Box
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                paddingTop: '1.5rem',
+              }}
+            >
+              <Box>
+                <Typography
+                  variant="h1"
+                  sx={{
+                    fontSize: isSmallScreen ? '1.75rem' : '3rem',
+                    marginRight: isSmallScreen ? '2px' : '5px',
+                    transition: 'all 0.3s',
+                  }}
+                  color="primary"
+                >
+                  Blogz
+                </Typography>
+              </Box>
+              <Box
+                sx={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                }}
+              >
+                <AssignmentIcon
+                  style={{
+                    color: iconColor,
+                    fontSize: isSmallScreen ? '1.25rem' : '2rem',
+                  }}
+                />
+              </Box>
+            </Box>
+          )}
+          <Navigation
+            isSmallScreen={isSmallScreen}
+            scroll={scrollPosition}
+            iconColor={iconColor}
+          />
+        </Box>
+        <Box sx={{ display: 'flex' }}>
           <Box
-            style={{
+            sx={{
               display: 'flex',
-              alignItems: 'center',
+              flexDirection: 'row',
+              alignItems: 'flex-end',
+              justifyContent: 'flex-end',
             }}
           >
-            <Typography
-              variant="h1"
+            <Box
               sx={{
-                fontSize: isSmallScreen ? '3.15rem' : '5rem',
-                marginRight: isSmallScreen ? '5px' : '10px',
+                display: 'flex',
+                alignItems: 'flex-end',
+                justifyContent: 'center',
+                marginRight: '.5rem',
               }}
-              color="primary"
             >
-              Blogz
-            </Typography>
-            <AssignmentIcon
-              style={{
-                color: iconColor,
-                fontSize: isSmallScreen ? '2rem' : '3.5rem',
+              <DarkModeToggle checked={isDarkMode} onChange={handleSwitch} />
+            </Box>
+            <Box
+              sx={{
+                display: 'flex',
+                flexDirection: 'row',
+                alignItems: 'flex-end',
+                justifyContent: 'center',
               }}
-            />
+            >
+              <AccountMenu user={user} />
+            </Box>
           </Box>
-          <Navigation isSmallScreen={isSmallScreen} />
-        </Box>
-        <Box
-          sx={{
-            display: 'flex',
-          }}
-        >
-          {user ? (
-            <>
-              <Box>
-                <Box
-                  sx={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                  }}
-                >
-                  <Typography
-                    variant="paragraph"
-                    marginLeft={0.75}
-                    sx={{
-                      fontSize: isSmallScreen ? '.75rem' : '1rem',
-                    }}
-                    className="login-status"
-                  >
-                    <span
-                      style={{
-                        fontWeight: '800',
-                      }}
-                    >
-                      <Link component={RouterLink} to={`/users/${user.id}`}>
-                        {user.name}
-                      </Link>
-                    </span>{' '}
-                    is logged in
-                  </Typography>
-                </Box>
-                <Box
-                  sx={{
-                    textAlign: 'right',
-                  }}
-                >
-                  <Button
-                    id="login-button"
-                    variant="contained"
-                    type="submit"
-                    color="primary"
-                    sx={{
-                      color: '#fff',
-                      borderColor: '#fff',
-                      marginTop: '10px',
-                    }}
-                    onClick={handleLogout}
-                  >
-                    Logout
-                  </Button>
-                </Box>
-                <Box
-                  sx={{
-                    display: 'flex',
-                    flexDirection: 'row',
-                    alignItems: 'center',
-                    justifyContent: 'flex-end',
-                  }}
-                >
-                  <Box marginTop={2}>
-                    <FormGroup
-                      sx={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        marginRight: 0,
-                        flexDirection: 'row',
-                      }}
-                    >
-                      <FormControlLabel
-                        control={
-                          <Switch
-                            checked={isDarkMode}
-                            onChange={handleSwitch}
-                          />
-                        }
-                        sx={{
-                          marginRight: 0,
-                          padding: 0,
-                          display: 'flex',
-                          alignItems: 'flex-end',
-                        }}
-                      />
-                      <LightbulbIcon />
-                    </FormGroup>
-                  </Box>
-                </Box>
-              </Box>
-            </>
-          ) : null}
         </Box>
       </Box>
-    </Box>
+    </Container>
   )
 }
 

@@ -18,7 +18,18 @@ const UserView = () => {
   const blogs = useSelector((state) => state.blogs.blogs)
 
   if (!blogs) {
-    return <Loading mode="large" />
+    return (
+      <Box
+        minHeight={'72vh'}
+        sx={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}
+      >
+        <Loading mode="large" />
+      </Box>
+    )
   }
 
   // Filtering the blogs based on user id
@@ -126,77 +137,87 @@ const UserView = () => {
   ))
 
   return (
-    <Box marginBottom={5}>
-      <Typography variant="h2" color="body" marginTop={'16px'} marginBottom={2}>
-        Blogs by {userBlogs[0]?.user.name || 'User'}
-      </Typography>
-      <Table
-        sx={{
-          marginTop: '.5rem',
-        }}
+    <Box marginBottom={5} minHeight={'77vh'} marginTop={'10vh'}>
+      <Typography
+        variant="h2"
+        color="body"
+        marginTop={'16px'}
+        marginBottom={2}
+        textAlign={userBlogs.length > 0 ? 'left' : 'center'}
       >
-        <TableHead>
-          <TableRow>
-            <TableCell
-              sx={{
-                padding: 0,
-              }}
-            >
-              <Typography
-                variant="paragraph"
-                color="primary"
-                fontWeight={'600'}
-                paddingRight={'1rem'}
+        {userBlogs.length > 0
+          ? `Blogs by ${userBlogs[0]?.user.name || 'User'}`
+          : `No Blogs made yet by ${userBlogs[0]?.user.name || 'User'}`}
+      </Typography>
+      {userBlogs.length > 0 && (
+        <Table
+          sx={{
+            marginTop: '.5rem',
+          }}
+        >
+          <TableHead>
+            <TableRow>
+              <TableCell
+                sx={{
+                  padding: 0,
+                }}
               >
-                Title
-              </Typography>
-            </TableCell>
-            <TableCell
-              sx={{
-                padding: 0,
-              }}
-            >
-              <Typography
-                variant="paragraph"
-                color="primary"
-                fontWeight={'600'}
-                paddingRight={'1rem'}
+                <Typography
+                  variant="paragraph"
+                  color="primary"
+                  fontWeight={'600'}
+                  paddingRight={'1rem'}
+                >
+                  Title
+                </Typography>
+              </TableCell>
+              <TableCell
+                sx={{
+                  padding: 0,
+                }}
               >
-                Date Posted
-              </Typography>
-            </TableCell>
-            <TableCell
-              sx={{
-                padding: 0,
-              }}
-            >
-              <Typography
-                variant="paragraph"
-                color="primary"
-                fontWeight={'600'}
-                paddingRight={'1rem'}
+                <Typography
+                  variant="paragraph"
+                  color="primary"
+                  fontWeight={'600'}
+                  paddingRight={'1rem'}
+                >
+                  Date Posted
+                </Typography>
+              </TableCell>
+              <TableCell
+                sx={{
+                  padding: 0,
+                }}
               >
-                Comments
-              </Typography>
-            </TableCell>
-            <TableCell
-              sx={{
-                padding: 0,
-              }}
-            >
-              <Typography
-                variant="paragraph"
-                color="primary"
-                fontWeight={'600'}
-                paddingRight={'1rem'}
+                <Typography
+                  variant="paragraph"
+                  color="primary"
+                  fontWeight={'600'}
+                  paddingRight={'1rem'}
+                >
+                  Comments
+                </Typography>
+              </TableCell>
+              <TableCell
+                sx={{
+                  padding: 0,
+                }}
               >
-                Likes
-              </Typography>
-            </TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>{blogRows}</TableBody>
-      </Table>
+                <Typography
+                  variant="paragraph"
+                  color="primary"
+                  fontWeight={'600'}
+                  paddingRight={'1rem'}
+                >
+                  Likes
+                </Typography>
+              </TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>{blogRows}</TableBody>
+        </Table>
+      )}
     </Box>
   )
 }
