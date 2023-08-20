@@ -137,7 +137,7 @@ const UserView = () => {
   ))
 
   return (
-    <Box marginBottom={5} minHeight={'77vh'} marginTop={'10vh'}>
+    <Box marginBottom={5} minHeight={'77vh'} marginTop={'110px'}>
       <Typography
         variant="h2"
         color="body"

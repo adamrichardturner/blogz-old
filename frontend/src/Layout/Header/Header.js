@@ -5,6 +5,7 @@ import { useTheme } from '../../hooks/theme'
 import Navigation from './Navigation'
 import AccountMenu from '../../common/AccountMenu'
 import DarkModeToggle from '../../common/DarkModeToggle'
+import { useNavigate } from 'react-router-dom'
 
 const Header = ({ theme }) => {
   const [scrollPosition, setScrollPosition] = useState(0)
@@ -12,6 +13,7 @@ const Header = ({ theme }) => {
   const { handleThemeChange, isDarkMode } = useTheme()
   const user = JSON.parse(localStorage.getItem('loggedBlogzApp'))
   const isSmallScreen = useMediaQuery((theme) => theme.breakpoints.down('sm'))
+  const navigate = useNavigate()
 
   const handleScroll = () => {
     setScrollPosition(window.scrollY)
@@ -27,6 +29,14 @@ const Header = ({ theme }) => {
 
   const handleSwitch = () => {
     handleThemeChange()
+  }
+
+  const handleHomeButton = () => {
+    navigate('/')
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth', // Smooth scroll
+    })
   }
 
   const headerStyle = {
@@ -92,6 +102,8 @@ const Header = ({ theme }) => {
                     color: iconColor,
                     fontSize: isSmallScreen ? '1.25rem' : '2rem',
                   }}
+                  onClick={handleHomeButton}
+                  cursor={'pointer'}
                 />
               </Box>
             </Box>

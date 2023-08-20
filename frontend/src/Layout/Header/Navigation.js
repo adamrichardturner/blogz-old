@@ -1,8 +1,19 @@
 import { NavLink } from 'react-router-dom'
 import { Box, Link as MuiLink } from '@mui/material'
 import AssignmentIcon from '@mui/icons-material/Assignment'
+import { useNavigate } from 'react-router-dom'
 
 function Navigation({ isSmallScreen, scroll, iconColor }) {
+  const navigate = useNavigate()
+
+  const handleHomeButton = () => {
+    navigate('/')
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth', // Smooth scroll
+    })
+  }
+
   return (
     <Box
       sx={{
@@ -19,6 +30,8 @@ function Navigation({ isSmallScreen, scroll, iconColor }) {
             marginLeft: '0',
             marginRight: '.5rem',
           }}
+          onClick={handleHomeButton}
+          cursor={'pointer'}
         />
       )}
       <NavLink to="/">
