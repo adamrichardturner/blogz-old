@@ -131,15 +131,6 @@ export const darkTheme = createTheme({
         },
       },
     },
-    MuiTableRow: {
-      styleOverrides: {
-        root: {
-          '&:hover': {
-            backgroundColor: 'rgba(255, 255, 255, 0.08) !important', // Change to your desired hover color.
-          },
-        },
-      },
-    },
     MuiPaper: {
       styleOverrides: {
         root: {

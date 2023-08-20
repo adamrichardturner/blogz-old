@@ -2,13 +2,13 @@
 
 Blogz is a dynamic MERN stack social network application.
 
-The UI offers views for Blogs and Users, managed by Redux for smooth state handling.
+The React UI offers views for Blogs and Users, managed by Redux for smooth state handling.
 
 On the backend, Node and Express manage routes for user actions like blog creation, updates, and deletion, along with commenting and liking, with the addition of GIPHY API integration, enabling users to post or comment with GIFs from a library.
 
 User data is securely stored in MongoDB with Mongoose.
 
-Integration testing with Supertest ensures robust APIs, and user authentication relies on JWT and Bcrypt. Comprehensive end-to-end testing is implemented using Cypress.
+Integration testing with Supertest ensures robust APIs, and user authentication relies on JWT and Bcrypt.
 
 # Screenshots
 
@@ -34,14 +34,10 @@ Or register for your own account at [https://blogz.dev/register](https://blogz.d
 
 ## Backend:
 
-- Powering Blogz is a Node and Express backend that handles various routes, including retrieving, creating, updating, and deleting blogs, as well as user registration, login, commenting, and liking functionalities.
-- MongoDB with Mongoose serves as the database, efficiently storing Users and Blogs data with a structured schema.
+- Node and Express backend that handles various routes, including retrieving, creating, updating, and deleting blogs, as well as user registration, login, commenting, and liking functionalities.
+- MongoDB with Mongoose serves as the database, storing Users and Blogs data with a structured schema.
 - The backend is subjected to integration testing using Supertest, ensuring reliable API endpoints.
 - User Authentication is prioritized and enforced with JWT (JSON Web Tokens) and Bcrypt.
-
-## End to End Testing:
-
-- Cypress is utilised for end-to-end testing.
 
 ## Installation
 
@@ -59,7 +55,7 @@ Register for an account with [MongoDB Atlas](https://www.mongodb.com/atlas/datab
 
 ```
 MONGODB_URI="Your Mongo DB URI"
-PORT=3003
+PORT=3004
 SECRET="Any secure string for hashing the passwords can go here"
 ```
 

@@ -13,7 +13,7 @@ const BlogView = () => {
   if (!blog) {
     return (
       <Box
-        minHeight={'72vh'}
+        minHeight={'83vh'}
         sx={{
           display: 'flex',
           alignItems: 'center',

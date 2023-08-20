@@ -49,7 +49,7 @@ const UserView = () => {
     <TableRow key={blog.id} hover role="checkbox">
       <TableCell
         sx={{
-          padding: 0,
+          padding: '0 !important',
         }}
       >
         <ButtonBase
@@ -99,7 +99,12 @@ const UserView = () => {
           </Box>
         </ButtonBase>
       </TableCell>
-      <TableCell align="center">
+      <TableCell
+        align="center"
+        sx={{
+          padding: '0 !important',
+        }}
+      >
         <ButtonBase
           component={Link}
           to={`/blogs/${blog.id}`}
@@ -120,7 +125,12 @@ const UserView = () => {
           </Typography>
         </ButtonBase>
       </TableCell>
-      <TableCell align="center">
+      <TableCell
+        align="center"
+        sx={{
+          padding: '0 !important',
+        }}
+      >
         <ButtonBase
           component={Link}
           to={`/blogs/${blog.id}`}
@@ -142,7 +152,7 @@ const UserView = () => {
   ))
 
   return (
-    <Box marginBottom={5} minHeight={'77vh'} marginTop={'110px'}>
+    <Box marginBottom={5} minHeight={'83vh'} marginTop={'110px'}>
       <Typography
         variant="h2"
         color="body"
@@ -172,7 +182,7 @@ const UserView = () => {
               <TableCell
                 sx={{
                   padding: '1.25rem .5rem',
-                  lineHeight: '1rem',
+                  lineHeight: '1.5rem',
                 }}
               >
                 <Typography

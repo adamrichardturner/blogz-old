@@ -37,7 +37,7 @@ const UserSummaryView = () => {
   }
 
   return (
-    <Box marginBottom={5} marginTop={'110px'}>
+    <Box marginBottom={5} marginTop={'110px'} minHeight={'83vh'}>
       <Typography variant="h2" color="body" marginTop={2} marginBottom={2}>
         Blogz Users
       </Typography>
@@ -52,6 +52,7 @@ const UserSummaryView = () => {
             '& .MuiTableRow-root:hover': {
               backgroundColor: `${theme.palette.head.main} !important`,
             },
+            lineHeight: '1.5rem',
           }}
         >
           <TableRow

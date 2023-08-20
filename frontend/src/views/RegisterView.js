@@ -11,13 +11,11 @@ const RegisterView = ({ theme, user }) => {
     navigate('/')
   }
 
-  // If the user is already logged in or registration was successful, navigate away.
   if (user || loggedIn) {
     navigate('/')
     return null
   }
 
-  // If user is not logged in and registration hasn't been done, show the registration form.
   return <RegistrationForm theme={theme} handleLogin={handleLogin} />
 }
 
