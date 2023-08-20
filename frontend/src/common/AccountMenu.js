@@ -100,7 +100,7 @@ export default function AccountMenu({ user }) {
           onClick={handleLogout}
           sx={{
             marginBottom: 0,
-            padding: '0 1rem 1rem 1rem',
+            padding: '1rem 1rem 1rem 1rem',
           }}
         >
           Logout
