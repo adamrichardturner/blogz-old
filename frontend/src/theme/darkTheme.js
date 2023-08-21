@@ -41,7 +41,7 @@ export const darkTheme = createTheme({
     },
     text: {
       primary: '#ffffff',
-      secondary: '#000000',
+      secondary: '#ffffff',
       tertiary: '#ffffff',
     },
   },
