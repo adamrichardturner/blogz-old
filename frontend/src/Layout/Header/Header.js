@@ -51,32 +51,55 @@ const Header = ({ theme }) => {
 
   const headerStyle = {
     position: 'fixed',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
     top: 0,
     left: 0,
     right: 0,
-    height: isVisible ? '60px' : '82px',
     zIndex: 10,
+    padding: 0,
     transform: isVisible ? 'translateY(0)' : 'translateY(-10%)',
     transition: 'transform 0.3s ease-in-out',
     backgroundColor: theme.palette.background.default,
   }
 
   const iconColor = theme.palette.type === 'dark' ? '#ffffff' : '#201b2d'
+  const shadowStyle =
+    theme.palette.type === 'dark'
+      ? 'rgba(255, 255, 255, 0.1) 0px 2px 3px 0px'
+      : 'rgba(0, 0, 0, 0.1) 0px 2px 3px 0px'
 
   if (user === null) {
     return null
   }
 
   return (
-    <Container maxWidth="md" style={{ ...headerStyle, color: iconColor }}>
-      <Box
+    <Box
+      width={'100%'}
+      padding={0}
+      style={{
+        ...headerStyle,
+        color: iconColor,
+        boxShadow: isVisible ? shadowStyle : 'none',
+        transition: 'box-shadow .3s ease-in-out',
+      }}
+    >
+      <Container
+        maxWidth="md"
         style={{
           display: 'flex',
           flexDirection: 'row',
-          alignItems: 'center',
+          alignItems: 'flex-start',
           justifyContent: 'space-between',
-          padding: 0,
-          margin: '1rem 0',
+          maxWidth: theme.breakpoints.down('md'),
+          padding: isVisible
+            ? isSmallScreen
+              ? '16px'
+              : '16px 24px 16px 24px'
+            : isSmallScreen
+            ? '32px 16px 16px 16px'
+            : '32px 24px 16px 24px',
         }}
       >
         <Box>
@@ -105,6 +128,7 @@ const Header = ({ theme }) => {
                       fontSize: isSmallScreen ? '2.5rem' : '3rem',
                       marginRight: isSmallScreen ? '2px' : '5px',
                       transition: 'all 0.3s',
+                      lineHeight: 1.15,
                     }}
                     color="primary"
                   >
@@ -165,8 +189,8 @@ const Header = ({ theme }) => {
             </Box>
           </Box>
         </Box>
-      </Box>
-    </Container>
+      </Container>
+    </Box>
   )
 }
 

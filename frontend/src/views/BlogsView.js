@@ -50,9 +50,9 @@ const BlogsView = () => {
   })
 
   return (
-    <Box marginTop={'110px'}>
+    <Box marginTop={'8rem'}>
       <Box>
-        <Typography variant="h2" color="body" marginTop={2} marginBottom={0}>
+        <Typography variant="h2" color="body" marginBottom={0}>
           What&apos;s on your mind, {user.name.split(' ')[0]}? 😄
         </Typography>
       </Box>

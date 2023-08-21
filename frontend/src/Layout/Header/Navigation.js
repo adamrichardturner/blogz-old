@@ -1,11 +1,11 @@
 import { NavLink } from 'react-router-dom'
-import { Box, Link as MuiLink } from '@mui/material'
+import { useMediaQuery, Box, Link as MuiLink } from '@mui/material'
 import AssignmentIcon from '@mui/icons-material/Assignment'
 import { useNavigate } from 'react-router-dom'
 
-function Navigation({ isSmallScreen, scroll, iconColor }) {
+function Navigation({ scroll, iconColor }) {
   const navigate = useNavigate()
-
+  const isSmallScreen = useMediaQuery((theme) => theme.breakpoints.down('md'))
   const handleHomeButton = () => {
     navigate('/')
     window.scrollTo({
@@ -34,7 +34,7 @@ function Navigation({ isSmallScreen, scroll, iconColor }) {
           style={{
             color: iconColor,
             fontSize: '2rem',
-            marginLeft: '0',
+            marginLeft: isSmallScreen ? '-4px' : '-4px',
             marginRight: '.5rem',
           }}
           onClick={handleHomeButton}
@@ -56,7 +56,6 @@ function Navigation({ isSmallScreen, scroll, iconColor }) {
           </MuiLink>
         }
       </NavLink>
-
       <NavLink to="/users">
         {
           <MuiLink

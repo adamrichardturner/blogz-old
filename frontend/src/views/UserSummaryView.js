@@ -37,7 +37,7 @@ const UserSummaryView = () => {
   }
 
   return (
-    <Box marginBottom={5} marginTop={'110px'} minHeight={'83vh'}>
+    <Box marginBottom={5} marginTop={'8rem'} minHeight={'83vh'}>
       <Typography variant="h2" color="body" marginTop={2} marginBottom={2}>
         Blogz Users
       </Typography>

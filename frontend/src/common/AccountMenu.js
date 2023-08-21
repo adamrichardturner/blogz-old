@@ -5,16 +5,14 @@ import Menu from '@mui/material/Menu'
 import MenuItem from '@mui/material/MenuItem'
 import IconButton from '@mui/material/IconButton'
 import Tooltip from '@mui/material/Tooltip'
-import { Link } from '@mui/material'
 import { Link as RouterLink } from 'react-router-dom'
 import { useAuth } from '../hooks/auth'
-import { Typography } from '@mui/material'
-import { useTheme } from '@mui/material'
+import { Typography, useTheme, Link } from '@mui/material'
+
 export default function AccountMenu({ user }) {
   const theme = useTheme()
   const [anchorEl, setAnchorEl] = useState(null)
   const open = Boolean(anchorEl)
-
   const { signout } = useAuth()
 
   const handleClick = (event) => {

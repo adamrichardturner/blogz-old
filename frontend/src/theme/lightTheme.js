@@ -29,6 +29,7 @@ export const lightTheme = createTheme({
     },
     paper: {
       main: '#ffffff',
+      secondary: '#0c121c',
     },
     danger: {
       main: '#DC3545',

@@ -230,7 +230,7 @@ const RegistrationForm = ({ handleLogin }) => {
                   id="login-button"
                   variant="contained"
                   type="submit"
-                  color="body"
+                  color="primary"
                   disabled={isLoading}
                   sx={{
                     color: theme.palette.text.secondary,
